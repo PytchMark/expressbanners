@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Express Banners delivers fast, reliable print, signage, and embroidery with premium quality." />
+    <meta name="description" content="Premium banners, signs, embroidery, and printing delivered fast across Jamaica." />
     <meta name="theme-color" content="#ffffff" />
     <title>Express Banners | Fast. Affordable. Reliable.</title>
 
@@ -16,32 +16,51 @@
 
     <meta property="og:title" content="Express Banners" />
     <meta property="og:description" content="Fast, affordable, reliable printing in days." />
-    <meta property="og:image" content="assets/img/og-image.jpg" />
+    <meta property="og:image" content="assets/img/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="css/styles.css" />
   </head>
-  <body>
+  <body data-base="./" data-seo-page="home">
     <a class="skip-link" href="#main">Skip to content</a>
 
+    <div class="promo-strip" aria-label="Express Banners trust statements">
+      <div class="promo-track" aria-hidden="true">
+        <span>Over a decade of high-quality printing</span>
+        <span>Fast turnaround, sharp results</span>
+        <span>Client satisfaction guaranteed</span>
+        <span>Banners, signs, embroidery, screen printing</span>
+        <span>Design help available</span>
+        <span>Reliable. Affordable. Done right.</span>
+        <span>Over a decade of high-quality printing</span>
+        <span>Fast turnaround, sharp results</span>
+        <span>Client satisfaction guaranteed</span>
+        <span>Banners, signs, embroidery, screen printing</span>
+        <span>Design help available</span>
+        <span>Reliable. Affordable. Done right.</span>
+      </div>
+      <span class="sr-only">Over a decade of high-quality printing. Fast turnaround, sharp results.</span>
+    </div>
+
+    <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <div class="nav-logo">
-          <img src="assets/img/logo.png" width="120" height="36" alt="Express Banners logo" />
+        <a class="nav-logo" href="index.html">
+          <img src="assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
           <span class="brand-name" data-business-name>Express Banners</span>
-        </div>
+        </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
         <div class="nav-links" id="nav-menu">
-          <a href="#services" data-nav-link>Services</a>
-          <a href="#order" data-nav-link>Order</a>
-          <a href="#portfolio" data-nav-link>Portfolio</a>
-          <a href="#process" data-nav-link>Process</a>
-          <a href="#faq" data-nav-link>FAQ</a>
-          <a href="#contact" data-nav-link>Contact</a>
-          <a class="btn btn-primary" href="#order">Start Order</a>
+          <a href="index.html" data-nav-link>Home</a>
+          <a href="services/" data-nav-link>Services</a>
+          <a href="portfolio/" data-nav-link>Portfolio</a>
+          <a href="about/" data-nav-link>About</a>
+          <a href="order/" data-nav-link>Order</a>
+          <a href="contact/" data-nav-link>Contact</a>
+          <a class="btn btn-primary" href="order/">Start Order</a>
         </div>
       </nav>
     </header>
@@ -49,15 +68,15 @@
     <main id="main">
       <section class="hero section theme-light" aria-labelledby="hero-title">
         <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow" data-tagline>Fast & Efficient Printing</p>
+          <div class="hero-copy reveal">
+            <p class="eyebrow" data-tagline>Fast. Affordable. Reliable.</p>
             <h1 id="hero-title" data-hero-title>Premium banners, signs & embroidery delivered fast.</h1>
             <p class="lead">
-              Express Banners helps you launch campaigns in days, not weeks. Clean finishes, bold colors, and a team that
-              prints 24/7.
+              Express Banners helps Jamaican brands launch campaigns in days, not weeks. Clean finishes, bold colors, and
+              a production team that keeps your deadlines moving.
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#order">Start Order</a>
+              <a class="btn btn-primary" href="order/">Start Order</a>
               <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Quote</a>
             </div>
             <div class="chip-row">
@@ -66,15 +85,16 @@
               <span class="chip">Trusted by local brands</span>
             </div>
           </div>
-          <div class="hero-media">
+          <div class="hero-media reveal">
             <div class="media-card">
               <img
                 src="assets/img/hero.jpg"
                 width="520"
                 height="420"
-                alt="Placeholder hero showing Express Banners work"
+                alt="Express Banners production showcase"
+                data-hero-image
               />
-              <div class="media-badge">Replace hero.jpg with your latest project.</div>
+              <div class="media-badge">Upload your latest banner, sign, or apparel project here.</div>
             </div>
           </div>
         </div>
@@ -84,19 +104,19 @@
 
       <section class="proof-strip section theme-dark theme-dark--slim" aria-label="Key proof points">
         <div class="container proof-grid">
-          <div class="stat-chip">
+          <div class="stat-chip reveal">
             <span class="stat">24/7</span>
             <span class="label">Production hours</span>
           </div>
-          <div class="stat-chip">
+          <div class="stat-chip reveal">
             <span class="stat">2-5 days</span>
             <span class="label">Average turnaround</span>
           </div>
-          <div class="stat-chip">
+          <div class="stat-chip reveal">
             <span class="stat">5K+</span>
             <span class="label">Projects delivered</span>
           </div>
-          <div class="stat-chip">
+          <div class="stat-chip reveal">
             <span class="stat">100%</span>
             <span class="label">Quality check</span>
           </div>
@@ -105,43 +125,43 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section theme-light" id="services" aria-labelledby="services-title">
+      <section class="section theme-light" aria-labelledby="services-title">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head reveal">
             <p class="eyebrow">Services</p>
             <h2 id="services-title">Print work that shows up sharp.</h2>
             <p>Banners, signs, embroidery, and screen printing—fast and reliable.</p>
           </div>
           <div class="services-grid">
-            <article class="card service-card" data-service="Signs">
+            <article class="card service-card reveal">
               <h3>Signs</h3>
               <p>Durable indoor/outdoor signage that stays sharp.</p>
               <span class="turnaround">Turnaround: 3-5 days</span>
-              <button class="btn btn-outline" type="button" data-service-order>Order this</button>
+              <a class="btn btn-outline" href="order/?service=Signs">Order this</a>
             </article>
-            <article class="card service-card" data-service="Banners">
+            <article class="card service-card reveal">
               <h3>Banners</h3>
               <p>Bold vinyl banners sized for visibility and impact.</p>
               <span class="turnaround">Turnaround: 2-4 days</span>
-              <button class="btn btn-outline" type="button" data-service-order>Order this</button>
+              <a class="btn btn-outline" href="order/?service=Banners">Order this</a>
             </article>
-            <article class="card service-card" data-service="Embroidery">
+            <article class="card service-card reveal">
               <h3>Embroidery</h3>
               <p>Clean stitched apparel for teams and uniforms.</p>
               <span class="turnaround">Turnaround: 4-6 days</span>
-              <button class="btn btn-outline" type="button" data-service-order>Order this</button>
+              <a class="btn btn-outline" href="order/?service=Embroidery">Order this</a>
             </article>
-            <article class="card service-card" data-service="Graphic Designing">
+            <article class="card service-card reveal">
               <h3>Graphic Designing</h3>
               <p>Fresh layouts ready for print and social use.</p>
               <span class="turnaround">Turnaround: 2-3 days</span>
-              <button class="btn btn-outline" type="button" data-service-order>Order this</button>
+              <a class="btn btn-outline" href="order/?service=Graphic%20Designing">Order this</a>
             </article>
-            <article class="card service-card" data-service="Screen Printing">
+            <article class="card service-card reveal">
               <h3>Screen Printing</h3>
               <p>High-volume apparel prints that stay vibrant.</p>
               <span class="turnaround">Turnaround: 5-7 days</span>
-              <button class="btn btn-outline" type="button" data-service-order>Order this</button>
+              <a class="btn btn-outline" href="order/?service=Screen%20Printing">Order this</a>
             </article>
           </div>
         </div>
@@ -149,242 +169,50 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section theme-light" id="order" aria-labelledby="order-title">
-        <div class="container order-grid">
-          <div>
-            <div class="section-head">
-              <p class="eyebrow">Order</p>
-              <h2 id="order-title">Start your order in minutes.</h2>
-              <p>Pick a service, dial in size, and we will confirm fast.</p>
-            </div>
-            <ol class="stepper">
-              <li>
-                <span class="step">Step 1</span>
-                <strong>Choose service</strong>
-                <p>Select the service that matches your job.</p>
-              </li>
-              <li>
-                <span class="step">Step 2</span>
-                <strong>Pick options</strong>
-                <p>Tell us size, quantity, and finishing preferences.</p>
-              </li>
-              <li>
-                <span class="step">Step 3</span>
-                <strong>Upload artwork</strong>
-                <p>Use the secure upload link.</p>
-              </li>
-              <li>
-                <span class="step">Step 4</span>
-                <strong>Payment</strong>
-                <p>Card payments via NCB are launching soon.</p>
-              </li>
-            </ol>
-            <div class="order-form card">
-              <div class="form-row">
-                <span class="form-label">Service</span>
-                <div class="pill-group" role="group" aria-label="Select a service">
-                  <button class="pill" type="button" data-service-pill data-value="Signs">SIGNS</button>
-                  <button class="pill" type="button" data-service-pill data-value="Banners">BANNERS</button>
-                  <button class="pill" type="button" data-service-pill data-value="Embroidery">EMBROIDERY</button>
-                  <button class="pill" type="button" data-service-pill data-value="Graphic Designing">
-                    GRAPHIC DESIGNING
-                  </button>
-                  <button class="pill" type="button" data-service-pill data-value="Screen Printing">
-                    SCREEN PRINTING
-                  </button>
-                </div>
-                <label class="sr-only" for="service-select">Service</label>
-                <select id="service-select" name="service" class="sr-only">
-                  <option value="">Select a service</option>
-                  <option value="Signs">Signs</option>
-                  <option value="Banners">Banners</option>
-                  <option value="Embroidery">Embroidery</option>
-                  <option value="Graphic Designing">Graphic Designing</option>
-                  <option value="Screen Printing">Screen Printing</option>
-                </select>
-                <div class="helper-chips" aria-live="polite">
-                  <span class="helper-chip" data-helper-turnaround>Typical turnaround: 2-5 days</span>
-                  <span class="helper-chip" data-helper-files>Best files: PDF, AI, EPS, PNG</span>
-                  <span class="helper-chip" data-helper-rush>Rush available: Yes</span>
-                </div>
-              </div>
-              <div class="form-row">
-                <span class="form-label">Size</span>
-                <div class="pill-group" role="group" aria-label="Select a size">
-                  <button class="pill" type="button" data-size-pill data-value="2 x 6 ft">2×6 ft</button>
-                  <button class="pill" type="button" data-size-pill data-value="3 x 8 ft">3×8 ft</button>
-                  <button class="pill" type="button" data-size-pill data-value="4 x 10 ft">4×10 ft</button>
-                  <button class="pill" type="button" data-size-pill data-value="Custom">Custom</button>
-                </div>
-                <div class="custom-size" data-custom-size hidden>
-                  <div class="custom-size-grid">
-                    <div>
-                      <label for="custom-width">Width</label>
-                      <input id="custom-width" name="custom-width" type="number" min="1" placeholder="Width" />
-                    </div>
-                    <div>
-                      <label for="custom-height">Height</label>
-                      <input id="custom-height" name="custom-height" type="number" min="1" placeholder="Height" />
-                    </div>
-                    <div>
-                      <label for="custom-unit">Unit</label>
-                      <select id="custom-unit" name="custom-unit">
-                        <option value="ft">ft</option>
-                        <option value="in">in</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <label for="quantity-input">Quantity</label>
-                <div class="stepper-input" role="group" aria-label="Quantity selector">
-                  <button class="stepper-btn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
-                  <input id="quantity-input" name="quantity" type="number" min="1" max="999" value="1" />
-                  <button class="stepper-btn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
-                </div>
-              </div>
-              <div class="form-row">
-                <label for="finish-select">Finish</label>
-                <select id="finish-select" name="finish">
-                  <option value="Standard">Standard</option>
-                  <option value="Premium">Premium</option>
-                  <option value="Matte">Matte</option>
-                  <option value="Gloss">Gloss</option>
-                </select>
-              </div>
-              <div class="form-row full">
-                <label for="notes-input">Notes</label>
-                <textarea id="notes-input" name="notes" rows="3" placeholder="Tell us any special instructions."></textarea>
-              </div>
-            </div>
-          </div>
-          <aside class="summary card" aria-live="polite">
-            <div class="ticket-head">
-              <p class="eyebrow">Order Summary</p>
-              <h3>Job ticket</h3>
-              <p class="muted">Review before you send.</p>
-            </div>
-            <dl class="ticket-list">
-              <div>
-                <dt>Service</dt>
-                <dd data-summary-service>Not selected</dd>
-              </div>
-              <div>
-                <dt>Size</dt>
-                <dd data-summary-size>Not set</dd>
-              </div>
-              <div>
-                <dt>Quantity</dt>
-                <dd data-summary-quantity>1</dd>
-              </div>
-              <div>
-                <dt>Finish</dt>
-                <dd data-summary-finish>Standard</dd>
-              </div>
-              <div>
-                <dt>Notes</dt>
-                <dd data-summary-notes>None</dd>
-              </div>
-            </dl>
-            <div class="ticket-meta">
-              <span class="muted">Last updated</span>
-              <strong data-summary-timestamp>Just now</strong>
-            </div>
-            <div class="summary-actions">
-              <a class="btn btn-primary" data-whatsapp href="#">Send order via WhatsApp</a>
-              <a class="btn btn-outline" data-upload-link href="#">Upload artwork</a>
-              <button
-                class="btn btn-outline btn-disabled"
-                type="button"
-                aria-disabled="true"
-                data-payment-button
-                title="Payments launching soon"
-              >
-                Pay Now
-              </button>
-              <span class="helper">Card payments (NCB) launching soon. For now, complete via WhatsApp.</span>
-              <button class="btn btn-ghost" type="button" data-whatsapp-alt>Complete order via WhatsApp for now</button>
-              <p class="notice" role="status" aria-live="polite" data-payment-notice></p>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <section class="section theme-light" id="portfolio" aria-labelledby="portfolio-title">
+      <section id="portfolio" class="section theme-dark" aria-labelledby="portfolio-title">
         <div class="container">
-          <div class="section-head">
-            <p class="eyebrow">Portfolio</p>
-            <h2 id="portfolio-title">A quick look at recent work.</h2>
-            <p>Swap the images in assets/img to show your latest projects.</p>
+          <div class="section-head reveal">
+            <p class="eyebrow">Featured Portfolio</p>
+            <h2 id="portfolio-title">Work that brings Jamaican brands to life.</h2>
+            <p class="muted">See how our banners, signage, and apparel help businesses launch with confidence.</p>
           </div>
-          <div class="portfolio-grid" data-portfolio-grid>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
-            <div class="skeleton" aria-hidden="true"></div>
+          <div class="portfolio-grid" data-portfolio-featured></div>
+          <div class="cta-band reveal" style="margin-top: 28px;">
+            <h3>Ready for a standout print launch?</h3>
+            <p class="muted">Browse the full portfolio or start a project today.</p>
+            <div class="hero-actions" style="justify-content: center;">
+              <a class="btn btn-primary" href="portfolio/">View Full Portfolio</a>
+              <a class="btn btn-outline" href="order/">Start Order</a>
+            </div>
           </div>
         </div>
       </section>
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section theme-light" id="process" aria-labelledby="process-title">
+      <section class="section theme-light" aria-labelledby="process-title">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head reveal">
             <p class="eyebrow">Process</p>
-            <h2 id="process-title">Clear steps, fast output.</h2>
-            <p>We guide you from brief to pickup with zero guesswork.</p>
+            <h2 id="process-title">A smooth, clear production flow.</h2>
+            <p>From briefing to delivery, we keep your order visible at every step.</p>
           </div>
-          <div class="process-grid">
-            <article class="card">
-              <h3>Choose</h3>
-              <p>Select your service and size so we can get moving.</p>
+          <div class="services-grid">
+            <article class="card reveal">
+              <h3>1. Share your needs</h3>
+              <p>Tell us the service, size, quantity, and any brand notes.</p>
             </article>
-            <article class="card">
-              <h3>Upload</h3>
-              <p>Send artwork using the secure upload link.</p>
+            <article class="card reveal">
+              <h3>2. Approve layout</h3>
+              <p>We confirm layout, pricing, and timing before production.</p>
             </article>
-            <article class="card">
-              <h3>Confirm</h3>
-              <p>We confirm pricing and proofing via WhatsApp.</p>
+            <article class="card reveal">
+              <h3>3. Print & finish</h3>
+              <p>We handle printing, trimming, hemming, or embroidery.</p>
             </article>
-            <article class="card">
-              <h3>We Print</h3>
-              <p>We print fast and keep you updated for pickup or delivery.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <section class="section theme-light" id="testimonials" aria-labelledby="testimonials-title">
-        <div class="container">
-          <div class="section-head">
-            <p class="eyebrow">Testimonials</p>
-            <h2 id="testimonials-title">Clients love the speed.</h2>
-            <p>Real feedback from busy teams and local brands.</p>
-          </div>
-          <div class="testimonials-grid">
-            <article class="card">
-              <p>“Our event banners were ready in two days. Fantastic quality.”</p>
-              <span class="muted">— Melissa, Event Planner</span>
-            </article>
-            <article class="card">
-              <p>“The team handled our rush order with zero hassle.”</p>
-              <span class="muted">— Andre, Retail Owner</span>
-            </article>
-            <article class="card">
-              <p>“Clean prints and clear communication. Highly recommend.”</p>
-              <span class="muted">— Priya, Marketing Lead</span>
+            <article class="card reveal">
+              <h3>4. Deliver or pickup</h3>
+              <p>Choose delivery across Jamaica or collect in person.</p>
             </article>
           </div>
         </div>
@@ -392,120 +220,82 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section theme-light" id="faq" aria-labelledby="faq-title">
+      <section class="section theme-light" aria-labelledby="faq-title">
         <div class="container">
-          <div class="section-head">
+          <div class="section-head reveal">
             <p class="eyebrow">FAQ</p>
-            <h2 id="faq-title">Answers, ready when you are.</h2>
-            <p>Fast clarity on turnaround, files, and payment.</p>
+            <h2 id="faq-title">Answers for your next order.</h2>
+            <p>We respond quickly and keep production timelines clear.</p>
           </div>
-          <div class="faq" data-accordion>
-            <button class="faq-item" type="button" aria-expanded="false">
-              <span>What is the average turnaround?</span>
-              <span class="icon">+</span>
-            </button>
-            <div class="faq-panel">
-              <p>Most orders are ready in 2-5 business days depending on size and quantity.</p>
-            </div>
-
-            <button class="faq-item" type="button" aria-expanded="false">
-              <span>What file types do you accept?</span>
-              <span class="icon">+</span>
-            </button>
-            <div class="faq-panel">
-              <p>We accept PDF, AI, EPS, and high-resolution PNG or JPG files.</p>
-            </div>
-
-            <button class="faq-item" type="button" aria-expanded="false">
-              <span>Do you help with sizing?</span>
-              <span class="icon">+</span>
-            </button>
-            <div class="faq-panel">
-              <p>Yes. Share your goal and we will recommend the best size for visibility.</p>
-            </div>
-
-            <button class="faq-item" type="button" aria-expanded="false">
-              <span>Do you offer pickup or delivery?</span>
-              <span class="icon">+</span>
-            </button>
-            <div class="faq-panel">
-              <p>Pickup is available locally, and delivery can be arranged on request.</p>
-            </div>
-
-            <button class="faq-item" type="button" aria-expanded="false">
-              <span>How does payment work?</span>
-              <span class="icon">+</span>
-            </button>
-            <div class="faq-panel">
-              <p>Card payments via NCB are launching soon. For now, confirm via WhatsApp.</p>
-            </div>
+          <div class="services-grid">
+            <article class="card reveal">
+              <h3>How fast can you deliver?</h3>
+              <p>Most banner and sign jobs are ready in 2-5 business days depending on volume.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Can you help with design?</h3>
+              <p>Yes. Our in-house designers can update or create layouts for print.</p>
+            </article>
+            <article class="card reveal">
+              <h3>What files work best?</h3>
+              <p>Vector files (AI, EPS, PDF) or high-res PNGs deliver the sharpest prints.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Do you handle rush jobs?</h3>
+              <p>Rush production is available for select services. Ask for a fast quote.</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <section class="cta-band section theme-dark" aria-label="Ready to print">
-        <div class="container cta-content">
-          <div class="section-head">
-            <p class="eyebrow">Ready</p>
-            <h2>Ready to print?</h2>
-            <p>Send your order now and we will confirm fast.</p>
-          </div>
-          <div class="cta-actions">
-            <a class="btn btn-primary" href="#order">Start Order</a>
-            <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Now</a>
+      <section class="section compact theme-light" aria-labelledby="home-contact">
+        <div class="container">
+          <div class="cta-band reveal">
+            <h3 id="home-contact">Need a quick quote?</h3>
+            <p class="muted">Message us on WhatsApp for same-day responses.</p>
+            <div class="hero-actions" style="justify-content: center;">
+              <a class="btn btn-primary" data-whatsapp href="#">Chat on WhatsApp</a>
+              <a class="btn btn-outline" href="contact/">Contact form</a>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="footer theme-light" id="contact">
+    <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <img src="assets/img/logo.png" width="140" height="40" alt="Express Banners logo" />
-          <p class="muted">Fast. Affordable. Reliable.</p>
-          <div class="social-links">
-            <a href="#" data-instagram>Instagram</a>
-            <a href="#" data-facebook>Facebook</a>
-            <a href="#" data-tiktok>TikTok</a>
+          <h3 data-business-name>Express Banners</h3>
+          <p class="muted">Premium print solutions for Jamaica businesses and events.</p>
+          <div class="footer-actions">
+            <a class="btn btn-primary" href="order/">Start Order</a>
+            <a class="btn btn-outline" data-whatsapp href="#">WhatsApp</a>
           </div>
         </div>
         <div>
-          <h3>Contact</h3>
-          <p data-address>123 Sample Street, Kingston</p>
-          <p data-hours>Mon-Sat: 9am - 6pm</p>
-          <p><a data-whatsapp href="#">WhatsApp us</a></p>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="services/">Services</a></li>
+            <li><a href="portfolio/">Portfolio</a></li>
+            <li><a href="about/">About</a></li>
+            <li><a href="contact/">Contact</a></li>
+          </ul>
         </div>
         <div>
-          <h3>Map</h3>
-          <div class="map-card">
-            <a href="#" data-map-link aria-label="Open map">Map placeholder (replace link)</a>
-          </div>
+          <h4>Contact</h4>
+          <p class="muted" data-address>Kingston, Jamaica</p>
+          <p class="muted" data-hours>Mon-Sat: 9am - 6pm</p>
+          <a class="btn btn-outline" data-map-link href="https://maps.google.com/">Open Map</a>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>© <span data-year></span> Express Banners. All rights reserved.</p>
+      <div class="container footer-bottom">
+        <span>© <span data-year></span> <span data-business-name>Express Banners</span></span>
+        <a href="terms/">Terms & Policies</a>
       </div>
     </footer>
 
-    <div class="bottom-cta" data-bottom-cta>
-      <a class="btn btn-primary" href="#order">Start Order</a>
-      <a class="btn btn-outline" data-whatsapp href="#">WhatsApp</a>
-    </div>
-
     <div class="toast" role="status" aria-live="polite" data-toast></div>
 
-    <div class="lightbox" data-lightbox aria-hidden="true">
-      <div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Portfolio image">
-        <button class="lightbox-close" type="button" aria-label="Close">×</button>
-        <button class="lightbox-prev" type="button" aria-label="Previous image">‹</button>
-        <img src="" alt="" />
-        <button class="lightbox-next" type="button" aria-label="Next image">›</button>
-        <p class="lightbox-caption"></p>
-      </div>
-    </div>
-
-    <script defer src="js/app.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

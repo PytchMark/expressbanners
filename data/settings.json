@@ -1,22 +1,59 @@
 {
   "businessName": "Express Banners",
-  "tagline": "Fast & Efficient Printing",
-  "whatsappNumber": "15551234567",
+  "tagline": "Fast. Affordable. Reliable.",
+  "heroTitle": "Premium banners, signs & embroidery delivered fast.",
+  "whatsappNumber": "18765551234",
   "whatsappDefaultMessage": "Hi Express Banners! I would like a quote.",
-  "addressLine": "123 Sample Street, Kingston",
-  "mapLinkUrl": "https://maps.google.com/",
+  "addressLine": "Kingston, Jamaica",
+  "mapLinkUrl": "https://maps.google.com/?q=Kingston%2C+Jamaica",
+  "hours": "Mon-Sat: 9am - 6pm",
   "social": {
     "instagram": "https://instagram.com/",
     "facebook": "https://facebook.com/",
     "tiktok": "https://tiktok.com/"
   },
+  "images": {
+    "logo": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/logo.png",
+    "hero": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/hero.jpg",
+    "og": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/og.jpg"
+  },
+  "contact": {
+    "email": "expressbannersja@mail.com",
+    "formMode": "formsubmit",
+    "formEndpoint": ""
+  },
   "orderLinks": {
     "artworkUploadUrl": "https://drive.google.com/",
-    "paymentUrl": ""
+    "paymentEnabled": false
   },
-  "hours": "Mon-Sat: 9am - 6pm",
   "seo": {
-    "title": "Express Banners | Fast. Affordable. Reliable.",
-    "description": "Premium banners, signs, embroidery, and printing delivered fast." 
+    "home": {
+      "title": "Express Banners | Fast. Affordable. Reliable.",
+      "description": "Premium banners, signs, embroidery, and printing delivered fast across Jamaica."
+    },
+    "about": {
+      "title": "About Express Banners | Local Print Partner in Jamaica",
+      "description": "Learn about Express Banners, a trusted Jamaican print partner for banners, signs, embroidery, and design."
+    },
+    "portfolio": {
+      "title": "Portfolio | Express Banners Jamaica",
+      "description": "Explore banners, signage, embroidery, screen printing, and design projects delivered by Express Banners."
+    },
+    "services": {
+      "title": "Services | Express Banners Printing & Design",
+      "description": "Banners, signs, embroidery, screen printing, and graphic design services for Jamaica businesses."
+    },
+    "order": {
+      "title": "Order | Express Banners",
+      "description": "Start a custom print order with Express Banners. Choose service, size, quantity, and submit fast."
+    },
+    "contact": {
+      "title": "Contact | Express Banners",
+      "description": "Contact Express Banners for quotes, artwork help, and order support."
+    },
+    "terms": {
+      "title": "Terms | Express Banners",
+      "description": "Review turnaround, revisions, file responsibility, deposits, and refunds for Express Banners orders."
+    }
   }
 }

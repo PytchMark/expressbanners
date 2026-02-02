@@ -1,65 +1,83 @@
 [
   {
     "id": 1,
-    "title": "Outdoor Banner",
+    "title": "Grand Opening Street Banner",
     "category": "Banners",
-    "src": "assets/img/portfolio-01.jpg",
-    "alt": "Outdoor banner placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-01.jpg",
+    "alt": "Large outdoor banner announcing a grand opening",
+    "featured": true,
+    "blurb": "Boosted foot traffic with bold street visibility."
   },
   {
     "id": 2,
-    "title": "Retail Signage",
+    "title": "Retail Wayfinding Signage",
     "category": "Signs",
-    "src": "assets/img/portfolio-02.jpg",
-    "alt": "Retail signage placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-02.jpg",
+    "alt": "Directional signage inside a retail space",
+    "featured": true,
+    "blurb": "Clear navigation that improved customer flow."
   },
   {
     "id": 3,
-    "title": "Team Jerseys",
+    "title": "Team Uniform Embroidery",
     "category": "Embroidery",
-    "src": "assets/img/portfolio-03.jpg",
-    "alt": "Embroidered apparel placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-03.jpg",
+    "alt": "Embroidered uniforms folded on a table",
+    "featured": true,
+    "blurb": "Polished uniforms ready for daily wear."
   },
   {
     "id": 4,
-    "title": "Window Graphics",
+    "title": "Storefront Lightbox Sign",
     "category": "Signs",
-    "src": "assets/img/portfolio-04.jpg",
-    "alt": "Window graphics placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-04.jpg",
+    "alt": "Illuminated storefront sign at night",
+    "featured": false,
+    "blurb": "Extended visibility after dark."
   },
   {
     "id": 5,
-    "title": "Event Backdrop",
+    "title": "Event Backdrop Wall",
     "category": "Banners",
-    "src": "assets/img/portfolio-05.jpg",
-    "alt": "Event backdrop placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-05.jpg",
+    "alt": "Step-and-repeat event backdrop with logos",
+    "featured": false,
+    "blurb": "Premium photo moments for guests."
   },
   {
     "id": 6,
-    "title": "Screen Print Tee",
+    "title": "Screen Print Merch Drop",
     "category": "Screen Printing",
-    "src": "assets/img/portfolio-06.jpg",
-    "alt": "Screen printed shirt placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-06.jpg",
+    "alt": "Screen printed tees on display",
+    "featured": false,
+    "blurb": "High-volume prints that stayed vibrant."
   },
   {
     "id": 7,
-    "title": "Storefront Sign",
+    "title": "Window Graphics Refresh",
     "category": "Signs",
-    "src": "assets/img/portfolio-07.jpg",
-    "alt": "Storefront sign placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-07.jpg",
+    "alt": "Storefront window graphics with promotions",
+    "featured": false,
+    "blurb": "Re-energized storefront promotions."
   },
   {
     "id": 8,
-    "title": "Trade Show Banner",
+    "title": "Trade Show Roll-Up",
     "category": "Banners",
-    "src": "assets/img/portfolio-08.jpg",
-    "alt": "Trade show banner placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-08.jpg",
+    "alt": "Roll-up banner at a trade show booth",
+    "featured": false,
+    "blurb": "Professional booth presence in minutes."
   },
   {
     "id": 9,
-    "title": "Branding Pack",
+    "title": "Brand Identity Pack",
     "category": "Graphic Designing",
-    "src": "assets/img/portfolio-09.jpg",
-    "alt": "Graphic design mockup placeholder"
+    "src": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/portfolio-09.jpg",
+    "alt": "Graphic design mockups on a desk",
+    "featured": true,
+    "blurb": "Unified visuals across print and digital."
   }
 ]

@@ -1,95 +1,80 @@
-# Express Banners Static Website
+# Express Banners Multi-Page Website
 
-This is a 100% static, mobile-first website for Express Banners. It runs on GitHub Pages with no backend.
+This repository contains a multi-page, mobile-first static site for Express Banners. It is designed for GitHub Pages and emphasizes a clean, Apple-inspired aesthetic with a sticky translucent navigation and a promotional marquee strip.
 
-## File Structure
+## Structure
 
 ```
 /
   index.html
-  /assets
-    /img
-      logo.png
-      hero.jpg
-      og-image.jpg
-      portfolio-01.jpg
-      portfolio-02.jpg
-      portfolio-03.jpg
-      portfolio-04.jpg
-      portfolio-05.jpg
-      portfolio-06.jpg
-      portfolio-07.jpg
-      portfolio-08.jpg
-      portfolio-09.jpg
-    /video
-  /css
-    styles.css
-  /js
-    app.js
-  /data
-    settings.json
-    portfolio.json
+  /about/index.html
+  /portfolio/index.html
+  /services/index.html
+  /order/index.html
+  /contact/index.html
+  /terms/index.html
+  /assets/img/.gitkeep
+  /assets/video/.gitkeep
+  /css/styles.css
+  /js/app.js
+  /data/settings.json
+  /data/portfolio.json
   README.md
 ```
 
-## Replace Images (Exact Filenames)
+All pages share the same header/nav and footer. Nested pages use relative paths (for example `../css/styles.css`).
 
-Replace the files in `assets/img` with your real images (keep filenames exactly the same):
+## Settings
 
-- `logo.png` (full logo)
-- `hero.jpg` (hero image)
-- `portfolio-01.jpg` → `portfolio-09.jpg` (portfolio tiles)
-- `og-image.jpg` (social preview image)
+Update `/data/settings.json` to customize global content:
 
-> Important: The site expects these exact filenames. Do not rename them.
+- `businessName`, `tagline`, `heroTitle`
+- `whatsappNumber` and `whatsappDefaultMessage`
+- `images.logo`, `images.hero`, `images.og`
+- `contact.email`, `contact.formMode`, `contact.formEndpoint`
+- `orderLinks.artworkUploadUrl`, `orderLinks.paymentEnabled`
+- `seo` per page (`home`, `about`, `portfolio`, `services`, `order`, `contact`, `terms`)
 
-## Update Business Details
+### Cloudinary URLs
 
-Edit `data/settings.json`:
+Use Cloudinary (or any CDN) URLs for the image fields in `settings.json` and for each portfolio item `src` in `/data/portfolio.json`.
 
-- `businessName` and `tagline`
-- `whatsappNumber` (international format without the `+`)
-- `whatsappDefaultMessage`
-- `addressLine` and `hours`
-- `social` links
-- `orderLinks.artworkUploadUrl` (Google Drive / Google Form link)
-- `seo.title` and `seo.description`
+## Portfolio Data
 
-## Update Portfolio Items
+`/data/portfolio.json` drives the featured and full gallery sections on the portfolio page. Each item should include:
 
-1. Add your images to `assets/img` using the same naming pattern: `portfolio-01.jpg`, etc.
-2. Edit `data/portfolio.json` to update titles, categories, and alt text.
+- `id`
+- `title`
+- `category`
+- `src`
+- `alt`
+- `featured` (boolean)
+- `blurb` (short outcome line)
+
+## Contact Form Modes
+
+The contact page uses FormSubmit by default for a static-safe form submission:
+
+- **FormSubmit** (default): form action is `https://formsubmit.co/expressbannersja@mail.com`
+- **Apps Script**: set `contact.formMode` to `appsscript` and place the script URL in `contact.formEndpoint` (requires custom wiring in `app.js` if you switch away from FormSubmit).
+- **Mailto**: set `contact.formMode` to `mailto` (may open the visitor’s email client).
+
+The current implementation is FormSubmit with `_next` redirect to `/contact/?sent=1`.
 
 ## GitHub Pages Deployment
 
-1. Push the repo to GitHub.
-2. Go to **Settings → Pages**.
-3. Choose **Deploy from a branch**.
-4. Select **main branch** and **/ (root)**.
-5. Save and wait for the published URL.
+1. Commit and push the repository to GitHub.
+2. In GitHub, open **Settings → Pages**.
+3. Select the default branch (e.g., `main`) and `/` (root) for the folder.
+4. Save and wait for the deployment URL.
 
-## QA Checklist
+## Development Notes
 
-- Test the mobile menu.
-- Test the WhatsApp buttons.
-- Confirm the portfolio lightbox opens and closes with ESC.
-- Confirm the order summary builds the WhatsApp message.
-
-## Connecting NCB Payment Gateway (Future)
-
-A placeholder payment hook exists in `js/app.js`:
-
-- Function: `initPayment(orderData)`
-- Data shape passed:
-
-```js
-{
-  service,
-  options,
-  quantity,
-  notes,
-  timestamp
-}
-```
-
-Card payments will be wired to NCB later. For now the Pay button stays disabled and the flow completes via WhatsApp.
+- `js/app.js` handles:
+  - Sticky nav scroll state (`.is-scrolled`)
+  - Mobile menu with focus management and scroll lock
+  - IntersectionObserver reveal animations
+  - Portfolio loading/filtering/lightbox
+  - Order flow logic
+  - Contact success message on `?sent=1`
+- Update navigation or footer once and replicate across all pages for consistent navigation.

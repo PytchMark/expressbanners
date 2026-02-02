@@ -8,7 +8,7 @@ const state = {
       size: "",
       finish: "Standard",
     },
-    quantity: "1",
+    quantity: 1,
     notes: "",
     timestamp: new Date().toISOString(),
   },
@@ -16,8 +16,9 @@ const state = {
 
 const elements = {
   businessName: document.querySelectorAll("[data-business-name]"),
+  tagline: document.querySelectorAll("[data-tagline]"),
   heroTitle: document.querySelector("[data-hero-title]"),
-  tagline: document.querySelector("[data-tagline]"),
+  heroImage: document.querySelector("[data-hero-image]"),
   whatsappLinks: document.querySelectorAll("[data-whatsapp]"),
   uploadLink: document.querySelector("[data-upload-link]"),
   mapLink: document.querySelector("[data-map-link]"),
@@ -27,6 +28,13 @@ const elements = {
   instagram: document.querySelector("[data-instagram]"),
   facebook: document.querySelector("[data-facebook]"),
   tiktok: document.querySelector("[data-tiktok]"),
+  logo: document.querySelector("[data-logo]") || document.querySelector("[data-logo-src]"),
+  ogImage: document.querySelector("[data-og-image]"),
+  navToggle: document.querySelector(".nav-toggle"),
+  navMenu: document.querySelector(".nav-links"),
+  navLinks: document.querySelectorAll(".nav-links a"),
+  navScrim: document.querySelector("[data-nav-scrim]"),
+  header: document.querySelector(".site-header"),
   serviceSelect: document.querySelector("#service-select"),
   servicePills: document.querySelectorAll("[data-service-pill]"),
   sizePills: document.querySelectorAll("[data-size-pill]"),
@@ -50,19 +58,17 @@ const elements = {
   summaryTimestamp: document.querySelector("[data-summary-timestamp]"),
   paymentButton: document.querySelector("[data-payment-button]"),
   paymentNotice: document.querySelector("[data-payment-notice]"),
-  whatsappAlt: document.querySelector("[data-whatsapp-alt]"),
   toast: document.querySelector("[data-toast]"),
+  portfolioFeatured: document.querySelector("[data-portfolio-featured]") || document.querySelector("[data-portfolio-grid]"),
   portfolioGrid: document.querySelector("[data-portfolio-grid]"),
+  portfolioFilter: document.querySelector("[data-filter-controls]"),
   lightbox: document.querySelector("[data-lightbox]"),
-  lightboxImage: document.querySelector(".lightbox-content img"),
-  lightboxCaption: document.querySelector(".lightbox-caption"),
-  lightboxClose: document.querySelector(".lightbox-close"),
-  lightboxNext: document.querySelector(".lightbox-next"),
-  lightboxPrev: document.querySelector(".lightbox-prev"),
-  bottomCta: document.querySelector("[data-bottom-cta]"),
-  navToggle: document.querySelector(".nav-toggle"),
-  navMenu: document.querySelector(".nav-links"),
-  navLinks: document.querySelectorAll("[data-nav-link]"),
+  lightboxImage: document.querySelector("[data-lightbox-image]"),
+  lightboxCaption: document.querySelector("[data-lightbox-caption]"),
+  lightboxClose: document.querySelector("[data-lightbox-close]"),
+  lightboxNext: document.querySelector("[data-lightbox-next]"),
+  lightboxPrev: document.querySelector("[data-lightbox-prev]"),
+  contactSuccess: document.querySelector("[data-contact-success]"),
 };
 
 const serviceHelpers = {
@@ -127,18 +133,41 @@ const updateHelperChips = (service) => {
 };
 
 const getCustomSizeValue = () => {
-  const width = elements.customWidthInput.value;
-  const height = elements.customHeightInput.value;
-  const unit = elements.customUnitSelect.value;
+  const width = elements.customWidthInput?.value;
+  const height = elements.customHeightInput?.value;
+  const unit = elements.customUnitSelect?.value;
   if (width && height) {
     return `${width} x ${height} ${unit}`;
   }
   return "Custom size";
 };
 
+const updateSummary = () => {
+  if (elements.summaryService) {
+    elements.summaryService.textContent = state.order.service || "Not selected";
+  }
+  if (elements.summarySize) {
+    elements.summarySize.textContent = state.order.options.size || "Not set";
+  }
+  if (elements.summaryQuantity) {
+    elements.summaryQuantity.textContent = state.order.quantity;
+  }
+  if (elements.summaryFinish) {
+    elements.summaryFinish.textContent = state.order.options.finish || "Standard";
+  }
+  if (elements.summaryNotes) {
+    elements.summaryNotes.textContent = state.order.notes || "None";
+  }
+  if (elements.summaryTimestamp) {
+    elements.summaryTimestamp.textContent = new Date(state.order.timestamp).toLocaleString();
+  }
+};
+
 const setService = (service) => {
   state.order.service = service;
-  elements.serviceSelect.value = service;
+  if (elements.serviceSelect) {
+    elements.serviceSelect.value = service;
+  }
   setActivePill(elements.servicePills, service);
   updateHelperChips(service);
   updateSummary();
@@ -188,6 +217,26 @@ const buildOrderMessage = () => {
   return lines.join("\n");
 };
 
+const buildWhatsAppMessage = (order, settings) => {
+  const service = order?.service || "Not selected";
+  const size = order?.options?.size || "Not set";
+  const quantity = order?.quantity || "Not set";
+  const finish = order?.options?.finish || "Standard";
+  const notes = order?.notes || "None";
+  const helper = serviceHelpers[service] || {};
+  return [
+    `Hello ${settings?.businessName || "Express Banners"} team,`,
+    "",
+    "Order Request",
+    `Service: ${service}`,
+    `Size: ${size}`,
+    `Quantity: ${quantity}`,
+    `Finish: ${finish}`,
+    `Notes: ${notes}`,
+    `Typical turnaround: ${helper.turnaround || "2-5 days"}`,
+  ].join("\n");
+};
+
 const updateWhatsAppLinks = () => {
   const message = state.settings?.whatsappDefaultMessage
     ? `${state.settings.whatsappDefaultMessage}\n\n${buildOrderMessage()}`
@@ -200,151 +249,80 @@ const updateWhatsAppLinks = () => {
   });
 };
 
-const updateSummary = () => {
-  elements.summaryService.textContent = state.order.service || "Not selected";
-  elements.summarySize.textContent = state.order.options.size || "Not set";
-  elements.summaryQuantity.textContent = state.order.quantity || "Not set";
-  elements.summaryFinish.textContent = state.order.options.finish || "Standard";
-  elements.summaryNotes.textContent = state.order.notes || "None";
-  if (elements.summaryTimestamp) {
-    elements.summaryTimestamp.textContent = new Date().toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }
-  updateWhatsAppLinks();
-};
-
-const handleOrderInput = () => {
-  state.order.options.finish = elements.finishSelect.value;
-  state.order.notes = elements.notesInput.value.trim();
-  state.order.timestamp = new Date().toISOString();
-  updateSummary();
-};
-
-const handleQuantityInput = () => {
-  const value = Number(elements.quantityInput.value || 1);
-  const clamped = clampNumber(value, 1, 999);
-  elements.quantityInput.value = String(clamped);
-  state.order.quantity = String(clamped);
-  updateSummary();
-};
-
-const bindOrderInputs = () => {
-  elements.finishSelect.addEventListener("change", handleOrderInput);
-  elements.notesInput.addEventListener("input", handleOrderInput);
-  elements.serviceSelect.addEventListener("change", (event) => {
-    setService(event.target.value);
-  });
-
-  elements.quantityInput.addEventListener("input", handleQuantityInput);
-  elements.quantityInput.addEventListener("change", handleQuantityInput);
-
-  elements.customWidthInput.addEventListener("input", () => setSize(getCustomSizeValue()));
-  elements.customHeightInput.addEventListener("input", () => setSize(getCustomSizeValue()));
-  elements.customUnitSelect.addEventListener("change", () => setSize(getCustomSizeValue()));
-};
-
-const bindServicePills = () => {
-  elements.servicePills.forEach((pill) => {
-    pill.addEventListener("click", () => {
-      setService(pill.dataset.value);
-    });
-  });
-};
-
-const bindSizePills = () => {
-  elements.sizePills.forEach((pill) => {
-    pill.addEventListener("click", () => {
-      const value = pill.dataset.value;
-      setActivePill(elements.sizePills, value);
-      if (value === "Custom") {
-        elements.customSizeWrap.hidden = false;
-        setSize(getCustomSizeValue());
-      } else {
-        elements.customSizeWrap.hidden = true;
-        elements.customWidthInput.value = "";
-        elements.customHeightInput.value = "";
-        setSize(value);
-      }
-    });
-  });
-};
-
-const bindQuantityStepper = () => {
-  elements.qtyMinus.addEventListener("click", () => {
-    const current = Number(elements.quantityInput.value || 1);
-    const next = clampNumber(current - 1, 1, 999);
-    elements.quantityInput.value = String(next);
-    handleQuantityInput();
-  });
-
-  elements.qtyPlus.addEventListener("click", () => {
-    const current = Number(elements.quantityInput.value || 1);
-    const next = clampNumber(current + 1, 1, 999);
-    elements.quantityInput.value = String(next);
-    handleQuantityInput();
-  });
-};
-
-const bindServiceCards = () => {
-  document.querySelectorAll("[data-service-order]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const card = button.closest("[data-service]");
-      if (!card) return;
-      const service = card.dataset.service;
-      setService(service);
-      document.querySelector("#order").scrollIntoView({ behavior: "smooth" });
-    });
-  });
-};
-
-const initAccordion = () => {
-  document.querySelectorAll(".faq-item").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const expanded = btn.getAttribute("aria-expanded") === "true";
-      document.querySelectorAll(".faq-item").forEach((item) => item.setAttribute("aria-expanded", "false"));
-      btn.setAttribute("aria-expanded", expanded ? "false" : "true");
-    });
-  });
-};
-
 const initNav = () => {
-  if (!elements.navToggle) return;
-  elements.navToggle.addEventListener("click", () => {
-    const isOpen = elements.navToggle.getAttribute("aria-expanded") === "true";
-    elements.navToggle.setAttribute("aria-expanded", String(!isOpen));
-    elements.navMenu.classList.toggle("open");
-  });
+  if (!elements.navToggle || !elements.navMenu || !elements.header) return;
+  const focusableSelector = "a, button";
+  let lastActive = null;
+
+  const setExpanded = (isOpen) => {
+    elements.navMenu.classList.toggle("is-open", isOpen);
+    elements.navToggle.setAttribute("aria-expanded", String(isOpen));
+    document.body.classList.toggle("nav-open", isOpen);
+    elements.navScrim?.classList.toggle("is-visible", isOpen);
+    if (isOpen) {
+      lastActive = document.activeElement;
+      const first = elements.navMenu.querySelector(focusableSelector);
+      first?.focus();
+    } else {
+      lastActive?.focus();
+    }
+  };
+
+  const toggleMenu = () => {
+    const isOpen = elements.navMenu.classList.contains("is-open");
+    setExpanded(!isOpen);
+  };
+
+  elements.navToggle.addEventListener("click", toggleMenu);
+  elements.navScrim?.addEventListener("click", () => setExpanded(false));
   elements.navLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      elements.navMenu.classList.remove("open");
-      elements.navToggle.setAttribute("aria-expanded", "false");
-    });
+    link.addEventListener("click", () => setExpanded(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setExpanded(false);
+    }
+    if (event.key === "Tab" && elements.navMenu.classList.contains("is-open")) {
+      const focusables = Array.from(elements.navMenu.querySelectorAll(focusableSelector));
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
   });
 };
 
-const initActiveNav = () => {
-  const sections = document.querySelectorAll("main section[id]");
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const link = document.querySelector(`[data-nav-link][href="#${entry.target.id}"]`);
-        if (link) {
-          link.classList.toggle("active", entry.isIntersecting);
-        }
-      });
+const initHeaderScroll = () => {
+  if (!elements.header) return;
+  let isTicking = false;
+  const update = () => {
+    const isScrolled = window.scrollY > 8;
+    elements.header.classList.toggle("is-scrolled", isScrolled);
+    isTicking = false;
+  };
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!isTicking) {
+        window.requestAnimationFrame(update);
+        isTicking = true;
+      }
     },
-    { threshold: 0.5 }
+    { passive: true }
   );
-  sections.forEach((section) => observer.observe(section));
+  update();
 };
 
 const initReveal = () => {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
-    return;
-  }
+  const revealEls = document.querySelectorAll(".reveal");
+  if (!revealEls.length) return;
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -356,216 +334,347 @@ const initReveal = () => {
     },
     { threshold: 0.2 }
   );
-  document.querySelectorAll(".section, .card, .stat-chip, .portfolio-tile").forEach((el) => {
-    el.classList.add("reveal");
-    observer.observe(el);
-  });
+  revealEls.forEach((el) => observer.observe(el));
 };
 
-const initBottomCta = () => {
-  const footer = document.querySelector("footer");
-  const update = () => {
-    const scrollProgress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    const nearFooter = footer.getBoundingClientRect().top < window.innerHeight + 80;
-    if (scrollProgress > 0.2 && !nearFooter) {
-      elements.bottomCta.classList.add("is-visible");
-    } else {
-      elements.bottomCta.classList.remove("is-visible");
-    }
-  };
-  window.addEventListener("scroll", update);
-  update();
-};
-
-const initPortfolio = async () => {
-  try {
-    const response = await fetch("data/portfolio.json");
-    const items = await response.json();
-    state.portfolio = items;
-    renderPortfolio();
-  } catch (error) {
-    console.error("Portfolio load failed", error);
+const renderPortfolioItem = (item, index, isFeatured = false) => {
+  const article = document.createElement("article");
+  article.className = "card portfolio-card reveal";
+  article.innerHTML = `
+    <button type="button" class="portfolio-thumb" data-portfolio-index="${index}" aria-label="Open ${item.title}">
+      <img src="${item.src}" alt="${item.alt}" loading="lazy" />
+    </button>
+    <div class="meta">
+      <strong>${item.title}</strong>
+      <span class="muted">${item.category}</span>
+      <span class="muted">${item.blurb || ""}</span>
+    </div>
+  `;
+  if (isFeatured) {
+    article.classList.add("is-featured");
   }
+  return article;
 };
 
 const renderPortfolio = () => {
+  if (!elements.portfolioGrid && !elements.portfolioFeatured) return;
+  const featuredWrap = elements.portfolioFeatured && elements.portfolioFeatured !== elements.portfolioGrid
+    ? elements.portfolioFeatured
+    : elements.portfolioFeatured;
+  const featuredItems = state.portfolio.filter((item) => item.featured);
+  const allItems = state.portfolio;
+
+  if (featuredWrap) {
+    featuredWrap.innerHTML = "";
+    featuredItems.forEach((item, index) => {
+      const itemIndex = allItems.findIndex((entry) => entry.id === item.id);
+      featuredWrap.appendChild(renderPortfolioItem(item, itemIndex, true));
+    });
+  }
+
+  if (elements.portfolioGrid) {
+    elements.portfolioGrid.innerHTML = "";
+    allItems.forEach((item, index) => {
+      elements.portfolioGrid.appendChild(renderPortfolioItem(item, index));
+    });
+  }
+
+  bindPortfolioClicks();
+};
+
+const filterPortfolio = (category) => {
+  if (!elements.portfolioGrid) return;
+  const items = category === "All"
+    ? state.portfolio
+    : state.portfolio.filter((item) => item.category === category);
   elements.portfolioGrid.innerHTML = "";
-  state.portfolio.forEach((item, index) => {
-    const tile = document.createElement("div");
-    tile.className = "portfolio-tile";
-    tile.innerHTML = `
-      <div class="portfolio-card" data-portfolio-card>
-        <div class="portfolio-front">
-          <img src="${item.src}" alt="${item.alt}" width="300" height="300" />
-        </div>
-        <div class="portfolio-overlay">
-          <strong>${item.title}</strong>
-          <span>${item.category}</span>
-        </div>
-      </div>
-      <button class="portfolio-button" type="button" aria-label="Open ${item.title}" data-index="${index}"></button>
-    `;
-    elements.portfolioGrid.appendChild(tile);
+  items.forEach((item) => {
+    const index = state.portfolio.findIndex((entry) => entry.id === item.id);
+    elements.portfolioGrid.appendChild(renderPortfolioItem(item, index));
   });
-  document.querySelectorAll(".portfolio-button").forEach((button) => {
-    button.addEventListener("click", () => openLightbox(Number(button.dataset.index)));
+  bindPortfolioClicks();
+};
+
+const bindPortfolioClicks = () => {
+  const buttons = document.querySelectorAll("[data-portfolio-index]");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.portfolioIndex);
+      openLightbox(index);
+    });
   });
+  initReveal();
 };
 
 const openLightbox = (index) => {
+  if (!elements.lightbox) return;
+  openLightbox.lastFocus = document.activeElement;
   state.currentIndex = index;
   const item = state.portfolio[index];
   if (!item) return;
   elements.lightboxImage.src = item.src;
   elements.lightboxImage.alt = item.alt;
-  elements.lightboxCaption.textContent = `${item.title} · ${item.category}`;
+  elements.lightboxCaption.textContent = `${item.title} — ${item.blurb || item.category}`;
   elements.lightbox.classList.add("is-open");
-  elements.lightbox.setAttribute("aria-hidden", "false");
-  elements.lightboxClose.focus();
-  document.body.style.overflow = "hidden";
+  document.body.classList.add("nav-open");
+  elements.lightboxClose?.focus();
 };
 
 const closeLightbox = () => {
-  elements.lightbox.classList.remove("is-open");
-  elements.lightbox.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
+  elements.lightbox?.classList.remove("is-open");
+  document.body.classList.remove("nav-open");
+  openLightbox.lastFocus?.focus();
 };
 
-const navigateLightbox = (direction) => {
+const showLightboxItem = (direction) => {
+  if (!state.portfolio.length) return;
   const total = state.portfolio.length;
   state.currentIndex = (state.currentIndex + direction + total) % total;
-  openLightbox(state.currentIndex);
+  const item = state.portfolio[state.currentIndex];
+  elements.lightboxImage.src = item.src;
+  elements.lightboxImage.alt = item.alt;
+  elements.lightboxCaption.textContent = `${item.title} — ${item.blurb || item.category}`;
 };
 
-const trapFocus = (event) => {
-  if (!elements.lightbox.classList.contains("is-open")) return;
-  const focusable = Array.from(
-    elements.lightbox.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])")
-  );
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-  if (event.key === "Tab") {
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-};
+const initLightbox = () => {
+  if (!elements.lightbox) return;
+  const focusableSelector = "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
+  elements.lightboxClose?.addEventListener("click", closeLightbox);
+  elements.lightboxNext?.addEventListener("click", () => showLightboxItem(1));
+  elements.lightboxPrev?.addEventListener("click", () => showLightboxItem(-1));
 
-const bindLightbox = () => {
-  elements.lightboxClose.addEventListener("click", closeLightbox);
-  elements.lightboxNext.addEventListener("click", () => navigateLightbox(1));
-  elements.lightboxPrev.addEventListener("click", () => navigateLightbox(-1));
   elements.lightbox.addEventListener("click", (event) => {
     if (event.target === elements.lightbox) {
       closeLightbox();
     }
   });
+
   document.addEventListener("keydown", (event) => {
     if (!elements.lightbox.classList.contains("is-open")) return;
-    if (event.key === "Escape") closeLightbox();
-    if (event.key === "ArrowRight") navigateLightbox(1);
-    if (event.key === "ArrowLeft") navigateLightbox(-1);
-    trapFocus(event);
+    if (event.key === "Escape") {
+      closeLightbox();
+    }
+    if (event.key === "ArrowRight") {
+      showLightboxItem(1);
+    }
+    if (event.key === "ArrowLeft") {
+      showLightboxItem(-1);
+    }
+    if (event.key === "Tab") {
+      const focusables = Array.from(elements.lightbox.querySelectorAll(focusableSelector));
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
   });
 };
 
-// PAYMENT PLACEHOLDER – NCB API INTEGRATION (FUTURE)
-const initPayment = (orderData) => {
-  console.log("Payment payload", orderData);
-  showToast("Card payments (NCB) launching soon. For now, complete via WhatsApp.");
-  elements.paymentNotice.textContent = "Card payments (NCB) launching soon.";
-};
-
-const bindPayment = () => {
-  elements.paymentButton.addEventListener("click", () => {
-    if (elements.paymentButton.getAttribute("aria-disabled") === "true") {
-      showToast("Card payments (NCB) launching soon. For now, complete via WhatsApp.");
-      return;
-    }
-    initPayment({
-      service: state.order.service,
-      options: state.order.options,
-      quantity: state.order.quantity,
-      notes: state.order.notes,
-      timestamp: state.order.timestamp,
+const initPortfolioFilters = () => {
+  if (!elements.portfolioFilter) return;
+  const buttons = elements.portfolioFilter.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const value = button.dataset.filter;
+      buttons.forEach((btn) => btn.classList.toggle("is-active", btn === button));
+      buttons.forEach((btn) => btn.setAttribute("aria-pressed", String(btn === button)));
+      filterPortfolio(value);
     });
   });
-  elements.whatsappAlt.addEventListener("click", () => {
-    window.open(buildWhatsAppLink(buildOrderMessage()), "_blank", "noopener");
+};
+
+const initOrderForm = () => {
+  if (!elements.serviceSelect) return;
+  const urlParams = new URLSearchParams(window.location.search);
+  const defaultService = urlParams.get("service");
+
+  elements.serviceSelect.addEventListener("change", (event) => {
+    setService(event.target.value);
   });
-};
 
-const applySettings = () => {
-  if (!state.settings) return;
-  const { businessName, tagline, addressLine, hours, social, orderLinks, seo } = state.settings;
-  if (businessName) {
-    setText(elements.businessName, businessName);
-    if (elements.heroTitle) {
-      elements.heroTitle.textContent = `${businessName} prints banners, signs & embroidery fast.`;
-    }
-  }
-  if (tagline) {
-    elements.tagline.textContent = tagline;
-  }
-  if (addressLine && elements.address) {
-    elements.address.textContent = addressLine;
-  }
-  if (hours && elements.hours) {
-    elements.hours.textContent = hours;
-  }
-  if (orderLinks?.artworkUploadUrl && elements.uploadLink) {
-    elements.uploadLink.href = orderLinks.artworkUploadUrl;
-    elements.uploadLink.target = "_blank";
-    elements.uploadLink.rel = "noopener";
-  }
-  if (state.settings.mapLinkUrl && elements.mapLink) {
-    elements.mapLink.href = state.settings.mapLinkUrl;
-    elements.mapLink.target = "_blank";
-    elements.mapLink.rel = "noopener";
-  }
-  if (social?.instagram && elements.instagram) elements.instagram.href = social.instagram;
-  if (social?.facebook && elements.facebook) elements.facebook.href = social.facebook;
-  if (social?.tiktok && elements.tiktok) elements.tiktok.href = social.tiktok;
-  if (seo?.title) document.title = seo.title;
-  if (seo?.description) {
-    const meta = document.querySelector("meta[name='description']");
-    if (meta) meta.setAttribute("content", seo.description);
-  }
-  updateWhatsAppLinks();
-};
+  elements.servicePills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      setService(pill.dataset.value);
+    });
+  });
 
-const loadSettings = async () => {
-  try {
-    const response = await fetch("data/settings.json");
-    state.settings = await response.json();
-    applySettings();
-  } catch (error) {
-    console.error("Settings load failed", error);
-  }
-};
+  elements.sizePills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      setActivePill(elements.sizePills, pill.dataset.value);
+      if (pill.dataset.value === "Custom") {
+        elements.customSizeWrap?.classList.remove("is-hidden");
+        setSize(getCustomSizeValue());
+      } else {
+        elements.customSizeWrap?.classList.add("is-hidden");
+        setSize(pill.dataset.value);
+      }
+    });
+  });
 
-const init = () => {
-  elements.year.textContent = new Date().getFullYear();
-  bindOrderInputs();
-  bindServicePills();
-  bindSizePills();
-  bindQuantityStepper();
-  bindServiceCards();
-  initAccordion();
-  initNav();
-  initActiveNav();
-  initReveal();
-  initBottomCta();
-  bindLightbox();
-  bindPayment();
-  loadSettings();
-  initPortfolio();
-  updateHelperChips("");
+  [elements.customWidthInput, elements.customHeightInput, elements.customUnitSelect].forEach((input) => {
+    input?.addEventListener("input", () => {
+      if (elements.customSizeWrap && !elements.customSizeWrap.classList.contains("is-hidden")) {
+        setSize(getCustomSizeValue());
+      }
+    });
+  });
+
+  elements.qtyMinus?.addEventListener("click", () => {
+    state.order.quantity = clampNumber(state.order.quantity - 1, 1, 999);
+    elements.quantityInput.value = state.order.quantity;
+    updateSummary();
+  });
+
+  elements.qtyPlus?.addEventListener("click", () => {
+    state.order.quantity = clampNumber(state.order.quantity + 1, 1, 999);
+    elements.quantityInput.value = state.order.quantity;
+    updateSummary();
+  });
+
+  elements.quantityInput?.addEventListener("input", (event) => {
+    state.order.quantity = clampNumber(Number(event.target.value || 1), 1, 999);
+    updateSummary();
+  });
+
+  elements.finishSelect?.addEventListener("change", (event) => {
+    state.order.options.finish = event.target.value;
+    updateSummary();
+  });
+
+  elements.notesInput?.addEventListener("input", (event) => {
+    state.order.notes = event.target.value;
+    updateSummary();
+  });
+
+  if (defaultService) {
+    setService(defaultService);
+  }
+
+  if (!state.order.service) {
+    setService(elements.serviceSelect.value || "Banners");
+  }
+
+  elements.paymentButton?.addEventListener("click", () => {
+    initPayment(state.order);
+  });
+
   updateSummary();
 };
 
-document.addEventListener("DOMContentLoaded", init);
+const initPayment = (orderData) => {
+  showToast("Secure payments are launching soon. We'll guide you during confirmation.");
+  console.log("Payment placeholder:", orderData);
+};
+
+const initContactSuccess = () => {
+  if (!elements.contactSuccess) return;
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("sent") === "1") {
+    elements.contactSuccess.classList.remove("sr-only");
+  }
+};
+
+const initSettings = async () => {
+  const basePath = document.body.dataset.base || "./";
+  try {
+    const [settingsResponse, portfolioResponse] = await Promise.all([
+      fetch(`${basePath}data/settings.json`),
+      fetch(`${basePath}data/portfolio.json`),
+    ]);
+    state.settings = await settingsResponse.json();
+    state.portfolio = await portfolioResponse.json();
+  } catch (error) {
+    console.error("Failed to load settings:", error);
+    return;
+  }
+
+  if (elements.businessName.length) {
+    setText(elements.businessName, state.settings.businessName);
+  }
+  if (elements.tagline.length) {
+    setText(elements.tagline, state.settings.tagline);
+  }
+  if (elements.heroTitle && state.settings.heroTitle) {
+    elements.heroTitle.textContent = state.settings.heroTitle;
+  }
+  if (elements.logo && state.settings.images?.logo) {
+    elements.logo.src = state.settings.images.logo;
+  }
+  if (elements.heroImage && state.settings.images?.hero) {
+    elements.heroImage.src = state.settings.images.hero;
+  }
+  if (elements.ogImage && state.settings.images?.og) {
+    elements.ogImage.setAttribute("content", state.settings.images.og);
+  }
+  if (elements.mapLink && state.settings.mapLinkUrl) {
+    elements.mapLink.href = state.settings.mapLinkUrl;
+  }
+  if (elements.address && state.settings.addressLine) {
+    elements.address.textContent = state.settings.addressLine;
+  }
+  if (elements.hours && state.settings.hours) {
+    elements.hours.textContent = state.settings.hours;
+  }
+  if (elements.instagram && state.settings.social?.instagram) {
+    elements.instagram.href = state.settings.social.instagram;
+  }
+  if (elements.facebook && state.settings.social?.facebook) {
+    elements.facebook.href = state.settings.social.facebook;
+  }
+  if (elements.tiktok && state.settings.social?.tiktok) {
+    elements.tiktok.href = state.settings.social.tiktok;
+  }
+  if (elements.uploadLink && state.settings.orderLinks?.artworkUploadUrl) {
+    elements.uploadLink.href = state.settings.orderLinks.artworkUploadUrl;
+  }
+  if (elements.paymentNotice && state.settings.orderLinks?.paymentEnabled === false) {
+    elements.paymentNotice.textContent = "Secure card payments via NCB are coming soon.";
+  }
+
+  const seoKey = document.body.dataset.seoPage;
+  if (seoKey && state.settings.seo?.[seoKey]) {
+    const { title, description } = state.settings.seo[seoKey];
+    if (title) document.title = title;
+    const metaDescription = document.querySelector("meta[name='description']");
+    if (metaDescription && description) {
+      metaDescription.setAttribute("content", description);
+    }
+  }
+
+  updateWhatsAppLinks();
+  renderPortfolio();
+  initPortfolioFilters();
+  initLightbox();
+  initOrderForm();
+};
+
+const initActiveNav = () => {
+  const path = window.location.pathname;
+  elements.navLinks.forEach((link) => {
+    const href = link.getAttribute("href");
+    if (!href) return;
+    if (path.endsWith(href) || (href.endsWith("/") && path.endsWith(href))) {
+      link.classList.add("active");
+    }
+  });
+};
+
+const init = () => {
+  if (elements.year) {
+    elements.year.textContent = new Date().getFullYear();
+  }
+  initNav();
+  initHeaderScroll();
+  initReveal();
+  initActiveNav();
+  initContactSuccess();
+  initSettings();
+};
+
+init();

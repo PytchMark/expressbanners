@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Contact Express Banners for quotes, artwork help, and order support." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Contact | Express Banners</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:title" content="Contact Express Banners" />
+    <meta property="og:description" content="Contact Express Banners for quotes, artwork help, and order support." />
+    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:type" content="website" />
+
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body data-base="../" data-seo-page="contact">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="promo-strip" aria-label="Express Banners trust statements">
+      <div class="promo-track" aria-hidden="true">
+        <span>Over a decade of high-quality printing</span>
+        <span>Fast turnaround, sharp results</span>
+        <span>Client satisfaction guaranteed</span>
+        <span>Banners, signs, embroidery, screen printing</span>
+        <span>Design help available</span>
+        <span>Reliable. Affordable. Done right.</span>
+        <span>Over a decade of high-quality printing</span>
+        <span>Fast turnaround, sharp results</span>
+        <span>Client satisfaction guaranteed</span>
+        <span>Banners, signs, embroidery, screen printing</span>
+        <span>Design help available</span>
+        <span>Reliable. Affordable. Done right.</span>
+      </div>
+      <span class="sr-only">Over a decade of high-quality printing. Fast turnaround, sharp results.</span>
+    </div>
+
+    <div class="nav-scrim" data-nav-scrim></div>
+    <header class="site-header" id="top">
+      <nav class="nav-pill" aria-label="Primary">
+        <a class="nav-logo" href="../index.html">
+          <img src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          <span class="brand-name" data-business-name>Express Banners</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="sr-only">Open menu</span>
+          <span class="burger"></span>
+        </button>
+        <div class="nav-links" id="nav-menu">
+          <a href="../index.html" data-nav-link>Home</a>
+          <a href="../services/" data-nav-link>Services</a>
+          <a href="../portfolio/" data-nav-link>Portfolio</a>
+          <a href="../about/" data-nav-link>About</a>
+          <a href="../order/" data-nav-link>Order</a>
+          <a href="../contact/" data-nav-link>Contact</a>
+          <a class="btn btn-primary" href="../order/">Start Order</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="section theme-light" aria-labelledby="contact-title">
+        <div class="container contact-grid">
+          <div class="reveal">
+            <p class="eyebrow">Contact</p>
+            <h1 id="contact-title">Let’s talk about your next print job.</h1>
+            <p class="lead">
+              Send a quick message and we’ll respond with timelines, pricing, and artwork guidance. You can also reach
+              us on WhatsApp for fast replies.
+            </p>
+            <div class="notice sr-only" data-contact-success>
+              Thanks for reaching out. Your message has been sent and we will get back to you soon.
+            </div>
+            <div class="hero-actions" style="margin-top: 20px;">
+              <a class="btn btn-primary" data-whatsapp href="#">Chat on WhatsApp</a>
+              <a class="btn btn-outline" data-map-link href="https://maps.google.com/">Open Map</a>
+            </div>
+            <div class="card map-card" style="margin-top: 20px;">
+              <h3>Visit or call</h3>
+              <p class="muted" data-address>Kingston, Jamaica</p>
+              <p class="muted" data-hours>Mon-Sat: 9am - 6pm</p>
+              <a class="btn btn-outline" data-map-link href="https://maps.google.com/">View on Google Maps</a>
+            </div>
+          </div>
+
+          <form
+            class="card reveal"
+            action="https://formsubmit.co/expressbannersja@mail.com"
+            method="POST"
+          >
+            <input type="hidden" name="_subject" value="Express Banners Contact Request" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value="/contact/?sent=1" />
+            <div class="form-row">
+              <label class="form-label" for="contact-name">Full name</label>
+              <input class="input" id="contact-name" name="name" type="text" required />
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="contact-email">Email or phone</label>
+              <input class="input" id="contact-email" name="email" type="text" required />
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="contact-service">Service</label>
+              <select id="contact-service" class="input" name="service">
+                <option value="Banners">Banners</option>
+                <option value="Signs">Signs</option>
+                <option value="Embroidery">Embroidery</option>
+                <option value="Graphic Designing">Graphic Designing</option>
+                <option value="Screen Printing">Screen Printing</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="contact-message">Project details</label>
+              <textarea id="contact-message" class="input" name="message" required></textarea>
+            </div>
+            <div class="sr-only" aria-hidden="true">
+              <label for="website">Website</label>
+              <input id="website" name="website" type="text" tabindex="-1" />
+            </div>
+            <button class="btn btn-primary" type="submit">Send message</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <h3 data-business-name>Express Banners</h3>
+          <p class="muted">Premium print solutions for Jamaica businesses and events.</p>
+          <div class="footer-actions">
+            <a class="btn btn-primary" href="../order/">Start Order</a>
+            <a class="btn btn-outline" data-whatsapp href="#">WhatsApp</a>
+          </div>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../services/">Services</a></li>
+            <li><a href="../portfolio/">Portfolio</a></li>
+            <li><a href="../about/">About</a></li>
+            <li><a href="../contact/">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p class="muted" data-address>Kingston, Jamaica</p>
+          <p class="muted" data-hours>Mon-Sat: 9am - 6pm</p>
+          <a class="btn btn-outline" data-map-link href="https://maps.google.com/">Open Map</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span data-year></span> <span data-business-name>Express Banners</span></span>
+        <a href="../terms/">Terms & Policies</a>
+      </div>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+    <script src="../js/app.js"></script>
+  </body>
+</html>
