@@ -35,6 +35,25 @@ Update `/data/settings.json` to customize global content:
 - `orderLinks.artworkUploadUrl`, `orderLinks.paymentEnabled`
 - `seo` per page (`home`, `about`, `portfolio`, `services`, `order`, `contact`, `terms`)
 
+## Updating Logo & Hero Images
+
+You can update the shared logo, hero, and open-graph images in two ways:
+
+**A) Local images**
+1. Add files to `/assets/img` with these exact filenames:
+   - `logo.png`
+   - `hero.jpg`
+   - `og-image.jpg`
+2. Keep the `images` values in `/data/settings.json` as the default `./assets/img/...` paths.
+
+**B) Cloudinary (or another CDN)**
+1. Replace the URLs inside `/data/settings.json` → `images`:
+   - `images.logo`
+   - `images.hero`
+   - `images.og`
+
+Portfolio images are controlled by `/data/portfolio.json`, not `settings.json`.
+
 ### Cloudinary URLs
 
 Use Cloudinary (or any CDN) URLs for the image fields in `settings.json` and for each portfolio item `src` in `/data/portfolio.json`.

@@ -13,17 +13,18 @@
     "tiktok": "https://tiktok.com/"
   },
   "images": {
-    "logo": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/logo.png",
-    "hero": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/hero.jpg",
-    "og": "https://res.cloudinary.com/demo/image/upload/v1699999999/express-banners/og.jpg"
+    "logo": "./assets/img/logo.png",
+    "hero": "./assets/img/hero.jpg",
+    "og": "./assets/img/og-image.jpg"
   },
   "contact": {
     "email": "expressbannersja@mail.com",
     "formMode": "formsubmit",
-    "formEndpoint": ""
+    "formEndpoint": "https://formsubmit.co/expressbannersja@mail.com"
   },
   "orderLinks": {
     "artworkUploadUrl": "https://drive.google.com/",
+    "paymentUrl": "",
     "paymentEnabled": false
   },
   "seo": {
