@@ -18,7 +18,8 @@ const elements = {
   businessName: document.querySelectorAll("[data-business-name]"),
   tagline: document.querySelectorAll("[data-tagline]"),
   heroTitle: document.querySelector("[data-hero-title]"),
-  heroImage: document.querySelector("[data-hero-image]"),
+  heroImage: document.querySelector("#heroImg") || document.querySelector("[data-hero-image]"),
+  heroMedia: document.querySelector("#heroMedia"),
   whatsappLinks: document.querySelectorAll("[data-whatsapp]"),
   uploadLink: document.querySelector("[data-upload-link]"),
   mapLink: document.querySelector("[data-map-link]"),
@@ -28,7 +29,7 @@ const elements = {
   instagram: document.querySelector("[data-instagram]"),
   facebook: document.querySelector("[data-facebook]"),
   tiktok: document.querySelector("[data-tiktok]"),
-  logo: document.querySelector("[data-logo]") || document.querySelector("[data-logo-src]"),
+  logo: document.querySelector("#siteLogo") || document.querySelector("[data-logo]") || document.querySelector("[data-logo-src]"),
   ogImage: document.querySelector("[data-og-image]"),
   navToggle: document.querySelector(".nav-toggle"),
   navMenu: document.querySelector(".nav-links"),
@@ -616,6 +617,8 @@ const initSettings = async () => {
   }
   if (elements.heroImage && state.settings.images?.hero) {
     elements.heroImage.src = state.settings.images.hero;
+  } else if (elements.heroMedia && state.settings.images?.hero) {
+    elements.heroMedia.style.backgroundImage = `url('${state.settings.images.hero}')`;
   }
   if (elements.ogImage && state.settings.images?.og) {
     elements.ogImage.setAttribute("content", state.settings.images.og);
@@ -645,11 +648,18 @@ const initSettings = async () => {
     elements.paymentNotice.textContent = "Secure card payments via NCB are coming soon.";
   }
 
+  const metaDescription = document.querySelector("meta[name='description']");
+  if (state.settings.seo?.title) {
+    document.title = state.settings.seo.title;
+  }
+  if (state.settings.seo?.description && metaDescription) {
+    metaDescription.setAttribute("content", state.settings.seo.description);
+  }
+
   const seoKey = document.body.dataset.seoPage;
   if (seoKey && state.settings.seo?.[seoKey]) {
     const { title, description } = state.settings.seo[seoKey];
     if (title) document.title = title;
-    const metaDescription = document.querySelector("meta[name='description']");
     if (metaDescription && description) {
       metaDescription.setAttribute("content", description);
     }
