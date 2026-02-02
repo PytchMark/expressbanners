@@ -13,24 +13,9 @@
     "tiktok": "https://tiktok.com/"
   },
   "images": {
-    "logo": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_320/expressbanners/logo.png",
-    "og": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/og-image.jpg",
-    "homeHero": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1600/expressbanners/hero.jpg",
-    "hero": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1600/expressbanners/hero.jpg"
-  },
-  "orderHero": {
-    "videoMp4": "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/q_auto/expressbanners/order-hero.mp4",
-    "poster": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1600/expressbanners/order-hero-poster.jpg"
-  },
-  "servicesMedia": {
-    "Signs": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/signs.jpg",
-    "Banners": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/banners.jpg",
-    "Embroidery": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/embroidery.jpg",
-    "Graphic Designing": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/design.jpg",
-    "Screen Printing": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/screenprint.jpg"
-  },
-  "ui": {
-    "navHeight": 56
+    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
+    "hero": "./assets/img/hero.jpg",
+    "og": "./assets/img/og-image.jpg"
   },
   "contact": {
     "email": "expressbannersja@mail.com",
