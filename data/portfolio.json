@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "title": "Outdoor Banner",
+    "category": "Banners",
+    "src": "assets/img/portfolio-01.jpg",
+    "alt": "Outdoor banner placeholder"
+  },
+  {
+    "id": 2,
+    "title": "Retail Signage",
+    "category": "Signs",
+    "src": "assets/img/portfolio-02.jpg",
+    "alt": "Retail signage placeholder"
+  },
+  {
+    "id": 3,
+    "title": "Team Jerseys",
+    "category": "Embroidery",
+    "src": "assets/img/portfolio-03.jpg",
+    "alt": "Embroidered apparel placeholder"
+  },
+  {
+    "id": 4,
+    "title": "Window Graphics",
+    "category": "Signs",
+    "src": "assets/img/portfolio-04.jpg",
+    "alt": "Window graphics placeholder"
+  },
+  {
+    "id": 5,
+    "title": "Event Backdrop",
+    "category": "Banners",
+    "src": "assets/img/portfolio-05.jpg",
+    "alt": "Event backdrop placeholder"
+  },
+  {
+    "id": 6,
+    "title": "Screen Print Tee",
+    "category": "Screen Printing",
+    "src": "assets/img/portfolio-06.jpg",
+    "alt": "Screen printed shirt placeholder"
+  },
+  {
+    "id": 7,
+    "title": "Storefront Sign",
+    "category": "Signs",
+    "src": "assets/img/portfolio-07.jpg",
+    "alt": "Storefront sign placeholder"
+  },
+  {
+    "id": 8,
+    "title": "Trade Show Banner",
+    "category": "Banners",
+    "src": "assets/img/portfolio-08.jpg",
+    "alt": "Trade show banner placeholder"
+  },
+  {
+    "id": 9,
+    "title": "Branding Pack",
+    "category": "Graphic Designing",
+    "src": "assets/img/portfolio-09.jpg",
+    "alt": "Graphic design mockup placeholder"
+  }
+]
