@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Express Banners delivers fast, reliable print, signage, and embroidery with premium quality." />
-    <meta name="theme-color" content="#0B0D12" />
+    <meta name="theme-color" content="#ffffff" />
     <title>Express Banners | Fast. Affordable. Reliable.</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,7 +27,7 @@
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
         <div class="nav-logo">
-          <img src="assets/img/logo-mark.png" width="32" height="32" alt="Express Banners logo" />
+          <img src="assets/img/logo.png" width="120" height="36" alt="Express Banners logo" />
           <span class="brand-name" data-business-name>Express Banners</span>
         </div>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
@@ -47,7 +47,7 @@
     </header>
 
     <main id="main">
-      <section class="hero section" aria-labelledby="hero-title">
+      <section class="hero section theme-light" aria-labelledby="hero-title">
         <div class="container hero-grid">
           <div class="hero-copy">
             <p class="eyebrow" data-tagline>Fast & Efficient Printing</p>
@@ -82,7 +82,7 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="proof-strip section" aria-label="Key proof points">
+      <section class="proof-strip section theme-dark theme-dark--slim" aria-label="Key proof points">
         <div class="container proof-grid">
           <div class="stat-chip">
             <span class="stat">24/7</span>
@@ -105,11 +105,12 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section" id="services" aria-labelledby="services-title">
+      <section class="section theme-light" id="services" aria-labelledby="services-title">
         <div class="container">
-          <div class="section-heading">
-            <h2 id="services-title">Services built for quick wins.</h2>
-            <p class="muted">Choose a service and jump straight into the order flow.</p>
+          <div class="section-head">
+            <p class="eyebrow">Services</p>
+            <h2 id="services-title">Print work that shows up sharp.</h2>
+            <p>Banners, signs, embroidery, and screen printing—fast and reliable.</p>
           </div>
           <div class="services-grid">
             <article class="card service-card" data-service="Signs">
@@ -148,12 +149,13 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section" id="order" aria-labelledby="order-title">
+      <section class="section theme-light" id="order" aria-labelledby="order-title">
         <div class="container order-grid">
           <div>
-            <div class="section-heading">
+            <div class="section-head">
+              <p class="eyebrow">Order</p>
               <h2 id="order-title">Start your order in minutes.</h2>
-              <p class="muted">Follow the steps below to prep your request. Payments & uploads open in a secure link.</p>
+              <p>Pick a service, dial in size, and we will confirm fast.</p>
             </div>
             <ol class="stepper">
               <li>
@@ -174,13 +176,25 @@
               <li>
                 <span class="step">Step 4</span>
                 <strong>Payment</strong>
-                <p>Secure online card payments coming soon.</p>
+                <p>Card payments via NCB are launching soon.</p>
               </li>
             </ol>
             <div class="order-form card">
               <div class="form-row">
-                <label for="service-select">Service</label>
-                <select id="service-select" name="service">
+                <span class="form-label">Service</span>
+                <div class="pill-group" role="group" aria-label="Select a service">
+                  <button class="pill" type="button" data-service-pill data-value="Signs">SIGNS</button>
+                  <button class="pill" type="button" data-service-pill data-value="Banners">BANNERS</button>
+                  <button class="pill" type="button" data-service-pill data-value="Embroidery">EMBROIDERY</button>
+                  <button class="pill" type="button" data-service-pill data-value="Graphic Designing">
+                    GRAPHIC DESIGNING
+                  </button>
+                  <button class="pill" type="button" data-service-pill data-value="Screen Printing">
+                    SCREEN PRINTING
+                  </button>
+                </div>
+                <label class="sr-only" for="service-select">Service</label>
+                <select id="service-select" name="service" class="sr-only">
                   <option value="">Select a service</option>
                   <option value="Signs">Signs</option>
                   <option value="Banners">Banners</option>
@@ -188,14 +202,47 @@
                   <option value="Graphic Designing">Graphic Designing</option>
                   <option value="Screen Printing">Screen Printing</option>
                 </select>
+                <div class="helper-chips" aria-live="polite">
+                  <span class="helper-chip" data-helper-turnaround>Typical turnaround: 2-5 days</span>
+                  <span class="helper-chip" data-helper-files>Best files: PDF, AI, EPS, PNG</span>
+                  <span class="helper-chip" data-helper-rush>Rush available: Yes</span>
+                </div>
               </div>
               <div class="form-row">
-                <label for="size-input">Size</label>
-                <input id="size-input" name="size" type="text" placeholder="e.g., 4ft x 8ft" />
+                <span class="form-label">Size</span>
+                <div class="pill-group" role="group" aria-label="Select a size">
+                  <button class="pill" type="button" data-size-pill data-value="2 x 6 ft">2×6 ft</button>
+                  <button class="pill" type="button" data-size-pill data-value="3 x 8 ft">3×8 ft</button>
+                  <button class="pill" type="button" data-size-pill data-value="4 x 10 ft">4×10 ft</button>
+                  <button class="pill" type="button" data-size-pill data-value="Custom">Custom</button>
+                </div>
+                <div class="custom-size" data-custom-size hidden>
+                  <div class="custom-size-grid">
+                    <div>
+                      <label for="custom-width">Width</label>
+                      <input id="custom-width" name="custom-width" type="number" min="1" placeholder="Width" />
+                    </div>
+                    <div>
+                      <label for="custom-height">Height</label>
+                      <input id="custom-height" name="custom-height" type="number" min="1" placeholder="Height" />
+                    </div>
+                    <div>
+                      <label for="custom-unit">Unit</label>
+                      <select id="custom-unit" name="custom-unit">
+                        <option value="ft">ft</option>
+                        <option value="in">in</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="form-row">
                 <label for="quantity-input">Quantity</label>
-                <input id="quantity-input" name="quantity" type="number" min="1" placeholder="e.g., 50" />
+                <div class="stepper-input" role="group" aria-label="Quantity selector">
+                  <button class="stepper-btn" type="button" data-qty-minus aria-label="Decrease quantity">−</button>
+                  <input id="quantity-input" name="quantity" type="number" min="1" max="999" value="1" />
+                  <button class="stepper-btn" type="button" data-qty-plus aria-label="Increase quantity">+</button>
+                </div>
               </div>
               <div class="form-row">
                 <label for="finish-select">Finish</label>
@@ -213,14 +260,37 @@
             </div>
           </div>
           <aside class="summary card" aria-live="polite">
-            <h3>Order summary</h3>
-            <ul class="summary-list">
-              <li><span>Service</span><strong data-summary-service>Not selected</strong></li>
-              <li><span>Size</span><strong data-summary-size>Not set</strong></li>
-              <li><span>Quantity</span><strong data-summary-quantity>Not set</strong></li>
-              <li><span>Finish</span><strong data-summary-finish>Standard</strong></li>
-              <li><span>Notes</span><strong data-summary-notes>None</strong></li>
-            </ul>
+            <div class="ticket-head">
+              <p class="eyebrow">Order Summary</p>
+              <h3>Job ticket</h3>
+              <p class="muted">Review before you send.</p>
+            </div>
+            <dl class="ticket-list">
+              <div>
+                <dt>Service</dt>
+                <dd data-summary-service>Not selected</dd>
+              </div>
+              <div>
+                <dt>Size</dt>
+                <dd data-summary-size>Not set</dd>
+              </div>
+              <div>
+                <dt>Quantity</dt>
+                <dd data-summary-quantity>1</dd>
+              </div>
+              <div>
+                <dt>Finish</dt>
+                <dd data-summary-finish>Standard</dd>
+              </div>
+              <div>
+                <dt>Notes</dt>
+                <dd data-summary-notes>None</dd>
+              </div>
+            </dl>
+            <div class="ticket-meta">
+              <span class="muted">Last updated</span>
+              <strong data-summary-timestamp>Just now</strong>
+            </div>
             <div class="summary-actions">
               <a class="btn btn-primary" data-whatsapp href="#">Send order via WhatsApp</a>
               <a class="btn btn-outline" data-upload-link href="#">Upload artwork</a>
@@ -233,7 +303,7 @@
               >
                 Pay Now
               </button>
-              <span class="helper">Payments launching soon.</span>
+              <span class="helper">Card payments (NCB) launching soon. For now, complete via WhatsApp.</span>
               <button class="btn btn-ghost" type="button" data-whatsapp-alt>Complete order via WhatsApp for now</button>
               <p class="notice" role="status" aria-live="polite" data-payment-notice></p>
             </div>
@@ -243,11 +313,12 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section" id="portfolio" aria-labelledby="portfolio-title">
+      <section class="section theme-light" id="portfolio" aria-labelledby="portfolio-title">
         <div class="container">
-          <div class="section-heading">
-            <h2 id="portfolio-title">Portfolio highlights</h2>
-            <p class="muted">Swap the images in assets/img to show your latest work.</p>
+          <div class="section-head">
+            <p class="eyebrow">Portfolio</p>
+            <h2 id="portfolio-title">A quick look at recent work.</h2>
+            <p>Swap the images in assets/img to show your latest projects.</p>
           </div>
           <div class="portfolio-grid" data-portfolio-grid>
             <div class="skeleton" aria-hidden="true"></div>
@@ -265,11 +336,12 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section" id="process" aria-labelledby="process-title">
+      <section class="section theme-light" id="process" aria-labelledby="process-title">
         <div class="container">
-          <div class="section-heading">
-            <h2 id="process-title">How it works</h2>
-            <p class="muted">Fast and clear from start to finish.</p>
+          <div class="section-head">
+            <p class="eyebrow">Process</p>
+            <h2 id="process-title">Clear steps, fast output.</h2>
+            <p>We guide you from brief to pickup with zero guesswork.</p>
           </div>
           <div class="process-grid">
             <article class="card">
@@ -281,8 +353,8 @@
               <p>Send artwork using the secure upload link.</p>
             </article>
             <article class="card">
-              <h3>Pay</h3>
-              <p>Payments open soon. For now, confirm via WhatsApp.</p>
+              <h3>Confirm</h3>
+              <p>We confirm pricing and proofing via WhatsApp.</p>
             </article>
             <article class="card">
               <h3>We Print</h3>
@@ -294,11 +366,12 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section" id="testimonials" aria-labelledby="testimonials-title">
+      <section class="section theme-light" id="testimonials" aria-labelledby="testimonials-title">
         <div class="container">
-          <div class="section-heading">
+          <div class="section-head">
+            <p class="eyebrow">Testimonials</p>
             <h2 id="testimonials-title">Clients love the speed.</h2>
-            <p class="muted">Swap these quotes anytime in the HTML.</p>
+            <p>Real feedback from busy teams and local brands.</p>
           </div>
           <div class="testimonials-grid">
             <article class="card">
@@ -319,11 +392,12 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section" id="faq" aria-labelledby="faq-title">
+      <section class="section theme-light" id="faq" aria-labelledby="faq-title">
         <div class="container">
-          <div class="section-heading">
-            <h2 id="faq-title">FAQ</h2>
-            <p class="muted">Answers to the most common questions.</p>
+          <div class="section-head">
+            <p class="eyebrow">FAQ</p>
+            <h2 id="faq-title">Answers, ready when you are.</h2>
+            <p>Fast clarity on turnaround, files, and payment.</p>
           </div>
           <div class="faq" data-accordion>
             <button class="faq-item" type="button" aria-expanded="false">
@@ -363,7 +437,7 @@
               <span class="icon">+</span>
             </button>
             <div class="faq-panel">
-              <p>Secure online card payments are launching soon. For now, confirm via WhatsApp.</p>
+              <p>Card payments via NCB are launching soon. For now, confirm via WhatsApp.</p>
             </div>
           </div>
         </div>
@@ -371,10 +445,13 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="cta-band" aria-label="Ready to print">
+      <section class="cta-band section theme-dark" aria-label="Ready to print">
         <div class="container cta-content">
-          <h2>Ready to print?</h2>
-          <p>Send your order now and we will confirm fast.</p>
+          <div class="section-head">
+            <p class="eyebrow">Ready</p>
+            <h2>Ready to print?</h2>
+            <p>Send your order now and we will confirm fast.</p>
+          </div>
           <div class="cta-actions">
             <a class="btn btn-primary" href="#order">Start Order</a>
             <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Now</a>
@@ -383,7 +460,7 @@
       </section>
     </main>
 
-    <footer class="footer" id="contact">
+    <footer class="footer theme-light" id="contact">
       <div class="container footer-grid">
         <div>
           <img src="assets/img/logo.png" width="140" height="40" alt="Express Banners logo" />
@@ -416,6 +493,8 @@
       <a class="btn btn-primary" href="#order">Start Order</a>
       <a class="btn btn-outline" data-whatsapp href="#">WhatsApp</a>
     </div>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
 
     <div class="lightbox" data-lightbox aria-hidden="true">
       <div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Portfolio image">

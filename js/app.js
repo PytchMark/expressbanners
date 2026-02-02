@@ -8,7 +8,7 @@ const state = {
       size: "",
       finish: "Standard",
     },
-    quantity: "",
+    quantity: "1",
     notes: "",
     timestamp: new Date().toISOString(),
   },
@@ -28,18 +28,30 @@ const elements = {
   facebook: document.querySelector("[data-facebook]"),
   tiktok: document.querySelector("[data-tiktok]"),
   serviceSelect: document.querySelector("#service-select"),
-  sizeInput: document.querySelector("#size-input"),
+  servicePills: document.querySelectorAll("[data-service-pill]"),
+  sizePills: document.querySelectorAll("[data-size-pill]"),
+  customSizeWrap: document.querySelector("[data-custom-size]"),
+  customWidthInput: document.querySelector("#custom-width"),
+  customHeightInput: document.querySelector("#custom-height"),
+  customUnitSelect: document.querySelector("#custom-unit"),
   quantityInput: document.querySelector("#quantity-input"),
+  qtyMinus: document.querySelector("[data-qty-minus]"),
+  qtyPlus: document.querySelector("[data-qty-plus]"),
   finishSelect: document.querySelector("#finish-select"),
   notesInput: document.querySelector("#notes-input"),
+  helperTurnaround: document.querySelector("[data-helper-turnaround]"),
+  helperFiles: document.querySelector("[data-helper-files]"),
+  helperRush: document.querySelector("[data-helper-rush]"),
   summaryService: document.querySelector("[data-summary-service]"),
   summarySize: document.querySelector("[data-summary-size]"),
   summaryQuantity: document.querySelector("[data-summary-quantity]"),
   summaryFinish: document.querySelector("[data-summary-finish]"),
   summaryNotes: document.querySelector("[data-summary-notes]"),
+  summaryTimestamp: document.querySelector("[data-summary-timestamp]"),
   paymentButton: document.querySelector("[data-payment-button]"),
   paymentNotice: document.querySelector("[data-payment-notice]"),
   whatsappAlt: document.querySelector("[data-whatsapp-alt]"),
+  toast: document.querySelector("[data-toast]"),
   portfolioGrid: document.querySelector("[data-portfolio-grid]"),
   lightbox: document.querySelector("[data-lightbox]"),
   lightboxImage: document.querySelector(".lightbox-content img"),
@@ -53,10 +65,98 @@ const elements = {
   navLinks: document.querySelectorAll("[data-nav-link]"),
 };
 
+const serviceHelpers = {
+  Signs: {
+    turnaround: "3-5 days",
+    files: "PDF, AI, EPS, PNG",
+    rush: "Yes",
+  },
+  Banners: {
+    turnaround: "2-4 days",
+    files: "PDF, AI, EPS, PNG",
+    rush: "Yes",
+  },
+  Embroidery: {
+    turnaround: "4-6 days",
+    files: "AI, EPS, PDF",
+    rush: "Limited",
+  },
+  "Graphic Designing": {
+    turnaround: "2-3 days",
+    files: "Brief + brand assets",
+    rush: "Yes",
+  },
+  "Screen Printing": {
+    turnaround: "5-7 days",
+    files: "AI, EPS, PDF",
+    rush: "Limited",
+  },
+};
+
 const setText = (nodes, value) => {
   nodes.forEach((node) => {
     node.textContent = value;
   });
+};
+
+const clampNumber = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const setActivePill = (pills, value) => {
+  pills.forEach((pill) => {
+    const isActive = pill.dataset.value === value;
+    pill.classList.toggle("is-active", isActive);
+    pill.setAttribute("aria-pressed", String(isActive));
+  });
+};
+
+const updateHelperChips = (service) => {
+  const helper = serviceHelpers[service] || {
+    turnaround: "2-5 days",
+    files: "PDF, AI, EPS, PNG",
+    rush: "Yes",
+  };
+  if (elements.helperTurnaround) {
+    elements.helperTurnaround.textContent = `Typical turnaround: ${helper.turnaround}`;
+  }
+  if (elements.helperFiles) {
+    elements.helperFiles.textContent = `Best files: ${helper.files}`;
+  }
+  if (elements.helperRush) {
+    elements.helperRush.textContent = `Rush available: ${helper.rush}`;
+  }
+};
+
+const getCustomSizeValue = () => {
+  const width = elements.customWidthInput.value;
+  const height = elements.customHeightInput.value;
+  const unit = elements.customUnitSelect.value;
+  if (width && height) {
+    return `${width} x ${height} ${unit}`;
+  }
+  return "Custom size";
+};
+
+const setService = (service) => {
+  state.order.service = service;
+  elements.serviceSelect.value = service;
+  setActivePill(elements.servicePills, service);
+  updateHelperChips(service);
+  updateSummary();
+};
+
+const setSize = (size) => {
+  state.order.options.size = size;
+  updateSummary();
+};
+
+const showToast = (message) => {
+  if (!elements.toast) return;
+  elements.toast.textContent = message;
+  elements.toast.classList.add("is-visible");
+  window.clearTimeout(showToast.timeout);
+  showToast.timeout = window.setTimeout(() => {
+    elements.toast.classList.remove("is-visible");
+  }, 2400);
 };
 
 const buildWhatsAppLink = (message) => {
@@ -67,16 +167,24 @@ const buildWhatsAppLink = (message) => {
 
 const buildOrderMessage = () => {
   const { service, options, quantity, notes } = state.order;
+  const helper = serviceHelpers[service] || {};
   const lines = [
+    `Hello ${state.settings?.businessName || "Express Banners"} team,`,
+    "",
+    "Order Request",
     `Service: ${service || "Not selected"}`,
     `Size: ${options.size || "Not set"}`,
     `Quantity: ${quantity || "Not set"}`,
     `Finish: ${options.finish || "Standard"}`,
     `Notes: ${notes || "None"}`,
+    `Typical turnaround: ${helper.turnaround || "2-5 days"}`,
+    `Best files: ${helper.files || "PDF, AI, EPS, PNG"}`,
+    `Rush available: ${helper.rush || "Yes"}`,
   ];
   if (state.settings?.orderLinks?.artworkUploadUrl) {
     lines.push(`Artwork upload link: ${state.settings.orderLinks.artworkUploadUrl}`);
   }
+  lines.push("", "Thanks!");
   return lines.join("\n");
 };
 
@@ -98,29 +206,84 @@ const updateSummary = () => {
   elements.summaryQuantity.textContent = state.order.quantity || "Not set";
   elements.summaryFinish.textContent = state.order.options.finish || "Standard";
   elements.summaryNotes.textContent = state.order.notes || "None";
+  if (elements.summaryTimestamp) {
+    elements.summaryTimestamp.textContent = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
   updateWhatsAppLinks();
 };
 
 const handleOrderInput = () => {
-  state.order.service = elements.serviceSelect.value;
-  state.order.options.size = elements.sizeInput.value.trim();
-  state.order.quantity = elements.quantityInput.value.trim();
   state.order.options.finish = elements.finishSelect.value;
   state.order.notes = elements.notesInput.value.trim();
   state.order.timestamp = new Date().toISOString();
   updateSummary();
 };
 
+const handleQuantityInput = () => {
+  const value = Number(elements.quantityInput.value || 1);
+  const clamped = clampNumber(value, 1, 999);
+  elements.quantityInput.value = String(clamped);
+  state.order.quantity = String(clamped);
+  updateSummary();
+};
+
 const bindOrderInputs = () => {
-  [
-    elements.serviceSelect,
-    elements.sizeInput,
-    elements.quantityInput,
-    elements.finishSelect,
-    elements.notesInput,
-  ].forEach((input) => {
-    input.addEventListener("input", handleOrderInput);
-    input.addEventListener("change", handleOrderInput);
+  elements.finishSelect.addEventListener("change", handleOrderInput);
+  elements.notesInput.addEventListener("input", handleOrderInput);
+  elements.serviceSelect.addEventListener("change", (event) => {
+    setService(event.target.value);
+  });
+
+  elements.quantityInput.addEventListener("input", handleQuantityInput);
+  elements.quantityInput.addEventListener("change", handleQuantityInput);
+
+  elements.customWidthInput.addEventListener("input", () => setSize(getCustomSizeValue()));
+  elements.customHeightInput.addEventListener("input", () => setSize(getCustomSizeValue()));
+  elements.customUnitSelect.addEventListener("change", () => setSize(getCustomSizeValue()));
+};
+
+const bindServicePills = () => {
+  elements.servicePills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      setService(pill.dataset.value);
+    });
+  });
+};
+
+const bindSizePills = () => {
+  elements.sizePills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      const value = pill.dataset.value;
+      setActivePill(elements.sizePills, value);
+      if (value === "Custom") {
+        elements.customSizeWrap.hidden = false;
+        setSize(getCustomSizeValue());
+      } else {
+        elements.customSizeWrap.hidden = true;
+        elements.customWidthInput.value = "";
+        elements.customHeightInput.value = "";
+        setSize(value);
+      }
+    });
+  });
+};
+
+const bindQuantityStepper = () => {
+  elements.qtyMinus.addEventListener("click", () => {
+    const current = Number(elements.quantityInput.value || 1);
+    const next = clampNumber(current - 1, 1, 999);
+    elements.quantityInput.value = String(next);
+    handleQuantityInput();
+  });
+
+  elements.qtyPlus.addEventListener("click", () => {
+    const current = Number(elements.quantityInput.value || 1);
+    const next = clampNumber(current + 1, 1, 999);
+    elements.quantityInput.value = String(next);
+    handleQuantityInput();
   });
 };
 
@@ -130,9 +293,7 @@ const bindServiceCards = () => {
       const card = button.closest("[data-service]");
       if (!card) return;
       const service = card.dataset.service;
-      elements.serviceSelect.value = service;
-      state.order.service = service;
-      updateSummary();
+      setService(service);
       document.querySelector("#order").scrollIntoView({ behavior: "smooth" });
     });
   });
@@ -315,11 +476,16 @@ const bindLightbox = () => {
 // PAYMENT PLACEHOLDER – NCB API INTEGRATION (FUTURE)
 const initPayment = (orderData) => {
   console.log("Payment payload", orderData);
-  elements.paymentNotice.textContent = "Secure online card payments coming soon.";
+  showToast("Card payments (NCB) launching soon. For now, complete via WhatsApp.");
+  elements.paymentNotice.textContent = "Card payments (NCB) launching soon.";
 };
 
 const bindPayment = () => {
   elements.paymentButton.addEventListener("click", () => {
+    if (elements.paymentButton.getAttribute("aria-disabled") === "true") {
+      showToast("Card payments (NCB) launching soon. For now, complete via WhatsApp.");
+      return;
+    }
     initPayment({
       service: state.order.service,
       options: state.order.options,
@@ -385,6 +551,9 @@ const loadSettings = async () => {
 const init = () => {
   elements.year.textContent = new Date().getFullYear();
   bindOrderInputs();
+  bindServicePills();
+  bindSizePills();
+  bindQuantityStepper();
   bindServiceCards();
   initAccordion();
   initNav();
@@ -395,6 +564,7 @@ const init = () => {
   bindPayment();
   loadSettings();
   initPortfolio();
+  updateHelperChips("");
   updateSummary();
 };
 
