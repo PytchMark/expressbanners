@@ -10,8 +10,8 @@ This is a 100% static, mobile-first website for Express Banners. It runs on GitH
   /assets
     /img
       logo.png
-      logo-mark.png
       hero.jpg
+      og-image.jpg
       portfolio-01.jpg
       portfolio-02.jpg
       portfolio-03.jpg
@@ -21,9 +21,7 @@ This is a 100% static, mobile-first website for Express Banners. It runs on GitH
       portfolio-07.jpg
       portfolio-08.jpg
       portfolio-09.jpg
-      og-image.jpg
     /video
-      hero.mp4
   /css
     styles.css
   /js
@@ -39,7 +37,6 @@ This is a 100% static, mobile-first website for Express Banners. It runs on GitH
 Replace the files in `assets/img` with your real images (keep filenames exactly the same):
 
 - `logo.png` (full logo)
-- `logo-mark.png` (icon)
 - `hero.jpg` (hero image)
 - `portfolio-01.jpg` → `portfolio-09.jpg` (portfolio tiles)
 - `og-image.jpg` (social preview image)
@@ -95,9 +92,4 @@ A placeholder payment hook exists in `js/app.js`:
 }
 ```
 
-To enable real payments, a backend/API integration is required. GitHub Pages is static, so you will need either:
-
-- A serverless function (Netlify / Cloudflare), OR
-- A secure redirect-based payment flow provided by NCB.
-
-Once NCB credentials and endpoints are ready, the `initPayment` function can be updated without changing the HTML.
+Card payments will be wired to NCB later. For now the Pay button stays disabled and the flow completes via WhatsApp.
