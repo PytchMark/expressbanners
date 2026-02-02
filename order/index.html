@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Start a custom print order with Express Banners. Choose service, size, quantity, and submit fast." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Order | Express Banners</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:title" content="Order with Express Banners" />
+    <meta property="og:description" content="Start a custom print order with Express Banners." />
+    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:type" content="website" />
+
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body data-base="../" data-seo-page="order">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="promo-strip" aria-label="Express Banners trust statements">
+      <div class="promo-track" aria-hidden="true">
+        <span>Over a decade of high-quality printing</span>
+        <span>Fast turnaround, sharp results</span>
+        <span>Client satisfaction guaranteed</span>
+        <span>Banners, signs, embroidery, screen printing</span>
+        <span>Design help available</span>
+        <span>Reliable. Affordable. Done right.</span>
+        <span>Over a decade of high-quality printing</span>
+        <span>Fast turnaround, sharp results</span>
+        <span>Client satisfaction guaranteed</span>
+        <span>Banners, signs, embroidery, screen printing</span>
+        <span>Design help available</span>
+        <span>Reliable. Affordable. Done right.</span>
+      </div>
+      <span class="sr-only">Over a decade of high-quality printing. Fast turnaround, sharp results.</span>
+    </div>
+
+    <div class="nav-scrim" data-nav-scrim></div>
+    <header class="site-header" id="top">
+      <nav class="nav-pill" aria-label="Primary">
+        <a class="nav-logo" href="../index.html">
+          <img src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          <span class="brand-name" data-business-name>Express Banners</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="sr-only">Open menu</span>
+          <span class="burger"></span>
+        </button>
+        <div class="nav-links" id="nav-menu">
+          <a href="../index.html" data-nav-link>Home</a>
+          <a href="../services/" data-nav-link>Services</a>
+          <a href="../portfolio/" data-nav-link>Portfolio</a>
+          <a href="../about/" data-nav-link>About</a>
+          <a href="../order/" data-nav-link>Order</a>
+          <a href="../contact/" data-nav-link>Contact</a>
+          <a class="btn btn-primary" href="../order/">Start Order</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="section theme-light" aria-labelledby="order-title">
+        <div class="container order-grid">
+          <div>
+            <div class="section-head reveal" style="text-align: left;">
+              <p class="eyebrow">Order</p>
+              <h1 id="order-title">Start your order in minutes.</h1>
+              <p>Pick a service, dial in size, and we will confirm fast.</p>
+            </div>
+            <ol class="stepper">
+              <li class="reveal">
+                <span class="step">Step 1</span>
+                <strong>Choose service</strong>
+                <p class="muted">Select the service that matches your job.</p>
+              </li>
+              <li class="reveal">
+                <span class="step">Step 2</span>
+                <strong>Pick options</strong>
+                <p class="muted">Tell us size, quantity, and finishing preferences.</p>
+              </li>
+              <li class="reveal">
+                <span class="step">Step 3</span>
+                <strong>Upload artwork</strong>
+                <p class="muted">Use the secure upload link if you have files ready.</p>
+              </li>
+              <li class="reveal">
+                <span class="step">Step 4</span>
+                <strong>Payment</strong>
+                <p class="muted">Card payments via NCB are launching soon.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="card reveal">
+            <div class="form-row">
+              <span class="form-label">Service</span>
+              <div class="pill-group" role="group" aria-label="Select a service">
+                <button class="pill" type="button" data-service-pill data-value="Signs">SIGNS</button>
+                <button class="pill" type="button" data-service-pill data-value="Banners">BANNERS</button>
+                <button class="pill" type="button" data-service-pill data-value="Embroidery">EMBROIDERY</button>
+                <button class="pill" type="button" data-service-pill data-value="Graphic Designing">
+                  GRAPHIC DESIGNING
+                </button>
+                <button class="pill" type="button" data-service-pill data-value="Screen Printing">
+                  SCREEN PRINTING
+                </button>
+              </div>
+              <label class="sr-only" for="service-select">Service</label>
+              <select id="service-select" name="service" class="input" aria-label="Service">
+                <option value="">Select a service</option>
+                <option value="Signs">Signs</option>
+                <option value="Banners">Banners</option>
+                <option value="Embroidery">Embroidery</option>
+                <option value="Graphic Designing">Graphic Designing</option>
+                <option value="Screen Printing">Screen Printing</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <span class="form-label">Size</span>
+              <div class="pill-group" role="group" aria-label="Select a size">
+                <button class="pill" type="button" data-size-pill data-value="2ft x 4ft">2ft x 4ft</button>
+                <button class="pill" type="button" data-size-pill data-value="3ft x 6ft">3ft x 6ft</button>
+                <button class="pill" type="button" data-size-pill data-value="4ft x 8ft">4ft x 8ft</button>
+                <button class="pill" type="button" data-size-pill data-value="Custom">Custom</button>
+              </div>
+              <div class="is-hidden" data-custom-size>
+                <div class="form-row">
+                  <label class="form-label" for="custom-width">Custom width</label>
+                  <input class="input" type="number" id="custom-width" min="1" placeholder="Width" />
+                </div>
+                <div class="form-row">
+                  <label class="form-label" for="custom-height">Custom height</label>
+                  <input class="input" type="number" id="custom-height" min="1" placeholder="Height" />
+                </div>
+                <label class="form-label" for="custom-unit">Units</label>
+                <select id="custom-unit" class="input">
+                  <option value="ft">Feet</option>
+                  <option value="in">Inches</option>
+                  <option value="cm">Centimeters</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <span class="form-label">Quantity</span>
+              <div class="quantity-stepper">
+                <button type="button" aria-label="Decrease quantity" data-qty-minus>-</button>
+                <input class="input" id="quantity-input" type="number" min="1" max="999" value="1" />
+                <button type="button" aria-label="Increase quantity" data-qty-plus>+</button>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label class="form-label" for="finish-select">Finish</label>
+              <select id="finish-select" class="input">
+                <option value="Standard">Standard</option>
+                <option value="Gloss">Gloss</option>
+                <option value="Matte">Matte</option>
+                <option value="Double-sided">Double-sided</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <span class="form-label">Notes</span>
+              <textarea id="notes-input" class="input" placeholder="Tell us about your deadline, colors, or install needs"></textarea>
+            </div>
+
+            <div class="helper-row">
+              <span class="chip" data-helper-turnaround>Typical turnaround: 2-5 days</span>
+              <span class="chip" data-helper-files>Best files: PDF, AI, EPS, PNG</span>
+              <span class="chip" data-helper-rush>Rush available: Yes</span>
+            </div>
+
+            <div class="form-row">
+              <span class="form-label">Upload artwork</span>
+              <a class="btn btn-outline" data-upload-link href="https://drive.google.com/">Upload files</a>
+            </div>
+
+            <div class="form-row">
+              <span class="form-label">Order summary</span>
+              <dl class="order-summary">
+                <div class="summary-grid">
+                  <div>
+                    <dt>Service</dt>
+                    <dd data-summary-service>Not selected</dd>
+                  </div>
+                  <div>
+                    <dt>Size</dt>
+                    <dd data-summary-size>Not set</dd>
+                  </div>
+                  <div>
+                    <dt>Quantity</dt>
+                    <dd data-summary-quantity>1</dd>
+                  </div>
+                  <div>
+                    <dt>Finish</dt>
+                    <dd data-summary-finish>Standard</dd>
+                  </div>
+                  <div>
+                    <dt>Notes</dt>
+                    <dd data-summary-notes>None</dd>
+                  </div>
+                </div>
+                <dt class="sr-only">Timestamp</dt>
+                <dd class="sr-only" data-summary-timestamp></dd>
+              </dl>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" data-whatsapp href="#">Complete Order on WhatsApp</a>
+              <button class="btn btn-outline" type="button" data-payment-button disabled>
+                Pay Securely (NCB soon)
+              </button>
+            </div>
+            <p class="muted" data-payment-notice>Secure card payments via NCB are coming soon.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <h3 data-business-name>Express Banners</h3>
+          <p class="muted">Premium print solutions for Jamaica businesses and events.</p>
+          <div class="footer-actions">
+            <a class="btn btn-primary" href="../order/">Start Order</a>
+            <a class="btn btn-outline" data-whatsapp href="#">WhatsApp</a>
+          </div>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="../services/">Services</a></li>
+            <li><a href="../portfolio/">Portfolio</a></li>
+            <li><a href="../about/">About</a></li>
+            <li><a href="../contact/">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p class="muted" data-address>Kingston, Jamaica</p>
+          <p class="muted" data-hours>Mon-Sat: 9am - 6pm</p>
+          <a class="btn btn-outline" data-map-link href="https://maps.google.com/">Open Map</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span data-year></span> <span data-business-name>Express Banners</span></span>
+        <a href="../terms/">Terms & Policies</a>
+      </div>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+    <script src="../js/app.js"></script>
+  </body>
+</html>
