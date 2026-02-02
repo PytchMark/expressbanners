@@ -1,0 +1,22 @@
+{
+  "businessName": "Express Banners",
+  "tagline": "Fast & Efficient Printing",
+  "whatsappNumber": "15551234567",
+  "whatsappDefaultMessage": "Hi Express Banners! I would like a quote.",
+  "addressLine": "123 Sample Street, Kingston",
+  "mapLinkUrl": "https://maps.google.com/",
+  "social": {
+    "instagram": "https://instagram.com/",
+    "facebook": "https://facebook.com/",
+    "tiktok": "https://tiktok.com/"
+  },
+  "orderLinks": {
+    "artworkUploadUrl": "https://drive.google.com/",
+    "paymentUrl": ""
+  },
+  "hours": "Mon-Sat: 9am - 6pm",
+  "seo": {
+    "title": "Express Banners | Fast. Affordable. Reliable.",
+    "description": "Premium banners, signs, embroidery, and printing delivered fast." 
+  }
+}
