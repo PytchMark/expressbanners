@@ -44,33 +44,23 @@
 
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
-      <nav class="nav-bar" aria-label="Primary">
-        <div class="container nav-inner">
-          <a class="nav-logo" href="index.html" aria-label="Express Banners home">
-            <span class="logo-gloss">
-              <img
-                id="siteLogo"
-                src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_320/expressbanners/logo.png"
-                width="120"
-                height="40"
-                alt="Express Banners logo"
-                data-logo
-              />
-            </span>
-          </a>
-          <button class="nav-toggle icon-btn" type="button" aria-expanded="false" aria-controls="nav-menu">
-            <span class="sr-only">Open menu</span>
-            <span class="burger"></span>
-          </button>
-          <div class="nav-links" id="nav-menu">
-            <a class="nav-link" href="index.html" data-nav-link>Home</a>
-            <a class="nav-link" href="services/" data-nav-link>Services</a>
-            <a class="nav-link" href="portfolio/" data-nav-link>Portfolio</a>
-            <a class="nav-link" href="about/" data-nav-link>About</a>
-            <a class="nav-link" href="order/" data-nav-link>Order</a>
-            <a class="nav-link" href="contact/" data-nav-link>Contact</a>
-            <a class="btn btn-primary" href="order/">Start Order</a>
-          </div>
+      <nav class="nav-pill" aria-label="Primary">
+        <a class="nav-logo" href="index.html">
+          <img id="siteLogo" src="assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          <span class="brand-name" data-business-name>Express Banners</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="sr-only">Open menu</span>
+          <span class="burger"></span>
+        </button>
+        <div class="nav-links" id="nav-menu">
+          <a href="index.html" data-nav-link>Home</a>
+          <a href="services/" data-nav-link>Services</a>
+          <a href="portfolio/" data-nav-link>Portfolio</a>
+          <a href="about/" data-nav-link>About</a>
+          <a href="order/" data-nav-link>Order</a>
+          <a href="contact/" data-nav-link>Contact</a>
+          <a class="btn btn-primary" href="order/">Start Order</a>
         </div>
       </nav>
     </header>
@@ -99,7 +89,7 @@
             <div class="media-card">
               <img
                 id="heroImg"
-                src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1600/expressbanners/hero.jpg"
+                src="assets/img/hero.jpg"
                 width="520"
                 height="420"
                 alt="Express Banners production showcase"
@@ -173,106 +163,6 @@
               <p>High-volume apparel prints that stay vibrant.</p>
               <span class="turnaround">Turnaround: 5-7 days</span>
               <a class="btn btn-outline" href="order/?service=Screen%20Printing">Order this</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-divider" aria-hidden="true"></div>
-
-      <section class="section theme-light" aria-labelledby="what-we-do-title">
-        <div class="container">
-          <div class="section-head reveal">
-            <p class="eyebrow">What We Do</p>
-            <h2 id="what-we-do-title">Print and branding essentials, handled end-to-end.</h2>
-            <p>Everything you need to launch, refresh, and scale your visibility across Jamaica.</p>
-          </div>
-          <div class="what-we-do grid">
-            <div class="icon-list reveal">
-              <div class="icon-bullet">
-                <span class="icon-dot" aria-hidden="true"></span>
-                <div>
-                  <strong>Banners</strong>
-                  <p class="muted">Vinyl, mesh, and fabric banners sized for impact.</p>
-                </div>
-              </div>
-              <div class="icon-bullet">
-                <span class="icon-dot" aria-hidden="true"></span>
-                <div>
-                  <strong>Signs</strong>
-                  <p class="muted">Indoor and outdoor signage with crisp readability.</p>
-                </div>
-              </div>
-              <div class="icon-bullet">
-                <span class="icon-dot" aria-hidden="true"></span>
-                <div>
-                  <strong>Embroidery</strong>
-                  <p class="muted">Clean stitched branding for uniforms and teams.</p>
-                </div>
-              </div>
-              <div class="icon-bullet">
-                <span class="icon-dot" aria-hidden="true"></span>
-                <div>
-                  <strong>Screen Printing</strong>
-                  <p class="muted">Vibrant runs for tees, merch, and giveaways.</p>
-                </div>
-              </div>
-              <div class="icon-bullet">
-                <span class="icon-dot" aria-hidden="true"></span>
-                <div>
-                  <strong>Design</strong>
-                  <p class="muted">Layouts and production files that are print-ready.</p>
-                </div>
-              </div>
-            </div>
-            <div class="card reveal">
-              <h3>Need a full launch kit?</h3>
-              <p class="muted">
-                Combine signage, banners, and apparel in one production sprint. We coordinate print, finishing, and
-                delivery timelines so your campaign hits on time.
-              </p>
-              <a class="btn btn-outline" href="order/">Build my order</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section theme-light" aria-labelledby="industries-title">
-        <div class="container">
-          <div class="section-head reveal">
-            <p class="eyebrow">Industries We Serve</p>
-            <h2 id="industries-title">Trusted by teams that need speed and polish.</h2>
-            <p>We partner with fast-moving brands that value consistent quality.</p>
-          </div>
-          <div class="chip-grid reveal" role="list">
-            <span class="chip" role="listitem">Events</span>
-            <span class="chip" role="listitem">Retail</span>
-            <span class="chip" role="listitem">Construction</span>
-            <span class="chip" role="listitem">Schools</span>
-            <span class="chip" role="listitem">Small Businesses</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="section theme-light" aria-labelledby="why-title">
-        <div class="container">
-          <div class="section-head reveal">
-            <p class="eyebrow">Why Express Banners</p>
-            <h2 id="why-title">Premium results without the long wait.</h2>
-            <p>We pair fast production with detail-driven craftsmanship.</p>
-          </div>
-          <div class="feature-grid">
-            <article class="card reveal">
-              <h3>Fast turnaround</h3>
-              <p class="muted">Priority scheduling and rush options keep launch dates protected.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Sharp quality</h3>
-              <p class="muted">Color-managed prints, durable materials, and clean finishing.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Guaranteed satisfaction</h3>
-              <p class="muted">We confirm layouts and specs before production begins.</p>
             </article>
           </div>
         </div>

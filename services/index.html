@@ -44,33 +44,23 @@
 
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
-      <nav class="nav-bar" aria-label="Primary">
-        <div class="container nav-inner">
-          <a class="nav-logo" href="../index.html" aria-label="Express Banners home">
-            <span class="logo-gloss">
-              <img
-                id="siteLogo"
-                src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_320/expressbanners/logo.png"
-                width="120"
-                height="40"
-                alt="Express Banners logo"
-                data-logo
-              />
-            </span>
-          </a>
-          <button class="nav-toggle icon-btn" type="button" aria-expanded="false" aria-controls="nav-menu">
-            <span class="sr-only">Open menu</span>
-            <span class="burger"></span>
-          </button>
-          <div class="nav-links" id="nav-menu">
-            <a class="nav-link" href="../index.html" data-nav-link>Home</a>
-            <a class="nav-link" href="../services/" data-nav-link>Services</a>
-            <a class="nav-link" href="../portfolio/" data-nav-link>Portfolio</a>
-            <a class="nav-link" href="../about/" data-nav-link>About</a>
-            <a class="nav-link" href="../order/" data-nav-link>Order</a>
-            <a class="nav-link" href="../contact/" data-nav-link>Contact</a>
-            <a class="btn btn-primary" href="../order/">Start Order</a>
-          </div>
+      <nav class="nav-pill" aria-label="Primary">
+        <a class="nav-logo" href="../index.html">
+          <img id="siteLogo" src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          <span class="brand-name" data-business-name>Express Banners</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          <span class="sr-only">Open menu</span>
+          <span class="burger"></span>
+        </button>
+        <div class="nav-links" id="nav-menu">
+          <a href="../index.html" data-nav-link>Home</a>
+          <a href="../services/" data-nav-link>Services</a>
+          <a href="../portfolio/" data-nav-link>Portfolio</a>
+          <a href="../about/" data-nav-link>About</a>
+          <a href="../order/" data-nav-link>Order</a>
+          <a href="../contact/" data-nav-link>Contact</a>
+          <a class="btn btn-primary" href="../order/">Start Order</a>
         </div>
       </nav>
     </header>
@@ -86,111 +76,51 @@
               service below and jump straight to an order form built for speed.
             </p>
           </div>
-          <div class="services-detail-list">
-            <article class="service-row reveal">
-              <div class="service-media">
-                <img
-                  src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/banners.jpg"
-                  width="520"
-                  height="420"
-                  alt="Custom vinyl banners ready for installation"
-                  loading="lazy"
-                  data-service-media="Banners"
-                />
-              </div>
-              <div class="service-content">
-                <h3>Banners</h3>
-                <p class="muted">
-                  Durable vinyl and mesh banners designed for visibility at storefronts, launches, and events. We handle
-                  hemming, grommets, and sizing for any space.
-                </p>
-                <p class="muted">Use cases: Grand openings, promotions, community events.</p>
-                <a class="btn btn-outline" href="../order/?service=Banners">Order Banners</a>
-              </div>
+          <div class="services-detail-grid">
+            <article class="card reveal">
+              <h3>Banners</h3>
+              <p class="muted">
+                Durable vinyl and mesh banners designed for visibility at storefronts, launches, and events. We handle
+                hemming, grommets, and sizing for any space.
+              </p>
+              <p class="muted">Use cases: Grand openings, promotions, community events.</p>
+              <a class="btn btn-outline" href="../order/?service=Banners">Order Banners</a>
             </article>
-            <article class="service-row reveal">
-              <div class="service-media">
-                <img
-                  src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/signs.jpg"
-                  width="520"
-                  height="420"
-                  alt="Storefront signage with clear branding"
-                  loading="lazy"
-                  data-service-media="Signs"
-                />
-              </div>
-              <div class="service-content">
-                <h3>Signs</h3>
-                <p class="muted">
-                  Indoor and outdoor signage with clear typography and weather-ready materials. Keep your brand readable
-                  and consistent across locations.
-                </p>
-                <p class="muted">Use cases: Storefronts, directional signage, safety notices.</p>
-                <a class="btn btn-outline" href="../order/?service=Signs">Order Signs</a>
-              </div>
+            <article class="card reveal">
+              <h3>Signs</h3>
+              <p class="muted">
+                Indoor and outdoor signage with clear typography and weather-ready materials. Keep your brand readable
+                and consistent across locations.
+              </p>
+              <p class="muted">Use cases: Storefronts, directional signage, safety notices.</p>
+              <a class="btn btn-outline" href="../order/?service=Signs">Order Signs</a>
             </article>
-            <article class="service-row reveal">
-              <div class="service-media">
-                <img
-                  src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/embroidery.jpg"
-                  width="520"
-                  height="420"
-                  alt="Embroidered apparel on a production table"
-                  loading="lazy"
-                  data-service-media="Embroidery"
-                />
-              </div>
-              <div class="service-content">
-                <h3>Embroidery</h3>
-                <p class="muted">
-                  Clean stitched logos for uniforms, merch, and corporate apparel. We match thread tones and keep branding
-                  consistent across batches.
-                </p>
-                <p class="muted">Use cases: Staff uniforms, team kits, corporate gifting.</p>
-                <a class="btn btn-outline" href="../order/?service=Embroidery">Order Embroidery</a>
-              </div>
+            <article class="card reveal">
+              <h3>Embroidery</h3>
+              <p class="muted">
+                Clean stitched logos for uniforms, merch, and corporate apparel. We match thread tones and keep branding
+                consistent across batches.
+              </p>
+              <p class="muted">Use cases: Staff uniforms, team kits, corporate gifting.</p>
+              <a class="btn btn-outline" href="../order/?service=Embroidery">Order Embroidery</a>
             </article>
-            <article class="service-row reveal">
-              <div class="service-media">
-                <img
-                  src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/screenprint.jpg"
-                  width="520"
-                  height="420"
-                  alt="Screen printed shirts in production"
-                  loading="lazy"
-                  data-service-media="Screen Printing"
-                />
-              </div>
-              <div class="service-content">
-                <h3>Screen Printing</h3>
-                <p class="muted">
-                  Bold screen prints that stay vibrant on tees, tote bags, and promo apparel. Ideal for high-volume runs
-                  and consistent brand colors.
-                </p>
-                <p class="muted">Use cases: Event merch, retail launches, school programs.</p>
-                <a class="btn btn-outline" href="../order/?service=Screen%20Printing">Order Screen Prints</a>
-              </div>
+            <article class="card reveal">
+              <h3>Screen Printing</h3>
+              <p class="muted">
+                Bold screen prints that stay vibrant on tees, tote bags, and promo apparel. Ideal for high-volume runs
+                and consistent brand colors.
+              </p>
+              <p class="muted">Use cases: Event merch, retail launches, school programs.</p>
+              <a class="btn btn-outline" href="../order/?service=Screen%20Printing">Order Screen Prints</a>
             </article>
-            <article class="service-row reveal">
-              <div class="service-media">
-                <img
-                  src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/services/design.jpg"
-                  width="520"
-                  height="420"
-                  alt="Graphic design workspace with print layouts"
-                  loading="lazy"
-                  data-service-media="Graphic Designing"
-                />
-              </div>
-              <div class="service-content">
-                <h3>Graphic Designing</h3>
-                <p class="muted">
-                  Layouts, brand updates, and print-ready assets from a local creative team. We ensure files are optimized
-                  for sharp output across materials.
-                </p>
-                <p class="muted">Use cases: New campaign launch, rebrands, event collateral.</p>
-                <a class="btn btn-outline" href="../order/?service=Graphic%20Designing">Start Design</a>
-              </div>
+            <article class="card reveal">
+              <h3>Graphic Designing</h3>
+              <p class="muted">
+                Layouts, brand updates, and print-ready assets from a local creative team. We ensure files are optimized
+                for sharp output across materials.
+              </p>
+              <p class="muted">Use cases: New campaign launch, rebrands, event collateral.</p>
+              <a class="btn btn-outline" href="../order/?service=Graphic%20Designing">Start Design</a>
             </article>
           </div>
         </div>
