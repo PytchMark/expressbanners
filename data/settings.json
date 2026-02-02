@@ -13,7 +13,7 @@
     "tiktok": "https://tiktok.com/"
   },
   "images": {
-    "logo": "./assets/img/logo.png",
+    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
     "hero": "./assets/img/hero.jpg",
     "og": "./assets/img/og-image.jpg"
   },
