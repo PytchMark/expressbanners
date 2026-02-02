@@ -70,10 +70,17 @@ const elements = {
   lightboxNext: document.querySelector("[data-lightbox-next]"),
   lightboxPrev: document.querySelector("[data-lightbox-prev]"),
   contactSuccess: document.querySelector("[data-contact-success]"),
+  orderHeroVideo: document.querySelector("[data-order-hero-video]"),
+  orderHeroSource: document.querySelector("[data-order-hero-source]"),
+  workWall: document.querySelector("[data-work-wall]"),
+  serviceMedia: document.querySelectorAll("[data-service-media]"),
 };
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isCoarsePointer = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+
+const FALLBACK_MEDIA =
+  "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/f_auto,q_auto,w_1200/expressbanners/placeholder.jpg";
 
 const serviceHelpers = {
   Signs: {
@@ -110,6 +117,25 @@ const setText = (nodes, value) => {
 };
 
 const clampNumber = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const getPlaceholderImage = () =>
+  state.settings?.images?.homeHero || state.settings?.images?.hero || state.settings?.images?.og || FALLBACK_MEDIA;
+
+const resolveImageSrc = (src) => {
+  if (!src) return getPlaceholderImage();
+  if (src.startsWith("http") || src.startsWith("data:")) return src;
+  const basePath = document.body.dataset.base || "./";
+  if (src.startsWith("/")) return src;
+  return `${basePath}${src.replace(/^\.\//, "")}`;
+};
+
+const resolveMediaSrc = (src) => {
+  if (!src) return "";
+  if (src.startsWith("http") || src.startsWith("data:")) return src;
+  const basePath = document.body.dataset.base || "./";
+  if (src.startsWith("/")) return src;
+  return `${basePath}${src.replace(/^\.\//, "")}`;
+};
 
 const setActivePill = (pills, value) => {
   pills.forEach((pill) => {
@@ -301,11 +327,6 @@ const initNav = () => {
       }
     }
   });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && elements.navToggle.getAttribute("aria-expanded") === "true") {
-      closeMenu();
-    }
-  });
 };
 
 const initHeaderScroll = () => {
@@ -332,6 +353,10 @@ const initHeaderScroll = () => {
 const initReveal = () => {
   const revealEls = document.querySelectorAll(".reveal");
   if (!revealEls.length) return;
+  if (prefersReducedMotion()) {
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -347,11 +372,12 @@ const initReveal = () => {
 };
 
 const renderPortfolioItem = (item, index, isFeatured = false) => {
+  const resolvedSrc = resolveImageSrc(item.src);
   const article = document.createElement("article");
   article.className = "card portfolio-card reveal";
   article.innerHTML = `
     <button type="button" class="portfolio-thumb" data-portfolio-index="${index}" aria-label="Open ${item.title}">
-      <img src="${item.src}" alt="${item.alt}" loading="lazy" />
+      <img src="${resolvedSrc}" alt="${item.alt}" loading="lazy" width="480" height="360" data-portfolio-image />
     </button>
     <div class="meta">
       <strong>${item.title}</strong>
@@ -361,6 +387,13 @@ const renderPortfolioItem = (item, index, isFeatured = false) => {
   `;
   if (isFeatured) {
     article.classList.add("is-featured");
+  }
+  const img = article.querySelector("[data-portfolio-image]");
+  if (img) {
+    img.addEventListener("error", () => {
+      img.src = getPlaceholderImage();
+      img.classList.add("is-placeholder");
+    });
   }
   return article;
 };
@@ -389,6 +422,38 @@ const renderPortfolio = () => {
   }
 
   bindPortfolioClicks();
+};
+
+const renderWorkWall = () => {
+  if (!elements.workWall || !state.portfolio.length) return;
+  const items = [...state.portfolio];
+  items.sort(() => 0.5 - Math.random());
+  const wallItems = items.slice(0, 10);
+  elements.workWall.innerHTML = "";
+  wallItems.forEach((item) => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "work-wall-item";
+    tile.setAttribute("aria-label", `Open ${item.title}`);
+    const src = resolveImageSrc(item.src);
+    tile.innerHTML = `
+      <img src="${src}" alt="${item.alt}" loading="lazy" width="480" height="360" />
+      <span class="overlay" aria-hidden="true"></span>
+    `;
+    const img = tile.querySelector("img");
+    if (img) {
+      img.addEventListener("error", () => {
+        img.src = getPlaceholderImage();
+        img.classList.add("is-placeholder");
+      });
+    }
+    tile.addEventListener("click", () => {
+      const originalIndex = state.portfolio.findIndex((entry) => entry.id === item.id);
+      openLightbox(originalIndex);
+    });
+    elements.workWall.appendChild(tile);
+  });
+  initReveal();
 };
 
 const filterPortfolio = (category) => {
@@ -421,7 +486,7 @@ const openLightbox = (index) => {
   state.currentIndex = index;
   const item = state.portfolio[index];
   if (!item) return;
-  elements.lightboxImage.src = item.src;
+  elements.lightboxImage.src = resolveImageSrc(item.src);
   elements.lightboxImage.alt = item.alt;
   elements.lightboxCaption.textContent = `${item.title} — ${item.blurb || item.category}`;
   elements.lightbox.classList.add("is-open");
@@ -440,7 +505,7 @@ const showLightboxItem = (direction) => {
   const total = state.portfolio.length;
   state.currentIndex = (state.currentIndex + direction + total) % total;
   const item = state.portfolio[state.currentIndex];
-  elements.lightboxImage.src = item.src;
+  elements.lightboxImage.src = resolveImageSrc(item.src);
   elements.lightboxImage.alt = item.alt;
   elements.lightboxCaption.textContent = `${item.title} — ${item.blurb || item.category}`;
 };
@@ -603,6 +668,8 @@ const initSettings = async () => {
     return;
   }
 
+  window.siteSettings = state.settings;
+
   if (elements.businessName.length) {
     setText(elements.businessName, state.settings.businessName);
   }
@@ -613,15 +680,43 @@ const initSettings = async () => {
     elements.heroTitle.textContent = state.settings.heroTitle;
   }
   if (elements.logo && state.settings.images?.logo) {
-    elements.logo.src = state.settings.images.logo;
+    elements.logo.src = resolveImageSrc(state.settings.images.logo);
   }
-  if (elements.heroImage && state.settings.images?.hero) {
-    elements.heroImage.src = state.settings.images.hero;
-  } else if (elements.heroMedia && state.settings.images?.hero) {
-    elements.heroMedia.style.backgroundImage = `url('${state.settings.images.hero}')`;
+  const heroImage = state.settings.images?.homeHero || state.settings.images?.hero;
+  if (elements.heroImage && heroImage) {
+    elements.heroImage.src = resolveImageSrc(heroImage);
+  } else if (elements.heroMedia && heroImage) {
+    elements.heroMedia.style.backgroundImage = `url('${resolveImageSrc(heroImage)}')`;
   }
   if (elements.ogImage && state.settings.images?.og) {
-    elements.ogImage.setAttribute("content", state.settings.images.og);
+    elements.ogImage.setAttribute("content", resolveImageSrc(state.settings.images.og));
+  }
+  if (state.settings.ui?.navHeight) {
+    document.documentElement.style.setProperty("--nav-height", `${state.settings.ui.navHeight}px`);
+  }
+  if (elements.serviceMedia.length && state.settings.servicesMedia) {
+    elements.serviceMedia.forEach((img) => {
+      const key = img.dataset.serviceMedia;
+      const src = state.settings.servicesMedia?.[key];
+      if (src) {
+        img.src = resolveImageSrc(src);
+      }
+    });
+  }
+  if (elements.orderHeroVideo && state.settings.orderHero) {
+    const { videoMp4, poster } = state.settings.orderHero;
+    if (poster) {
+      elements.orderHeroVideo.setAttribute("poster", resolveImageSrc(poster));
+    }
+    if (elements.orderHeroSource && videoMp4) {
+      elements.orderHeroSource.src = resolveMediaSrc(videoMp4);
+      elements.orderHeroVideo.load();
+    }
+    if (prefersReducedMotion()) {
+      elements.orderHeroVideo.pause();
+      elements.orderHeroVideo.removeAttribute("autoplay");
+      elements.orderHeroVideo.loop = false;
+    }
   }
   if (elements.mapLink && state.settings.mapLinkUrl) {
     elements.mapLink.href = state.settings.mapLinkUrl;
@@ -667,6 +762,7 @@ const initSettings = async () => {
 
   updateWhatsAppLinks();
   renderPortfolio();
+  renderWorkWall();
   initPortfolioFilters();
   initLightbox();
   initOrderForm();
