@@ -71,6 +71,9 @@ const elements = {
   contactSuccess: document.querySelector("[data-contact-success]"),
 };
 
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isCoarsePointer = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+
 const serviceHelpers = {
   Signs: {
     turnaround: "3-5 days",
@@ -295,6 +298,11 @@ const initNav = () => {
         event.preventDefault();
         first.focus();
       }
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && elements.navToggle.getAttribute("aria-expanded") === "true") {
+      closeMenu();
     }
   });
 };

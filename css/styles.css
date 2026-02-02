@@ -26,6 +26,12 @@ body {
   background: var(--bg);
   color: var(--ink);
   line-height: 1.6;
+  font-size: clamp(1rem, 0.4vw + 0.95rem, 1.125rem);
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 body.nav-open {
@@ -87,12 +93,14 @@ textarea:focus-visible {
 }
 
 .container {
-  width: min(1200px, 100% - 36px);
+  width: 100%;
+  max-width: 1120px;
+  padding: 0 18px;
   margin: 0 auto;
 }
 
 .section {
-  padding: 56px 0;
+  padding: 40px 0;
 }
 
 .section.compact {
@@ -138,7 +146,7 @@ textarea:focus-visible {
 }
 
 .theme-dark--slim {
-  padding: 22px 0;
+  padding: 40px 0;
 }
 
 .section-head {
@@ -894,4 +902,12 @@ textarea {
   .card {
     transition: none;
   }
+}
+
+.nav-open {
+  overflow: hidden;
+}
+
+.has-bottom-cta {
+  padding-bottom: var(--bottom-cta-offset, 0px);
 }
