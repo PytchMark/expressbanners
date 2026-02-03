@@ -44,8 +44,8 @@
     }
   },
   "images": {
-    "logo": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png",
-    "homeHero": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/home-hero.jpg",
+    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
+    "homeHero": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
     "og": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg"
   },
   "orderHero": {
