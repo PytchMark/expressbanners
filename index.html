@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Premium banners, signs, embroidery, and printing delivered fast across Jamaica." />
+    <meta name="description" content="Premium banners, signs, embroidery, and screen printing delivered fast across Jamaica." />
     <meta name="theme-color" content="#ffffff" />
     <title>Express Banners | Fast. Affordable. Reliable.</title>
 
@@ -16,10 +16,10 @@
 
     <meta property="og:title" content="Express Banners" />
     <meta property="og:description" content="Fast, affordable, reliable printing in days." />
-    <meta property="og:image" content="assets/img/og-image.jpg" data-og-image />
+    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body data-base="./" data-seo-page="home">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -45,22 +45,23 @@
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <a class="nav-logo" href="index.html">
-          <img id="siteLogo" src="assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
-          <span class="brand-name" data-business-name>Express Banners</span>
+        <a class="nav-logo" href="./" aria-label="Express Banners home">
+          <span class="logo-wrap">
+            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
-        <div class="nav-links" id="nav-menu">
-          <a href="index.html" data-nav-link>Home</a>
-          <a href="services/" data-nav-link>Services</a>
-          <a href="portfolio/" data-nav-link>Portfolio</a>
-          <a href="about/" data-nav-link>About</a>
-          <a href="order/" data-nav-link>Order</a>
-          <a href="contact/" data-nav-link>Contact</a>
-          <a class="btn btn-primary" href="order/">Start Order</a>
+        <div class="nav-links" id="nav-menu" aria-hidden="true">
+          <a href="./" data-nav-link>Home</a>
+          <a href="./services/" data-nav-link>Services</a>
+          <a href="./portfolio/" data-nav-link>Portfolio</a>
+          <a href="./about/" data-nav-link>About</a>
+          <a href="./order/" data-nav-link>Order</a>
+          <a href="./contact/" data-nav-link>Contact</a>
+          <a class="btn btn-primary" href="./order/">Start Order</a>
         </div>
       </nav>
     </header>
@@ -72,11 +73,11 @@
             <p class="eyebrow" data-tagline>Fast. Affordable. Reliable.</p>
             <h1 id="hero-title" data-hero-title>Premium banners, signs & embroidery delivered fast.</h1>
             <p class="lead">
-              Express Banners helps Jamaican brands launch campaigns in days, not weeks. Clean finishes, bold colors, and
-              a production team that keeps your deadlines moving.
+              Express Banners helps Jamaican brands launch campaigns in days, not weeks. Expect clean finishes, bold
+              colors, and a production team that keeps your deadlines moving.
             </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="order/">Start Order</a>
+            <div class="hero-actions hero-actions--left">
+              <a class="btn btn-primary" href="./order/">Start Order</a>
               <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Quote</a>
             </div>
             <div class="chip-row">
@@ -89,7 +90,7 @@
             <div class="media-card">
               <img
                 id="heroImg"
-                src="assets/img/hero.jpg"
+                src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/home-hero.jpg"
                 width="520"
                 height="420"
                 alt="Express Banners production showcase"
@@ -138,31 +139,31 @@
               <h3>Signs</h3>
               <p>Durable indoor/outdoor signage that stays sharp.</p>
               <span class="turnaround">Turnaround: 3-5 days</span>
-              <a class="btn btn-outline" href="order/?service=Signs">Order this</a>
+              <a class="btn btn-outline" href="./order/?service=Signs">Order this</a>
             </article>
             <article class="card service-card reveal">
               <h3>Banners</h3>
               <p>Bold vinyl banners sized for visibility and impact.</p>
               <span class="turnaround">Turnaround: 2-4 days</span>
-              <a class="btn btn-outline" href="order/?service=Banners">Order this</a>
+              <a class="btn btn-outline" href="./order/?service=Banners">Order this</a>
             </article>
             <article class="card service-card reveal">
               <h3>Embroidery</h3>
               <p>Clean stitched apparel for teams and uniforms.</p>
               <span class="turnaround">Turnaround: 4-6 days</span>
-              <a class="btn btn-outline" href="order/?service=Embroidery">Order this</a>
+              <a class="btn btn-outline" href="./order/?service=Embroidery">Order this</a>
             </article>
             <article class="card service-card reveal">
               <h3>Graphic Designing</h3>
               <p>Fresh layouts ready for print and social use.</p>
               <span class="turnaround">Turnaround: 2-3 days</span>
-              <a class="btn btn-outline" href="order/?service=Graphic%20Designing">Order this</a>
+              <a class="btn btn-outline" href="./order/?service=Graphic%20Designing">Order this</a>
             </article>
             <article class="card service-card reveal">
               <h3>Screen Printing</h3>
               <p>High-volume apparel prints that stay vibrant.</p>
               <span class="turnaround">Turnaround: 5-7 days</span>
-              <a class="btn btn-outline" href="order/?service=Screen%20Printing">Order this</a>
+              <a class="btn btn-outline" href="./order/?service=Screen%20Printing">Order this</a>
             </article>
           </div>
         </div>
@@ -182,8 +183,8 @@
             <h3>Ready for a standout print launch?</h3>
             <p class="muted">Browse the full portfolio or start a project today.</p>
             <div class="hero-actions" style="justify-content: center;">
-              <a class="btn btn-primary" href="portfolio/">View Full Portfolio</a>
-              <a class="btn btn-outline" href="order/">Start Order</a>
+              <a class="btn btn-primary" href="./portfolio/">View Full Portfolio</a>
+              <a class="btn btn-outline" href="./order/">Start Order</a>
             </div>
           </div>
         </div>
@@ -191,29 +192,25 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section theme-light" aria-labelledby="process-title">
+      <section class="section theme-light" aria-labelledby="what-we-do">
         <div class="container">
           <div class="section-head reveal">
-            <p class="eyebrow">Process</p>
-            <h2 id="process-title">A smooth, clear production flow.</h2>
-            <p>From briefing to delivery, we keep your order visible at every step.</p>
+            <p class="eyebrow">What We Do</p>
+            <h2 id="what-we-do">End-to-end print support for busy Jamaican teams.</h2>
+            <p>We align your design, production, and delivery so your brand stays visible without delays.</p>
           </div>
-          <div class="services-grid">
+          <div class="info-grid">
             <article class="card reveal">
-              <h3>1. Share your needs</h3>
-              <p>Tell us the service, size, quantity, and any brand notes.</p>
+              <h3>Design & Pre-Press</h3>
+              <p class="muted">We refine layouts, color-match, and prep print-ready files before production.</p>
             </article>
             <article class="card reveal">
-              <h3>2. Approve layout</h3>
-              <p>We confirm layout, pricing, and timing before production.</p>
+              <h3>Production & Finishing</h3>
+              <p class="muted">Durable materials, sharp output, and finishing options built for Jamaican conditions.</p>
             </article>
             <article class="card reveal">
-              <h3>3. Print & finish</h3>
-              <p>We handle printing, trimming, hemming, or embroidery.</p>
-            </article>
-            <article class="card reveal">
-              <h3>4. Deliver or pickup</h3>
-              <p>Choose delivery across Jamaica or collect in person.</p>
+              <h3>Delivery & Install</h3>
+              <p class="muted">We coordinate pickup or delivery with timelines that match your launch dates.</p>
             </article>
           </div>
         </div>
@@ -221,29 +218,46 @@
 
       <div class="section-divider" aria-hidden="true"></div>
 
-      <section class="section theme-light" aria-labelledby="faq-title">
+      <section class="section theme-light" aria-labelledby="industries-title">
         <div class="container">
           <div class="section-head reveal">
-            <p class="eyebrow">FAQ</p>
-            <h2 id="faq-title">Answers for your next order.</h2>
-            <p>We respond quickly and keep production timelines clear.</p>
+            <p class="eyebrow">Industries We Serve</p>
+            <h2 id="industries-title">Trusted across Jamaica’s busiest sectors.</h2>
+            <p>Retail, hospitality, events, and corporate teams rely on our fast turnarounds.</p>
           </div>
-          <div class="services-grid">
+          <div class="tag-grid">
+            <span class="tag">Retail & Supermarkets</span>
+            <span class="tag">Hospitality & Tourism</span>
+            <span class="tag">Events & Activations</span>
+            <span class="tag">Schools & Universities</span>
+            <span class="tag">Corporate Offices</span>
+            <span class="tag">Sports Teams</span>
+            <span class="tag">Construction & Safety</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider" aria-hidden="true"></div>
+
+      <section class="section theme-light" aria-labelledby="why-title">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="eyebrow">Why Express Banners</p>
+            <h2 id="why-title">Premium quality with a production partner mindset.</h2>
+            <p>We stay hands-on from brief to delivery so your print stays on schedule.</p>
+          </div>
+          <div class="why-grid">
             <article class="card reveal">
-              <h3>How fast can you deliver?</h3>
-              <p>Most banner and sign jobs are ready in 2-5 business days depending on volume.</p>
+              <h3>Fast confirmations</h3>
+              <p class="muted">Clear proofs, quick approvals, and production updates without chasing.</p>
             </article>
             <article class="card reveal">
-              <h3>Can you help with design?</h3>
-              <p>Yes. Our in-house designers can update or create layouts for print.</p>
+              <h3>Materials that last</h3>
+              <p class="muted">We source durable vinyl, inks, and threads built for Jamaica’s climate.</p>
             </article>
             <article class="card reveal">
-              <h3>What files work best?</h3>
-              <p>Vector files (AI, EPS, PDF) or high-res PNGs deliver the sharpest prints.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Do you handle rush jobs?</h3>
-              <p>Rush production is available for select services. Ask for a fast quote.</p>
+              <h3>Hands-on support</h3>
+              <p class="muted">From sizing to install notes, our team stays with you until the job is complete.</p>
             </article>
           </div>
         </div>
@@ -256,7 +270,7 @@
             <p class="muted">Message us on WhatsApp for same-day responses.</p>
             <div class="hero-actions" style="justify-content: center;">
               <a class="btn btn-primary" data-whatsapp href="#">Chat on WhatsApp</a>
-              <a class="btn btn-outline" href="contact/">Contact form</a>
+              <a class="btn btn-outline" href="./contact/">Contact form</a>
             </div>
           </div>
         </div>
@@ -269,17 +283,17 @@
           <h3 data-business-name>Express Banners</h3>
           <p class="muted">Premium print solutions for Jamaica businesses and events.</p>
           <div class="footer-actions">
-            <a class="btn btn-primary" href="order/">Start Order</a>
+            <a class="btn btn-primary" href="./order/">Start Order</a>
             <a class="btn btn-outline" data-whatsapp href="#">WhatsApp</a>
           </div>
         </div>
         <div>
           <h4>Quick Links</h4>
           <ul>
-            <li><a href="services/">Services</a></li>
-            <li><a href="portfolio/">Portfolio</a></li>
-            <li><a href="about/">About</a></li>
-            <li><a href="contact/">Contact</a></li>
+            <li><a href="./services/">Services</a></li>
+            <li><a href="./portfolio/">Portfolio</a></li>
+            <li><a href="./about/">About</a></li>
+            <li><a href="./contact/">Contact</a></li>
           </ul>
         </div>
         <div>
@@ -291,12 +305,12 @@
       </div>
       <div class="container footer-bottom">
         <span>© <span data-year></span> <span data-business-name>Express Banners</span></span>
-        <a href="terms/">Terms & Policies</a>
+        <a href="./terms/">Terms & Policies</a>
       </div>
     </footer>
 
     <div class="toast" role="status" aria-live="polite" data-toast></div>
 
-    <script src="js/app.js"></script>
+    <script src="./js/app.js"></script>
   </body>
 </html>

@@ -16,7 +16,7 @@
 
     <meta property="og:title" content="Express Banners Portfolio" />
     <meta property="og:description" content="Banners, signs, embroidery, screen printing, and design across Jamaica." />
-    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="../css/styles.css" />
@@ -45,16 +45,17 @@
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <a class="nav-logo" href="../index.html">
-          <img id="siteLogo" src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
-          <span class="brand-name" data-business-name>Express Banners</span>
+        <a class="nav-logo" href="../" aria-label="Express Banners home">
+          <span class="logo-wrap">
+            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
-        <div class="nav-links" id="nav-menu">
-          <a href="../index.html" data-nav-link>Home</a>
+        <div class="nav-links" id="nav-menu" aria-hidden="true">
+          <a href="../" data-nav-link>Home</a>
           <a href="../services/" data-nav-link>Services</a>
           <a href="../portfolio/" data-nav-link>Portfolio</a>
           <a href="../about/" data-nav-link>About</a>
@@ -72,21 +73,25 @@
             <p class="eyebrow">Portfolio</p>
             <h1 id="portfolio-title">Proof that sharp print sells in Jamaica.</h1>
             <p class="lead">
-              Express Banners delivers banners, signs, embroidery, screen printing, and graphic design that give Jamaica
-              businesses a professional edge. We build visual systems for storefronts, campaigns, and teams—ensuring every
-              banner is crisp, every sign is readable, and every garment looks premium. Whether you need launch-day
-              visibility, event branding, or ongoing retail support, our team turns your goals into print that grabs
-              attention and converts foot traffic. Explore featured projects below, filter by service, and picture how
-              your next campaign can land with the same clarity and impact. The results you see here are built on sharp
-              layout work, durable materials, and fast production so your brand never misses momentum.
+              Express Banners supports Jamaican brands with premium banners, signs, embroidery, screen printing, and
+              graphic design that converts attention into action. From Kingston storefront launches to island-wide event
+              tours, we craft signage that stays crisp, apparel that feels premium, and campaigns that stay cohesive.
+              Our team aligns sizes, materials, and finishes so every banner is readable, every sign guides customers
+              clearly, and every uniform feels polished. We work with retailers, hospitality teams, schools, and
+              corporate brands that need visibility fast, without sacrificing durability. Each job includes proofing,
+              file checks, and turnaround guidance so you can plan marketing moments with confidence. We can also
+              coordinate installs, pickups, and deliveries across the island. Browse the featured work below, filter by
+              service, and imagine your campaign with the same bold visibility. Whether you need a single banner or a
+              full multi-location rollout, we deliver design-ready, high-impact print that keeps your brand consistent
+              across Jamaica.
             </p>
           </div>
 
           <div class="cta-band reveal" style="margin-bottom: 32px;">
-            <h3>Want your project to be the next standout story?</h3>
+            <h3>Ready to launch your next visual campaign?</h3>
             <p class="muted">Start with a quick brief and we'll guide the rest.</p>
             <div class="hero-actions" style="justify-content: center;">
-              <a class="btn btn-primary" href="../order/">Start a Design</a>
+              <a class="btn btn-primary" href="../order/">Start Your Design</a>
               <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Quote</a>
             </div>
           </div>
@@ -102,6 +107,15 @@
 
       <section class="section theme-light" aria-labelledby="gallery-title">
         <div class="container">
+          <div class="cta-band reveal" style="margin-bottom: 32px;">
+            <h3>Need help choosing the right service?</h3>
+            <p class="muted">Chat with our team and we'll match materials to your goals.</p>
+            <div class="hero-actions" style="justify-content: center;">
+              <a class="btn btn-primary" href="../order/">Start a Project</a>
+              <a class="btn btn-outline" href="../services/">Review Services</a>
+            </div>
+          </div>
+
           <div class="section-head reveal">
             <p class="eyebrow">Gallery</p>
             <h2 id="gallery-title">Filter by service to find your fit.</h2>
@@ -124,7 +138,7 @@
             <p class="muted">Share your details and we'll confirm sizing, pricing, and timelines.</p>
             <div class="hero-actions" style="justify-content: center;">
               <a class="btn btn-primary" href="../order/">Start an Order</a>
-              <a class="btn btn-outline" href="../services/">Review Services</a>
+              <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Us</a>
             </div>
           </div>
         </div>

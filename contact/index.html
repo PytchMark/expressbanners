@@ -16,7 +16,7 @@
 
     <meta property="og:title" content="Contact Express Banners" />
     <meta property="og:description" content="Contact Express Banners for quotes, artwork help, and order support." />
-    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="../css/styles.css" />
@@ -45,16 +45,17 @@
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <a class="nav-logo" href="../index.html">
-          <img id="siteLogo" src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
-          <span class="brand-name" data-business-name>Express Banners</span>
+        <a class="nav-logo" href="../" aria-label="Express Banners home">
+          <span class="logo-wrap">
+            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
-        <div class="nav-links" id="nav-menu">
-          <a href="../index.html" data-nav-link>Home</a>
+        <div class="nav-links" id="nav-menu" aria-hidden="true">
+          <a href="../" data-nav-link>Home</a>
           <a href="../services/" data-nav-link>Services</a>
           <a href="../portfolio/" data-nav-link>Portfolio</a>
           <a href="../about/" data-nav-link>About</a>
@@ -94,10 +95,11 @@
             class="card reveal"
             action="https://formsubmit.co/expressbannersja@mail.com"
             method="POST"
+            data-contact-form
           >
             <input type="hidden" name="_subject" value="Express Banners Contact Request" />
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value="/contact/?sent=1" />
+            <input type="hidden" name="_next" value="./?sent=1" data-contact-next />
             <div class="form-row">
               <label class="form-label" for="contact-name">Full name</label>
               <input class="input" id="contact-name" name="name" type="text" required />

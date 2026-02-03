@@ -16,7 +16,7 @@
 
     <meta property="og:title" content="Order with Express Banners" />
     <meta property="og:description" content="Start a custom print order with Express Banners." />
-    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="../css/styles.css" />
@@ -45,16 +45,17 @@
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <a class="nav-logo" href="../index.html">
-          <img id="siteLogo" src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
-          <span class="brand-name" data-business-name>Express Banners</span>
+        <a class="nav-logo" href="../" aria-label="Express Banners home">
+          <span class="logo-wrap">
+            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
-        <div class="nav-links" id="nav-menu">
-          <a href="../index.html" data-nav-link>Home</a>
+        <div class="nav-links" id="nav-menu" aria-hidden="true">
+          <a href="../" data-nav-link>Home</a>
           <a href="../services/" data-nav-link>Services</a>
           <a href="../portfolio/" data-nav-link>Portfolio</a>
           <a href="../about/" data-nav-link>About</a>
@@ -66,13 +67,39 @@
     </header>
 
     <main id="main">
+      <section class="section theme-light" aria-labelledby="order-hero-title">
+        <div class="container">
+          <div class="order-hero">
+            <video
+              data-order-video
+              src="https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1/express-banners/order-hero.mp4"
+              autoplay
+              muted
+              loop
+              playsinline
+              poster="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/order-hero-poster.jpg"
+              aria-label="Express Banners production video"
+            ></video>
+            <div class="hero-content">
+              <p class="eyebrow">Order</p>
+              <h1 id="order-hero-title">Start your order in minutes.</h1>
+              <p class="lead">Pick a service, dial in size, and we will confirm fast.</p>
+              <div class="hero-actions">
+                <a class="btn btn-primary" data-whatsapp href="#">Complete Order</a>
+                <a class="btn btn-outline" href="../portfolio/">View Portfolio</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section theme-light" aria-labelledby="order-title">
         <div class="container order-grid">
           <div>
-            <div class="section-head reveal" style="text-align: left;">
-              <p class="eyebrow">Order</p>
-              <h1 id="order-title">Start your order in minutes.</h1>
-              <p>Pick a service, dial in size, and we will confirm fast.</p>
+            <div class="section-head reveal">
+              <p class="eyebrow">Order Flow</p>
+              <h2 id="order-title">Tell us what to produce.</h2>
+              <p>Choose a service, size, and quantity to build your job ticket.</p>
             </div>
             <ol class="stepper">
               <li class="reveal">
@@ -92,8 +119,8 @@
               </li>
               <li class="reveal">
                 <span class="step">Step 4</span>
-                <strong>Payment</strong>
-                <p class="muted">Card payments via NCB are launching soon.</p>
+                <strong>Confirm on WhatsApp</strong>
+                <p class="muted">We finalize pricing and timelines instantly.</p>
               </li>
             </ol>
           </div>
@@ -213,17 +240,48 @@
               </dl>
             </div>
 
-            <div class="hero-actions">
+            <div class="hero-actions hero-actions--left">
               <a class="btn btn-primary" data-whatsapp href="#">Complete Order on WhatsApp</a>
-              <button class="btn btn-outline" type="button" data-payment-button disabled>
+              <button class="btn btn-outline" type="button" data-payment-button aria-disabled="true" disabled>
                 Pay Securely (NCB soon)
               </button>
             </div>
-            <p class="muted" data-payment-notice>Secure card payments via NCB are coming soon.</p>
+            <p class="muted" data-payment-notice>Card payments (NCB) launching soon…</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section theme-light" aria-labelledby="work-wall-title">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="eyebrow">Work Wall</p>
+            <h2 id="work-wall-title">Recent production highlights.</h2>
+            <p>Tap any project to see full details and explore more in the portfolio.</p>
+          </div>
+          <div class="work-wall" data-work-wall></div>
+          <div class="cta-band reveal" style="margin-top: 28px;">
+            <h3>Want to see more before you order?</h3>
+            <p class="muted">Explore the full portfolio for inspiration.</p>
+            <div class="hero-actions" style="justify-content: center;">
+              <a class="btn btn-primary" href="../portfolio/">View Full Portfolio</a>
+              <a class="btn btn-outline" data-whatsapp href="#">Ask on WhatsApp</a>
+            </div>
           </div>
         </div>
       </section>
     </main>
+
+    <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Portfolio preview">
+      <div class="lightbox-dialog">
+        <div class="lightbox-controls">
+          <button type="button" data-lightbox-prev aria-label="Previous image">Previous</button>
+          <button type="button" data-lightbox-close aria-label="Close preview">Close</button>
+          <button type="button" data-lightbox-next aria-label="Next image">Next</button>
+        </div>
+        <img src="" alt="" data-lightbox-image />
+        <p class="lightbox-caption" data-lightbox-caption></p>
+      </div>
+    </div>
 
     <footer class="site-footer">
       <div class="container footer-grid">

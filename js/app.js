@@ -18,8 +18,7 @@ const elements = {
   businessName: document.querySelectorAll("[data-business-name]"),
   tagline: document.querySelectorAll("[data-tagline]"),
   heroTitle: document.querySelector("[data-hero-title]"),
-  heroImage: document.querySelector("#heroImg") || document.querySelector("[data-hero-image]"),
-  heroMedia: document.querySelector("#heroMedia"),
+  heroImage: document.querySelector("[data-hero-image]"),
   whatsappLinks: document.querySelectorAll("[data-whatsapp]"),
   uploadLink: document.querySelector("[data-upload-link]"),
   mapLink: document.querySelector("[data-map-link]"),
@@ -29,7 +28,7 @@ const elements = {
   instagram: document.querySelector("[data-instagram]"),
   facebook: document.querySelector("[data-facebook]"),
   tiktok: document.querySelector("[data-tiktok]"),
-  logo: document.querySelector("#siteLogo") || document.querySelector("[data-logo]") || document.querySelector("[data-logo-src]"),
+  logo: document.querySelector("#siteLogo") || document.querySelector("[data-logo]"),
   ogImage: document.querySelector("[data-og-image]"),
   navToggle: document.querySelector(".nav-toggle"),
   navMenu: document.querySelector(".nav-links"),
@@ -60,7 +59,7 @@ const elements = {
   paymentButton: document.querySelector("[data-payment-button]"),
   paymentNotice: document.querySelector("[data-payment-notice]"),
   toast: document.querySelector("[data-toast]"),
-  portfolioFeatured: document.querySelector("[data-portfolio-featured]") || document.querySelector("[data-portfolio-grid]"),
+  portfolioFeatured: document.querySelector("[data-portfolio-featured]"),
   portfolioGrid: document.querySelector("[data-portfolio-grid]"),
   portfolioFilter: document.querySelector("[data-filter-controls]"),
   lightbox: document.querySelector("[data-lightbox]"),
@@ -70,10 +69,14 @@ const elements = {
   lightboxNext: document.querySelector("[data-lightbox-next]"),
   lightboxPrev: document.querySelector("[data-lightbox-prev]"),
   contactSuccess: document.querySelector("[data-contact-success]"),
+  contactForm: document.querySelector("[data-contact-form]"),
+  contactNext: document.querySelector("[data-contact-next]"),
+  serviceImages: document.querySelectorAll("[data-service-image]"),
+  orderVideo: document.querySelector("[data-order-video]"),
+  workWall: document.querySelector("[data-work-wall]"),
 };
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isCoarsePointer = () => window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
 const serviceHelpers = {
   Signs: {
@@ -175,11 +178,13 @@ const setService = (service) => {
   setActivePill(elements.servicePills, service);
   updateHelperChips(service);
   updateSummary();
+  updateWhatsAppLinks();
 };
 
 const setSize = (size) => {
   state.order.options.size = size;
   updateSummary();
+  updateWhatsAppLinks();
 };
 
 const showToast = (message) => {
@@ -198,37 +203,14 @@ const buildWhatsAppLink = (message) => {
   return `https://wa.me/${state.settings.whatsappNumber}?text=${text}`;
 };
 
-const buildOrderMessage = () => {
-  const { service, options, quantity, notes } = state.order;
-  const helper = serviceHelpers[service] || {};
-  const lines = [
-    `Hello ${state.settings?.businessName || "Express Banners"} team,`,
-    "",
-    "Order Request",
-    `Service: ${service || "Not selected"}`,
-    `Size: ${options.size || "Not set"}`,
-    `Quantity: ${quantity || "Not set"}`,
-    `Finish: ${options.finish || "Standard"}`,
-    `Notes: ${notes || "None"}`,
-    `Typical turnaround: ${helper.turnaround || "2-5 days"}`,
-    `Best files: ${helper.files || "PDF, AI, EPS, PNG"}`,
-    `Rush available: ${helper.rush || "Yes"}`,
-  ];
-  if (state.settings?.orderLinks?.artworkUploadUrl) {
-    lines.push(`Artwork upload link: ${state.settings.orderLinks.artworkUploadUrl}`);
-  }
-  lines.push("", "Thanks!");
-  return lines.join("\n");
-};
-
-const buildWhatsAppMessage = (order, settings) => {
+const buildOrderMessage = (order, settings) => {
   const service = order?.service || "Not selected";
   const size = order?.options?.size || "Not set";
   const quantity = order?.quantity || "Not set";
   const finish = order?.options?.finish || "Standard";
   const notes = order?.notes || "None";
   const helper = serviceHelpers[service] || {};
-  return [
+  const lines = [
     `Hello ${settings?.businessName || "Express Banners"} team,`,
     "",
     "Order Request",
@@ -238,13 +220,21 @@ const buildWhatsAppMessage = (order, settings) => {
     `Finish: ${finish}`,
     `Notes: ${notes}`,
     `Typical turnaround: ${helper.turnaround || "2-5 days"}`,
-  ].join("\n");
+    `Best files: ${helper.files || "PDF, AI, EPS, PNG"}`,
+    `Rush available: ${helper.rush || "Yes"}`,
+  ];
+  if (settings?.orderLinks?.artworkUploadUrl) {
+    lines.push(`Artwork upload link: ${settings.orderLinks.artworkUploadUrl}`);
+  }
+  lines.push("", "Thanks!");
+  return lines.join("\n");
 };
 
 const updateWhatsAppLinks = () => {
-  const message = state.settings?.whatsappDefaultMessage
-    ? `${state.settings.whatsappDefaultMessage}\n\n${buildOrderMessage()}`
-    : buildOrderMessage();
+  if (!state.settings) return;
+  const baseMessage = state.settings.whatsappDefaultMessage || "Hi Express Banners!";
+  const orderMessage = buildOrderMessage(state.order, state.settings);
+  const message = `${baseMessage}\n\n${orderMessage}`;
   const link = buildWhatsAppLink(message);
   elements.whatsappLinks.forEach((linkEl) => {
     linkEl.href = link;
@@ -261,6 +251,7 @@ const initNav = () => {
   const setExpanded = (isOpen) => {
     elements.navMenu.classList.toggle("is-open", isOpen);
     elements.navToggle.setAttribute("aria-expanded", String(isOpen));
+    elements.navMenu.setAttribute("aria-hidden", String(!isOpen));
     document.body.classList.toggle("nav-open", isOpen);
     elements.navScrim?.classList.toggle("is-visible", isOpen);
     if (isOpen) {
@@ -277,15 +268,17 @@ const initNav = () => {
     setExpanded(!isOpen);
   };
 
+  const closeMenu = () => setExpanded(false);
+
   elements.navToggle.addEventListener("click", toggleMenu);
-  elements.navScrim?.addEventListener("click", () => setExpanded(false));
+  elements.navScrim?.addEventListener("click", closeMenu);
   elements.navLinks.forEach((link) => {
-    link.addEventListener("click", () => setExpanded(false));
+    link.addEventListener("click", closeMenu);
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      setExpanded(false);
+      closeMenu();
     }
     if (event.key === "Tab" && elements.navMenu.classList.contains("is-open")) {
       const focusables = Array.from(elements.navMenu.querySelectorAll(focusableSelector));
@@ -299,11 +292,6 @@ const initNav = () => {
         event.preventDefault();
         first.focus();
       }
-    }
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && elements.navToggle.getAttribute("aria-expanded") === "true") {
-      closeMenu();
     }
   });
 };
@@ -332,6 +320,10 @@ const initHeaderScroll = () => {
 const initReveal = () => {
   const revealEls = document.querySelectorAll(".reveal");
   if (!revealEls.length) return;
+  if (prefersReducedMotion()) {
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -344,6 +336,16 @@ const initReveal = () => {
     { threshold: 0.2 }
   );
   revealEls.forEach((el) => observer.observe(el));
+};
+
+const renderSkeletons = (target, count = 6) => {
+  if (!target) return;
+  target.innerHTML = "";
+  Array.from({ length: count }).forEach(() => {
+    const skeleton = document.createElement("div");
+    skeleton.className = "skeleton";
+    target.appendChild(skeleton);
+  });
 };
 
 const renderPortfolioItem = (item, index, isFeatured = false) => {
@@ -375,7 +377,7 @@ const renderPortfolio = () => {
 
   if (featuredWrap) {
     featuredWrap.innerHTML = "";
-    featuredItems.forEach((item, index) => {
+    featuredItems.forEach((item) => {
       const itemIndex = allItems.findIndex((entry) => entry.id === item.id);
       featuredWrap.appendChild(renderPortfolioItem(item, itemIndex, true));
     });
@@ -416,7 +418,7 @@ const bindPortfolioClicks = () => {
 };
 
 const openLightbox = (index) => {
-  if (!elements.lightbox) return;
+  if (!elements.lightbox || !elements.lightboxImage || !elements.lightboxCaption) return;
   openLightbox.lastFocus = document.activeElement;
   state.currentIndex = index;
   const item = state.portfolio[index];
@@ -436,7 +438,7 @@ const closeLightbox = () => {
 };
 
 const showLightboxItem = (direction) => {
-  if (!state.portfolio.length) return;
+  if (!state.portfolio.length || !elements.lightboxImage || !elements.lightboxCaption) return;
   const total = state.portfolio.length;
   state.currentIndex = (state.currentIndex + direction + total) % total;
   const item = state.portfolio[state.currentIndex];
@@ -536,29 +538,38 @@ const initOrderForm = () => {
 
   elements.qtyMinus?.addEventListener("click", () => {
     state.order.quantity = clampNumber(state.order.quantity - 1, 1, 999);
-    elements.quantityInput.value = state.order.quantity;
+    if (elements.quantityInput) {
+      elements.quantityInput.value = state.order.quantity;
+    }
     updateSummary();
+    updateWhatsAppLinks();
   });
 
   elements.qtyPlus?.addEventListener("click", () => {
     state.order.quantity = clampNumber(state.order.quantity + 1, 1, 999);
-    elements.quantityInput.value = state.order.quantity;
+    if (elements.quantityInput) {
+      elements.quantityInput.value = state.order.quantity;
+    }
     updateSummary();
+    updateWhatsAppLinks();
   });
 
   elements.quantityInput?.addEventListener("input", (event) => {
     state.order.quantity = clampNumber(Number(event.target.value || 1), 1, 999);
     updateSummary();
+    updateWhatsAppLinks();
   });
 
   elements.finishSelect?.addEventListener("change", (event) => {
     state.order.options.finish = event.target.value;
     updateSummary();
+    updateWhatsAppLinks();
   });
 
   elements.notesInput?.addEventListener("input", (event) => {
     state.order.notes = event.target.value;
     updateSummary();
+    updateWhatsAppLinks();
   });
 
   if (defaultService) {
@@ -577,7 +588,7 @@ const initOrderForm = () => {
 };
 
 const initPayment = (orderData) => {
-  showToast("Secure payments are launching soon. We'll guide you during confirmation.");
+  showToast("Card payments are launching soon. We'll guide you during confirmation.");
   console.log("Payment placeholder:", orderData);
 };
 
@@ -589,20 +600,30 @@ const initContactSuccess = () => {
   }
 };
 
-const initSettings = async () => {
-  const basePath = document.body.dataset.base || "./";
-  try {
-    const [settingsResponse, portfolioResponse] = await Promise.all([
-      fetch(`${basePath}data/settings.json`),
-      fetch(`${basePath}data/portfolio.json`),
-    ]);
-    state.settings = await settingsResponse.json();
-    state.portfolio = await portfolioResponse.json();
-  } catch (error) {
-    console.error("Failed to load settings:", error);
-    return;
-  }
+const initActiveNav = () => {
+  const path = window.location.pathname;
+  elements.navLinks.forEach((link) => {
+    const href = link.getAttribute("href") || "";
+    if (href.includes("services") && path.includes("/services")) {
+      link.classList.add("active");
+    } else if (href.includes("portfolio") && path.includes("/portfolio")) {
+      link.classList.add("active");
+    } else if (href.includes("about") && path.includes("/about")) {
+      link.classList.add("active");
+    } else if (href.includes("order") && path.includes("/order")) {
+      link.classList.add("active");
+    } else if (href.includes("contact") && path.includes("/contact")) {
+      link.classList.add("active");
+    } else if ((href === "./" || href === "../" || href.includes("index")) && path.endsWith("/")) {
+      if (!path.includes("/services") && !path.includes("/portfolio") && !path.includes("/about") && !path.includes("/order") && !path.includes("/contact") && !path.includes("/terms")) {
+        link.classList.add("active");
+      }
+    }
+  });
+};
 
+const applySettings = () => {
+  if (!state.settings) return;
   if (elements.businessName.length) {
     setText(elements.businessName, state.settings.businessName);
   }
@@ -615,10 +636,8 @@ const initSettings = async () => {
   if (elements.logo && state.settings.images?.logo) {
     elements.logo.src = state.settings.images.logo;
   }
-  if (elements.heroImage && state.settings.images?.hero) {
-    elements.heroImage.src = state.settings.images.hero;
-  } else if (elements.heroMedia && state.settings.images?.hero) {
-    elements.heroMedia.style.backgroundImage = `url('${state.settings.images.hero}')`;
+  if (elements.heroImage && state.settings.images?.homeHero) {
+    elements.heroImage.src = state.settings.images.homeHero;
   }
   if (elements.ogImage && state.settings.images?.og) {
     elements.ogImage.setAttribute("content", state.settings.images.og);
@@ -641,11 +660,45 @@ const initSettings = async () => {
   if (elements.tiktok && state.settings.social?.tiktok) {
     elements.tiktok.href = state.settings.social.tiktok;
   }
-  if (elements.uploadLink && state.settings.orderLinks?.artworkUploadUrl) {
-    elements.uploadLink.href = state.settings.orderLinks.artworkUploadUrl;
+  if (elements.uploadLink) {
+    if (state.settings.orderLinks?.artworkUploadUrl) {
+      elements.uploadLink.href = state.settings.orderLinks.artworkUploadUrl;
+    } else {
+      elements.uploadLink.classList.add("is-hidden");
+    }
   }
   if (elements.paymentNotice && state.settings.orderLinks?.paymentEnabled === false) {
-    elements.paymentNotice.textContent = "Secure card payments via NCB are coming soon.";
+    elements.paymentNotice.textContent = "Card payments (NCB) launching soon…";
+  }
+  if (elements.paymentButton) {
+    const enabled = state.settings.orderLinks?.paymentEnabled === true;
+    elements.paymentButton.disabled = !enabled;
+    elements.paymentButton.setAttribute("aria-disabled", String(!enabled));
+  }
+  if (elements.contactForm && state.settings.contact?.formEndpoint) {
+    elements.contactForm.action = state.settings.contact.formEndpoint;
+  }
+  if (elements.contactNext) {
+    elements.contactNext.value = "./?sent=1";
+  }
+
+  elements.serviceImages?.forEach((img) => {
+    const key = img.dataset.serviceImage;
+    if (key && state.settings.servicesMedia?.[key]) {
+      img.src = state.settings.servicesMedia[key];
+    }
+  });
+
+  if (elements.orderVideo && state.settings.orderHero?.videoMp4) {
+    elements.orderVideo.src = state.settings.orderHero.videoMp4;
+  }
+  if (elements.orderVideo && state.settings.orderHero?.poster) {
+    elements.orderVideo.setAttribute("poster", state.settings.orderHero.poster);
+  }
+
+  if (prefersReducedMotion() && elements.orderVideo) {
+    elements.orderVideo.pause();
+    elements.orderVideo.removeAttribute("autoplay");
   }
 
   const metaDescription = document.querySelector("meta[name='description']");
@@ -664,23 +717,55 @@ const initSettings = async () => {
       metaDescription.setAttribute("content", description);
     }
   }
+};
 
+const initWorkWall = () => {
+  if (!elements.workWall || !state.portfolio.length) return;
+  const items = [...state.portfolio].sort(() => 0.5 - Math.random()).slice(0, 8);
+  elements.workWall.innerHTML = "";
+  items.forEach((item) => {
+    const index = state.portfolio.findIndex((entry) => entry.id === item.id);
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "work-card";
+    card.setAttribute("data-portfolio-index", String(index));
+    card.setAttribute("aria-label", `Open ${item.title}`);
+    card.innerHTML = `<img src="${item.src}" alt="${item.alt}" loading="lazy" />`;
+    elements.workWall.appendChild(card);
+  });
+  bindPortfolioClicks();
+};
+
+const initSettings = async () => {
+  const basePath = document.body.dataset.base || "./";
+  if (elements.portfolioFeatured) {
+    renderSkeletons(elements.portfolioFeatured, 6);
+  }
+  if (elements.portfolioGrid) {
+    renderSkeletons(elements.portfolioGrid, 9);
+  }
+  if (elements.workWall) {
+    renderSkeletons(elements.workWall, 6);
+  }
+  try {
+    const [settingsResponse, portfolioResponse] = await Promise.all([
+      fetch(`${basePath}data/settings.json`),
+      fetch(`${basePath}data/portfolio.json`),
+    ]);
+    state.settings = await settingsResponse.json();
+    state.portfolio = await portfolioResponse.json();
+  } catch (error) {
+    console.error("Failed to load settings:", error);
+    return;
+  }
+
+  applySettings();
   updateWhatsAppLinks();
   renderPortfolio();
   initPortfolioFilters();
   initLightbox();
   initOrderForm();
-};
-
-const initActiveNav = () => {
-  const path = window.location.pathname;
-  elements.navLinks.forEach((link) => {
-    const href = link.getAttribute("href");
-    if (!href) return;
-    if (path.endsWith(href) || (href.endsWith("/") && path.endsWith(href))) {
-      link.classList.add("active");
-    }
-  });
+  initWorkWall();
 };
 
 const init = () => {

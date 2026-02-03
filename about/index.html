@@ -15,8 +15,8 @@
     />
 
     <meta property="og:title" content="About Express Banners" />
-    <meta property="og:description" content="Local Jamaican print partner for banners, signs, embroidery, and design." />
-    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:description" content="Local Jamaican print partner for banners, signs, and apparel." />
+    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="../css/styles.css" />
@@ -45,16 +45,17 @@
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <a class="nav-logo" href="../index.html">
-          <img id="siteLogo" src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
-          <span class="brand-name" data-business-name>Express Banners</span>
+        <a class="nav-logo" href="../" aria-label="Express Banners home">
+          <span class="logo-wrap">
+            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
-        <div class="nav-links" id="nav-menu">
-          <a href="../index.html" data-nav-link>Home</a>
+        <div class="nav-links" id="nav-menu" aria-hidden="true">
+          <a href="../" data-nav-link>Home</a>
           <a href="../services/" data-nav-link>Services</a>
           <a href="../portfolio/" data-nav-link>Portfolio</a>
           <a href="../about/" data-nav-link>About</a>
@@ -67,62 +68,63 @@
 
     <main id="main">
       <section class="section theme-light" aria-labelledby="about-title">
-        <div class="container hero-grid">
-          <div class="reveal">
+        <div class="container">
+          <div class="section-head reveal">
             <p class="eyebrow">About</p>
-            <h1 id="about-title">A Jamaican print partner you can rely on.</h1>
+            <h1 id="about-title">A Jamaican print partner built for busy brands.</h1>
             <p class="lead">
-              Express Banners was built to serve local businesses that need fast, reliable signage and apparel without
-              sacrificing quality. From Kingston to the wider island, we help teams show up with banners that pop,
-              embroidery that looks sharp, and signage that converts attention into action.
+              Express Banners blends premium production with fast, clear communication. We serve businesses across
+              Jamaica that need standout banners, signage, embroidery, and screen printing without delays.
             </p>
-            <p class="muted">
-              We balance premium output with tight deadlines by keeping production in-house and communication simple.
-              Our team reviews every file, confirms every detail, and delivers work that is ready for display. Whether
-              you're preparing for a launch, a corporate event, or a campaign refresh, we keep your visuals consistent
-              and confident.
-            </p>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="../portfolio/">View Portfolio</a>
-              <a class="btn btn-outline" href="../order/">Start an Order</a>
-            </div>
           </div>
-          <div class="card reveal">
-            <h3>Why clients choose Express Banners</h3>
-            <ul class="muted" style="margin-top: 12px; display: grid; gap: 10px;">
-              <li>Local knowledge with island-wide reach and delivery options.</li>
-              <li>In-house design assistance for quick edits and full layouts.</li>
-              <li>Clear timelines, proactive updates, and reliable quality checks.</li>
-              <li>Flexible materials for indoor, outdoor, and event-ready work.</li>
-            </ul>
+          <div class="info-grid">
+            <article class="card reveal">
+              <h3>Built for deadlines</h3>
+              <p class="muted">We plan each job with your launch date in mind and confirm timelines early.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Sharp, consistent output</h3>
+              <p class="muted">From signage to apparel, we protect color accuracy and sharp detail.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Local, responsive team</h3>
+              <p class="muted">Our Jamaica-based crew keeps you updated from proof to pickup.</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <section class="section theme-light">
-        <div class="container values-grid">
-          <article class="card reveal">
-            <h3>Trusted production</h3>
-            <p class="muted">Every order is reviewed for color accuracy, finishing, and durability before handoff.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Local responsiveness</h3>
-            <p class="muted">We answer quickly because we know your launch dates matter.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Creative support</h3>
-            <p class="muted">From light edits to full design builds, we keep your brand consistent.</p>
-          </article>
+      <section class="section theme-light" aria-labelledby="trust-title">
+        <div class="container">
+          <div class="section-head reveal">
+            <p class="eyebrow">Trust & Process</p>
+            <h2 id="trust-title">You get clarity at every stage.</h2>
+            <p>We guide you through sizing, materials, and delivery so your campaign stays on track.</p>
+          </div>
+          <div class="services-grid">
+            <article class="card reveal">
+              <h3>Planning & Proofs</h3>
+              <p class="muted">We review your brief, prep artwork, and confirm the best production path.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Production Updates</h3>
+              <p class="muted">Our team shares status updates so you can align marketing timelines.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Delivery Coordination</h3>
+              <p class="muted">Pickup, delivery, and install support are aligned with your launch dates.</p>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section class="section compact theme-light">
+      <section class="section compact theme-light" aria-labelledby="about-cta">
         <div class="container">
           <div class="cta-band reveal">
-            <h3>Let’s build your next print run.</h3>
-            <p class="muted">Browse the work we’ve delivered or start your order today.</p>
+            <h3 id="about-cta">See the work that keeps Jamaica brands visible.</h3>
+            <p class="muted">Explore our portfolio or jump straight into an order.</p>
             <div class="hero-actions" style="justify-content: center;">
-              <a class="btn btn-primary" href="../portfolio/">Explore Portfolio</a>
+              <a class="btn btn-primary" href="../portfolio/">View Portfolio</a>
               <a class="btn btn-outline" href="../order/">Start Order</a>
             </div>
           </div>
