@@ -1,40 +1,26 @@
 {
   "businessName": "Express Banners",
   "tagline": "Fast. Affordable. Reliable.",
-  "heroTitle": "Premium banners, signs & embroidery delivered fast.",
   "whatsappNumber": "18765551234",
   "whatsappDefaultMessage": "Hi Express Banners! I would like a quote.",
-  "addressLine": "Kingston, Jamaica",
-  "mapLinkUrl": "https://maps.google.com/?q=Kingston%2C+Jamaica",
-  "hours": "Mon-Sat: 9am - 6pm",
   "social": {
     "instagram": "https://instagram.com/",
     "facebook": "https://facebook.com/",
     "tiktok": "https://tiktok.com/"
   },
-  "images": {
-    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
-    "hero": "./assets/img/hero.jpg",
-    "og": "./assets/img/og-image.jpg"
-  },
-  "contact": {
-    "email": "expressbannersja@mail.com",
-    "formMode": "formsubmit",
-    "formEndpoint": "https://formsubmit.co/expressbannersja@mail.com"
-  },
-  "orderLinks": {
-    "artworkUploadUrl": "https://drive.google.com/",
-    "paymentUrl": "",
-    "paymentEnabled": false
-  },
+  "addressLine": "Kingston, Jamaica",
+  "mapLinkUrl": "https://maps.google.com/?q=Kingston%2C+Jamaica",
+  "hours": "Mon-Sat: 9am - 6pm",
   "seo": {
+    "title": "Express Banners | Premium Printing in Jamaica",
+    "description": "Premium banners, signs, embroidery, and screen printing delivered fast across Jamaica.",
     "home": {
       "title": "Express Banners | Fast. Affordable. Reliable.",
-      "description": "Premium banners, signs, embroidery, and printing delivered fast across Jamaica."
+      "description": "Premium banners, signs, embroidery, and screen printing delivered fast across Jamaica."
     },
     "about": {
       "title": "About Express Banners | Local Print Partner in Jamaica",
-      "description": "Learn about Express Banners, a trusted Jamaican print partner for banners, signs, embroidery, and design."
+      "description": "Meet the Express Banners team helping Jamaican brands stay visible with sharp print production."
     },
     "portfolio": {
       "title": "Portfolio | Express Banners Jamaica",
@@ -46,7 +32,7 @@
     },
     "order": {
       "title": "Order | Express Banners",
-      "description": "Start a custom print order with Express Banners. Choose service, size, quantity, and submit fast."
+      "description": "Start a custom print order with Express Banners. Choose service, size, and quantity in minutes."
     },
     "contact": {
       "title": "Contact | Express Banners",
@@ -56,5 +42,30 @@
       "title": "Terms | Express Banners",
       "description": "Review turnaround, revisions, file responsibility, deposits, and refunds for Express Banners orders."
     }
+  },
+  "images": {
+    "logo": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png",
+    "homeHero": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/home-hero.jpg",
+    "og": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg"
+  },
+  "orderHero": {
+    "videoMp4": "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1/express-banners/order-hero.mp4",
+    "poster": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/order-hero-poster.jpg"
+  },
+  "servicesMedia": {
+    "Signs": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-signs.jpg",
+    "Banners": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-banners.jpg",
+    "Embroidery": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-embroidery.jpg",
+    "Graphic Designing": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-design.jpg",
+    "Screen Printing": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-screen-printing.jpg"
+  },
+  "contact": {
+    "email": "expressbannersja@mail.com",
+    "formMode": "formsubmit",
+    "formEndpoint": "https://formsubmit.co/expressbannersja@mail.com"
+  },
+  "orderLinks": {
+    "artworkUploadUrl": "https://drive.google.com/",
+    "paymentEnabled": false
   }
 }

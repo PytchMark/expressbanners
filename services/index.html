@@ -16,7 +16,7 @@
 
     <meta property="og:title" content="Express Banners Services" />
     <meta property="og:description" content="Banners, signs, embroidery, screen printing, and graphic design." />
-    <meta property="og:image" content="../assets/img/og-image.jpg" data-og-image />
+    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="../css/styles.css" />
@@ -45,16 +45,17 @@
     <div class="nav-scrim" data-nav-scrim></div>
     <header class="site-header" id="top">
       <nav class="nav-pill" aria-label="Primary">
-        <a class="nav-logo" href="../index.html">
-          <img id="siteLogo" src="../assets/img/logo.png" width="120" height="36" alt="Express Banners logo" data-logo />
-          <span class="brand-name" data-business-name>Express Banners</span>
+        <a class="nav-logo" href="../" aria-label="Express Banners home">
+          <span class="logo-wrap">
+            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+          </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Open menu</span>
           <span class="burger"></span>
         </button>
-        <div class="nav-links" id="nav-menu">
-          <a href="../index.html" data-nav-link>Home</a>
+        <div class="nav-links" id="nav-menu" aria-hidden="true">
+          <a href="../" data-nav-link>Home</a>
           <a href="../services/" data-nav-link>Services</a>
           <a href="../portfolio/" data-nav-link>Portfolio</a>
           <a href="../about/" data-nav-link>About</a>
@@ -72,56 +73,89 @@
             <p class="eyebrow">Services</p>
             <h1 id="services-title">Everything you need to show up with confidence.</h1>
             <p>
-              Express Banners delivers full-spectrum print services for Jamaican businesses, events, and teams. Choose a
-              service below and jump straight to an order form built for speed.
+              Express Banners delivers full-spectrum print services for Jamaican businesses, events, and teams. Each
+              service includes planning support, production notes, and clear turnaround guidance.
             </p>
           </div>
-          <div class="services-detail-grid">
-            <article class="card reveal">
-              <h3>Banners</h3>
-              <p class="muted">
-                Durable vinyl and mesh banners designed for visibility at storefronts, launches, and events. We handle
-                hemming, grommets, and sizing for any space.
-              </p>
-              <p class="muted">Use cases: Grand openings, promotions, community events.</p>
-              <a class="btn btn-outline" href="../order/?service=Banners">Order Banners</a>
-            </article>
-            <article class="card reveal">
-              <h3>Signs</h3>
+
+          <div class="service-row reveal">
+            <div class="service-media">
+              <img data-service-image="Signs" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-signs.jpg" alt="Premium signage production" />
+            </div>
+            <div class="service-copy service-meta">
+              <h2>Signs</h2>
               <p class="muted">
                 Indoor and outdoor signage with clear typography and weather-ready materials. Keep your brand readable
                 and consistent across locations.
               </p>
               <p class="muted">Use cases: Storefronts, directional signage, safety notices.</p>
+              <p class="muted">Turnaround: 3-5 business days after approval.</p>
               <a class="btn btn-outline" href="../order/?service=Signs">Order Signs</a>
-            </article>
-            <article class="card reveal">
-              <h3>Embroidery</h3>
+            </div>
+          </div>
+
+          <div class="service-row reveal">
+            <div class="service-media">
+              <img data-service-image="Banners" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-banners.jpg" alt="Vinyl banner production" />
+            </div>
+            <div class="service-copy service-meta">
+              <h2>Banners</h2>
+              <p class="muted">
+                Durable vinyl and mesh banners designed for visibility at storefronts, launches, and events. We handle
+                hemming, grommets, and sizing for any space.
+              </p>
+              <p class="muted">Use cases: Grand openings, promotions, community events.</p>
+              <p class="muted">Turnaround: 2-4 business days after approval.</p>
+              <a class="btn btn-outline" href="../order/?service=Banners">Order Banners</a>
+            </div>
+          </div>
+
+          <div class="service-row reveal">
+            <div class="service-media">
+              <img data-service-image="Embroidery" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-embroidery.jpg" alt="Embroidery production for uniforms" />
+            </div>
+            <div class="service-copy service-meta">
+              <h2>Embroidery</h2>
               <p class="muted">
                 Clean stitched logos for uniforms, merch, and corporate apparel. We match thread tones and keep branding
                 consistent across batches.
               </p>
               <p class="muted">Use cases: Staff uniforms, team kits, corporate gifting.</p>
+              <p class="muted">Turnaround: 4-6 business days after approval.</p>
               <a class="btn btn-outline" href="../order/?service=Embroidery">Order Embroidery</a>
-            </article>
-            <article class="card reveal">
-              <h3>Screen Printing</h3>
-              <p class="muted">
-                Bold screen prints that stay vibrant on tees, tote bags, and promo apparel. Ideal for high-volume runs
-                and consistent brand colors.
-              </p>
-              <p class="muted">Use cases: Event merch, retail launches, school programs.</p>
-              <a class="btn btn-outline" href="../order/?service=Screen%20Printing">Order Screen Prints</a>
-            </article>
-            <article class="card reveal">
-              <h3>Graphic Designing</h3>
+            </div>
+          </div>
+
+          <div class="service-row reveal">
+            <div class="service-media">
+              <img data-service-image="Graphic Designing" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-design.jpg" alt="Graphic design layouts and proofs" />
+            </div>
+            <div class="service-copy service-meta">
+              <h2>Graphic Designing</h2>
               <p class="muted">
                 Layouts, brand updates, and print-ready assets from a local creative team. We ensure files are optimized
                 for sharp output across materials.
               </p>
               <p class="muted">Use cases: New campaign launch, rebrands, event collateral.</p>
+              <p class="muted">Turnaround: 2-3 business days after approval.</p>
               <a class="btn btn-outline" href="../order/?service=Graphic%20Designing">Start Design</a>
-            </article>
+            </div>
+          </div>
+
+          <div class="service-row reveal">
+            <div class="service-media">
+              <img data-service-image="Screen Printing" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-screen-printing.jpg" alt="Screen printing production line" />
+            </div>
+            <div class="service-copy service-meta">
+              <h2>Screen Printing</h2>
+              <p class="muted">
+                Bold screen prints that stay vibrant on tees, tote bags, and promo apparel. Ideal for high-volume runs
+                and consistent brand colors.
+              </p>
+              <p class="muted">Use cases: Event merch, retail launches, school programs.</p>
+              <p class="muted">Turnaround: 5-7 business days after approval.</p>
+              <a class="btn btn-outline" href="../order/?service=Screen%20Printing">Order Screen Prints</a>
+            </div>
           </div>
         </div>
       </section>
