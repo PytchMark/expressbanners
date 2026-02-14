@@ -72,8 +72,10 @@ const elements = {
   contactForm: document.querySelector("[data-contact-form]"),
   contactNext: document.querySelector("[data-contact-next]"),
   serviceImages: document.querySelectorAll("[data-service-image]"),
+  serviceMediaBlocks: document.querySelectorAll("[data-service-media]"),
   orderVideo: document.querySelector("[data-order-video]"),
   workWall: document.querySelector("[data-work-wall]"),
+  galleryWall: document.querySelector("[data-gallery-wall]"),
 };
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -719,6 +721,159 @@ const applySettings = () => {
   }
 };
 
+
+const getCloudinaryTileSrc = (sourceUrl, width = 480) => {
+  if (!sourceUrl || !sourceUrl.includes("/upload/")) return sourceUrl;
+  return sourceUrl.replace("/upload/", `/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_${width}/`);
+};
+
+const splitIntoRows = (items, rowCount) => {
+  const rows = Array.from({ length: rowCount }, () => []);
+  items.forEach((item, index) => {
+    rows[index % rowCount].push(item);
+  });
+  return rows;
+};
+
+const createGalleryTile = (item) => {
+  const tile = document.createElement("article");
+  tile.className = "gallery-wall-tile";
+
+  const img = document.createElement("img");
+  img.alt = item.folder ? `${item.folder} portfolio image` : "Portfolio image";
+  img.loading = "lazy";
+  img.decoding = "async";
+  img.src = getCloudinaryTileSrc(item.secure_url, 480);
+  img.srcset = [
+    `${getCloudinaryTileSrc(item.secure_url, 320)} 320w`,
+    `${getCloudinaryTileSrc(item.secure_url, 480)} 480w`,
+    `${getCloudinaryTileSrc(item.secure_url, 640)} 640w`,
+  ].join(", ");
+  img.sizes = "(max-width: 640px) 42vw, (max-width: 1024px) 24vw, 16vw";
+
+  tile.appendChild(img);
+  return tile;
+};
+
+const bindRowPause = (rowTrack) => {
+  const setPaused = (paused) => rowTrack.classList.toggle("is-paused", paused);
+
+  rowTrack.addEventListener("mouseenter", () => setPaused(true));
+  rowTrack.addEventListener("mouseleave", () => setPaused(false));
+  rowTrack.addEventListener("focusin", () => setPaused(true));
+  rowTrack.addEventListener("focusout", () => setPaused(false));
+  rowTrack.addEventListener("touchstart", () => setPaused(true), { passive: true });
+  rowTrack.addEventListener("touchend", () => setPaused(false));
+
+  let pointerDown = false;
+  let startX = 0;
+  let startScrollLeft = 0;
+
+  rowTrack.addEventListener("pointerdown", (event) => {
+    pointerDown = true;
+    setPaused(true);
+    startX = event.clientX;
+    startScrollLeft = rowTrack.scrollLeft;
+    rowTrack.setPointerCapture(event.pointerId);
+  });
+
+  rowTrack.addEventListener("pointermove", (event) => {
+    if (!pointerDown) return;
+    const delta = event.clientX - startX;
+    rowTrack.scrollLeft = startScrollLeft - delta;
+  });
+
+  const stopPointer = (event) => {
+    if (!pointerDown) return;
+    pointerDown = false;
+    rowTrack.releasePointerCapture(event.pointerId);
+  };
+
+  rowTrack.addEventListener("pointerup", stopPointer);
+  rowTrack.addEventListener("pointercancel", stopPointer);
+};
+
+const renderGalleryWall = (items) => {
+  if (!elements.galleryWall) return;
+  elements.galleryWall.innerHTML = "";
+
+  if (!items?.length) {
+    renderSkeletons(elements.galleryWall, 6);
+    return;
+  }
+
+  const rows = splitIntoRows(items, 3);
+
+  rows.forEach((rowItems, index) => {
+    const row = document.createElement("div");
+    row.className = "gallery-wall-row";
+
+    const track = document.createElement("div");
+    track.className = "gallery-wall-track";
+    track.style.setProperty("--wall-direction", index % 2 === 0 ? "normal" : "reverse");
+    track.style.setProperty("--wall-duration", `${80 + index * 12}s`);
+
+    const repeated = rowItems.concat(rowItems);
+    repeated.forEach((item) => {
+      track.appendChild(createGalleryTile(item));
+    });
+
+    bindRowPause(track);
+    row.appendChild(track);
+    elements.galleryWall.appendChild(row);
+  });
+};
+
+const initGalleryWall = async () => {
+  if (!elements.galleryWall) return;
+  renderSkeletons(elements.galleryWall, 6);
+
+  try {
+    const response = await fetch("/api/gallery");
+    if (!response.ok) throw new Error("gallery request failed");
+    const payload = await response.json();
+    renderGalleryWall(payload.items || []);
+  } catch (error) {
+    elements.galleryWall.innerHTML = "";
+  }
+};
+
+const initServicesMedia = async () => {
+  if (!elements.serviceMediaBlocks?.length) return;
+
+  try {
+    const response = await fetch("/api/services-media");
+    if (!response.ok) throw new Error("services media request failed");
+    const payload = await response.json();
+
+    elements.serviceMediaBlocks.forEach((block) => {
+      const slug = block.dataset.serviceMedia;
+      const media = payload.services?.[slug];
+      if (!media || media.type !== "video" || !media.secure_url) return;
+
+      const fallbackImage = block.querySelector("img");
+      if (fallbackImage) {
+        fallbackImage.classList.add("is-hidden");
+      }
+
+      const video = document.createElement("video");
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = "metadata";
+      video.autoplay = !prefersReducedMotion();
+      video.src = media.secure_url;
+      if (media.poster_url) {
+        video.poster = media.poster_url;
+      }
+
+      block.appendChild(video);
+    });
+  } catch (error) {
+    // Keep static service images when API is unavailable.
+  }
+};
+
 const initWorkWall = () => {
   if (!elements.workWall || !state.portfolio.length) return;
   const items = [...state.portfolio].sort(() => 0.5 - Math.random()).slice(0, 8);
@@ -766,6 +921,8 @@ const initSettings = async () => {
   initLightbox();
   initOrderForm();
   initWorkWall();
+  initGalleryWall();
+  initServicesMedia();
 };
 
 const init = () => {
