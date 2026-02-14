@@ -1,5 +1,4 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const {
   cloudinary,
@@ -10,20 +9,14 @@ const {
   CACHE_TTL_SECONDS,
 } = require("./server/lib/cloudinary");
 
-const GALLERY_ROOT_FOLDER = process.env.GALLERY_ROOT_FOLDER || "expressbanners/gallery";
-const SERVICES_ROOT_FOLDER = process.env.SERVICES_ROOT_FOLDER || "expressbanners/services";
+// Cloudinary folder roots: set these to match your media organization.
+const GALLERY_ROOT_FOLDER = "expressbanners/gallery";
+const SERVICES_ROOT_FOLDER = "expressbanners/services";
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || "8080", 10);
-const staticRoot = fs.existsSync(path.resolve(__dirname, "dist"))
-  ? path.resolve(__dirname, "dist")
-  : path.resolve(__dirname);
 
-app.use(express.static(staticRoot));
-
-app.get("/healthz", (_req, res) => {
-  res.status(200).send("ok");
-});
+app.use(express.static(path.resolve(__dirname)));
 
 const setResponseCacheHeaders = (res) => {
   res.set("Cache-Control", `public, max-age=300, s-maxage=${CACHE_TTL_SECONDS}`);
@@ -156,14 +149,12 @@ app.get("/api/services-media", async (req, res) => {
 
 app.get("*", (req, res) => {
   const requestPath = req.path === "/" ? "/index.html" : req.path;
-  const fullPath = path.resolve(staticRoot, `.${requestPath}`);
+  const fullPath = path.resolve(__dirname, `.${requestPath}`);
   res.sendFile(fullPath, (error) => {
     if (error) {
-      res.status(404).sendFile(path.resolve(staticRoot, "index.html"));
+      res.status(404).sendFile(path.resolve(__dirname, "index.html"));
     }
   });
 });
 
-app.listen(port, () => {
-  console.log(`Listening on ${port}`);
-});
+app.listen(port);

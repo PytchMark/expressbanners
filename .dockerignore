@@ -1,10 +1,6 @@
-node_modules
-npm-debug.log
 .git
 .gitignore
-dist
-build
-.env
-.env.*
-Dockerfile
-cloudbuild.yaml
+node_modules
+npm-debug.log
+.DS_Store
+*.md
