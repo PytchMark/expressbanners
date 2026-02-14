@@ -177,6 +177,10 @@ textarea:focus-visible {
   margin-bottom: 10px;
 }
 
+.text-accent {
+  color: var(--brand2);
+}
+
 .lead {
   font-size: 1.1rem;
   color: var(--muted);
@@ -463,7 +467,11 @@ textarea:focus-visible {
   margin-bottom: 16px;
 }
 
-.hero .lead {
+.hero .text-accent {
+  color: var(--brand2);
+}
+
+.lead {
   font-size: 1.1rem;
   color: var(--muted);
   margin-bottom: 22px;
