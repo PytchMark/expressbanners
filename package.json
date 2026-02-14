@@ -4,6 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
+    "build": "node scripts/build-static.js",
     "start": "node server.js"
   },
   "dependencies": {
