@@ -76,6 +76,7 @@ const elements = {
   orderVideo: document.querySelector("[data-order-video]"),
   workWall: document.querySelector("[data-work-wall]"),
   galleryWall: document.querySelector("[data-gallery-wall]"),
+  aboutGalleryWall: document.querySelector("[data-about-gallery-wall]"),
 };
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -793,12 +794,12 @@ const bindRowPause = (rowTrack) => {
   rowTrack.addEventListener("pointercancel", stopPointer);
 };
 
-const renderGalleryWall = (items) => {
-  if (!elements.galleryWall) return;
-  elements.galleryWall.innerHTML = "";
+const renderGalleryWall = (target, items) => {
+  if (!target) return;
+  target.innerHTML = "";
 
   if (!items?.length) {
-    renderSkeletons(elements.galleryWall, 6);
+    renderSkeletons(target, 6);
     return;
   }
 
@@ -820,7 +821,7 @@ const renderGalleryWall = (items) => {
 
     bindRowPause(track);
     row.appendChild(track);
-    elements.galleryWall.appendChild(row);
+    target.appendChild(row);
   });
 };
 
@@ -832,10 +833,23 @@ const initGalleryWall = async () => {
     const response = await fetch("/api/gallery");
     if (!response.ok) throw new Error("gallery request failed");
     const payload = await response.json();
-    renderGalleryWall(payload.items || []);
+    renderGalleryWall(elements.galleryWall, payload.items || []);
   } catch (error) {
     elements.galleryWall.innerHTML = "";
   }
+};
+
+
+const initAboutGalleryWall = () => {
+  if (!elements.aboutGalleryWall || !state.portfolio?.length) return;
+
+  renderGalleryWall(
+    elements.aboutGalleryWall,
+    state.portfolio.map((item) => ({
+      secure_url: item.src,
+      folder: item.category || "portfolio",
+    }))
+  );
 };
 
 const initServicesMedia = async () => {
@@ -902,6 +916,9 @@ const initSettings = async () => {
   if (elements.workWall) {
     renderSkeletons(elements.workWall, 6);
   }
+  if (elements.aboutGalleryWall) {
+    renderSkeletons(elements.aboutGalleryWall, 6);
+  }
   try {
     const [settingsResponse, portfolioResponse] = await Promise.all([
       fetch(`${basePath}data/settings.json`),
@@ -922,6 +939,7 @@ const initSettings = async () => {
   initOrderForm();
   initWorkWall();
   initGalleryWall();
+  initAboutGalleryWall();
   initServicesMedia();
 };
 
