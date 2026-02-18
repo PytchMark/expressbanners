@@ -5,12 +5,13 @@ const {
   ensureCloudinaryConfig,
   withCache,
   searchAll,
+  listAllByPrefix,
   folderFromPublicId,
   CACHE_TTL_SECONDS,
 } = require("./server/lib/cloudinary");
 
 // Cloudinary folder roots: set these to match your media organization.
-const GALLERY_ROOT_FOLDER = "expressbanners/gallery";
+const GALLERY_ROOT_PREFIX = "expressbanners/";
 const SERVICES_ROOT_FOLDER = "expressbanners/services";
 
 const app = express();
@@ -27,24 +28,30 @@ app.get("/api/gallery", async (req, res) => {
   try {
     ensureCloudinaryConfig();
     const payload = await withCache("gallery", async () => {
-      const images = await searchAll({
-        expression: `resource_type:image AND public_id:${GALLERY_ROOT_FOLDER}/*`,
+      const images = await listAllByPrefix({
         resourceType: "image",
+        type: "upload",
+        prefix: GALLERY_ROOT_PREFIX,
       });
 
-      const items = images.map((asset) => ({
-        public_id: asset.public_id,
-        secure_url: cloudinary.url(asset.public_id, {
-          secure: true,
+      const items = images
+        .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())
+        .map((asset) => ({
+          public_id: asset.public_id,
+          secure_url: asset.secure_url || cloudinary.url(asset.public_id, {
+            secure: true,
+            format: asset.format,
+            fetch_format: "auto",
+            quality: "auto",
+          }),
+          width: asset.width,
+          height: asset.height,
           format: asset.format,
-          fetch_format: "auto",
-          quality: "auto",
-        }),
-        width: asset.width,
-        height: asset.height,
-        format: asset.format,
-        folder: folderFromPublicId(asset.public_id, GALLERY_ROOT_FOLDER),
-      }));
+          created_at: asset.created_at,
+          folder: folderFromPublicId(asset.public_id, "expressbanners"),
+        }));
+
+      console.log(`[gallery] prefix=${GALLERY_ROOT_PREFIX} count=${items.length}`);
 
       return {
         updatedAt: new Date().toISOString(),
@@ -54,6 +61,10 @@ app.get("/api/gallery", async (req, res) => {
 
     res.json(payload);
   } catch (error) {
+    console.error("[gallery] Failed to load Cloudinary media", {
+      prefix: GALLERY_ROOT_PREFIX,
+      message: error?.message,
+    });
     res.status(500).json({
       updatedAt: new Date().toISOString(),
       items: [],
