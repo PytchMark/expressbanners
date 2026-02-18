@@ -1,7 +1,6 @@
 const state = {
   settings: null,
   portfolio: [],
-  gallery: [],
   currentIndex: 0,
   order: {
     service: "",
@@ -108,28 +107,6 @@ const serviceHelpers = {
     files: "AI, EPS, PDF",
     rush: "Limited",
   },
-};
-
-
-const SERVICE_FOLDER_BY_SLUG = {
-  catalogue: "catalogue",
-  embroidery: "Embroidery",
-  "promotional-printing": "Promotional Printing",
-  "signs-and-banners": "SignsandBanners",
-  signs: "SignsandBanners",
-  banners: "SignsandBanners",
-  "graphic-designing": "Promotional Printing",
-  "screen-printing": "catalogue",
-};
-
-const isExplicitImageUrl = (url) => {
-  if (!url) return false;
-  return !url.includes("YOUR_CLOUD_NAME");
-};
-
-const pickRepresentativeImage = (items, folder) => {
-  const inFolder = (items || []).filter((item) => item.folder === folder);
-  return inFolder[0] || null;
 };
 
 const setText = (nodes, value) => {
@@ -848,76 +825,67 @@ const renderGalleryWall = (target, items) => {
   });
 };
 
-const fetchGalleryItems = async () => {
-  if (state.gallery?.length) return state.gallery;
-
-  const response = await fetch("/api/gallery");
-  if (!response.ok) throw new Error("gallery request failed");
-  const payload = await response.json();
-  state.gallery = payload.items || [];
-  return state.gallery;
-};
-
 const initGalleryWall = async () => {
   if (!elements.galleryWall) return;
   renderSkeletons(elements.galleryWall, 6);
 
   try {
-    const items = await fetchGalleryItems();
-    renderGalleryWall(elements.galleryWall, items);
+    const response = await fetch("/api/gallery");
+    if (!response.ok) throw new Error("gallery request failed");
+    const payload = await response.json();
+    renderGalleryWall(elements.galleryWall, payload.items || []);
   } catch (error) {
-    // Keep skeleton fallback when gallery API is unavailable.
+    elements.galleryWall.innerHTML = "";
   }
 };
 
-const initAboutGalleryWall = async () => {
-  if (!elements.aboutGalleryWall) return;
-  renderSkeletons(elements.aboutGalleryWall, 6);
 
-  try {
-    const items = await fetchGalleryItems();
-    renderGalleryWall(elements.aboutGalleryWall, items);
-  } catch (error) {
-    if (!state.portfolio?.length) {
-      elements.aboutGalleryWall.innerHTML = "";
-      return;
-    }
+const initAboutGalleryWall = () => {
+  if (!elements.aboutGalleryWall || !state.portfolio?.length) return;
 
-    renderGalleryWall(
-      elements.aboutGalleryWall,
-      state.portfolio.map((item) => ({
-        secure_url: item.src,
-        folder: item.category || "portfolio",
-      }))
-    );
-  }
+  renderGalleryWall(
+    elements.aboutGalleryWall,
+    state.portfolio.map((item) => ({
+      secure_url: item.src,
+      folder: item.category || "portfolio",
+    }))
+  );
 };
 
 const initServicesMedia = async () => {
   if (!elements.serviceMediaBlocks?.length) return;
 
-  let galleryItems = [];
   try {
-    galleryItems = await fetchGalleryItems();
+    const response = await fetch("/api/services-media");
+    if (!response.ok) throw new Error("services media request failed");
+    const payload = await response.json();
+
+    elements.serviceMediaBlocks.forEach((block) => {
+      const slug = block.dataset.serviceMedia;
+      const media = payload.services?.[slug];
+      if (!media || media.type !== "video" || !media.secure_url) return;
+
+      const fallbackImage = block.querySelector("img");
+      if (fallbackImage) {
+        fallbackImage.classList.add("is-hidden");
+      }
+
+      const video = document.createElement("video");
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = "metadata";
+      video.autoplay = !prefersReducedMotion();
+      video.src = media.secure_url;
+      if (media.poster_url) {
+        video.poster = media.poster_url;
+      }
+
+      block.appendChild(video);
+    });
   } catch (error) {
-    galleryItems = [];
+    // Keep static service images when API is unavailable.
   }
-
-  elements.serviceMediaBlocks.forEach((block) => {
-    const slug = block.dataset.serviceMedia;
-    const folder = SERVICE_FOLDER_BY_SLUG[slug];
-    const image = block.querySelector("img");
-    if (!image) return;
-
-    if (isExplicitImageUrl(image.getAttribute("src"))) {
-      return;
-    }
-
-    const representative = pickRepresentativeImage(galleryItems, folder);
-    if (representative?.secure_url) {
-      image.src = getCloudinaryTileSrc(representative.secure_url, 900);
-    }
-  });
 };
 
 const initWorkWall = () => {
@@ -970,9 +938,9 @@ const initSettings = async () => {
   initLightbox();
   initOrderForm();
   initWorkWall();
-  await initGalleryWall();
-  await initAboutGalleryWall();
-  await initServicesMedia();
+  initGalleryWall();
+  initAboutGalleryWall();
+  initServicesMedia();
 };
 
 const init = () => {

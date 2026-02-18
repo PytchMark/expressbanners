@@ -71,43 +71,10 @@ const searchAll = async ({ expression, resourceType, maxResults = 100 }) => {
   return resources;
 };
 
-const listAllByPrefix = async ({ prefix, resourceType = "image", type = "upload", maxResults = 500 }) => {
-  const resources = [];
-  let nextCursor;
-
-  do {
-    const result = await cloudinary.api.resources({
-      resource_type: resourceType,
-      type,
-      prefix,
-      max_results: maxResults,
-      next_cursor: nextCursor,
-      direction: "desc",
-    });
-
-    resources.push(...(result.resources || []));
-    nextCursor = result.next_cursor;
-  } while (nextCursor);
-
-  return resources;
-};
-
 const folderFromPublicId = (publicId, rootFolder) => {
-  if (!publicId || !rootFolder) return "root";
-
-  const normalizedRoot = rootFolder.endsWith("/") ? rootFolder.slice(0, -1) : rootFolder;
-  const withSlash = `${normalizedRoot}/`;
-  const trimmed = publicId.startsWith(withSlash)
-    ? publicId.slice(withSlash.length)
-    : publicId === normalizedRoot
-      ? ""
-      : publicId;
-
-  if (!trimmed) return "root";
-
-  const segments = trimmed.split("/").filter(Boolean);
-  if (segments.length <= 1) return "root";
-  return segments[0];
+  const trimmed = publicId.replace(`${rootFolder}/`, "");
+  const [folder] = trimmed.split("/");
+  return folder || "root";
 };
 
 module.exports = {
@@ -115,7 +82,6 @@ module.exports = {
   ensureCloudinaryConfig,
   withCache,
   searchAll,
-  listAllByPrefix,
   folderFromPublicId,
   CACHE_TTL_SECONDS,
 };
