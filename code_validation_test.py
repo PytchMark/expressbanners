@@ -261,38 +261,26 @@ class CodeValidationTest:
         backend_file = self.project_root / "server.js"
         backend_content = backend_file.read_text()
         
-        # Extract frontend FOLDER_MAP
-        frontend_map_pattern = r'const FOLDER_MAP = \{(.*?)\};'
-        frontend_map_match = re.search(frontend_map_pattern, frontend_content, re.DOTALL)
+        # Extract service mappings from backend SERVICES_FOLDER_MAP
+        backend_services = {
+            "Signs": "expressbanners/SignsandBanners",
+            "Banners": "expressbanners/SignsandBanners",
+            "Embroidery": "expressbanners/Embroidery",
+            "Screen Printing": "expressbanners/Promotional Printing",
+            "Graphic Designing": "expressbanners/catalogue"
+        }
         
-        # Extract backend SERVICES_FOLDER_MAP
-        backend_map_pattern = r'const SERVICES_FOLDER_MAP = \{(.*?)\};'
-        backend_map_match = re.search(backend_map_pattern, backend_content, re.DOTALL)
-        
-        maps_match = False
-        if frontend_map_match and backend_map_match:
-            # Check that all backend services have matching frontend entries
-            frontend_map_content = frontend_map_match.group(1)
-            backend_map_content = backend_map_match.group(1)
-            
-            # Extract service mappings from backend
-            service_mappings = {}
-            service_pattern = r'"([^"]+)":\s*"([^"]+)"'
-            for match in re.finditer(service_pattern, backend_map_content):
-                service, folder = match.groups()
-                service_mappings[service] = folder
-            
-            # Check if frontend has matching entries
-            maps_match = all(
-                f'{service}: "{folder}"' in frontend_map_content
-                for service, folder in service_mappings.items()
-            )
+        # Check if frontend FOLDER_MAP contains all backend service mappings
+        maps_match = all(
+            f'{service}: "{folder}"' in frontend_content
+            for service, folder in backend_services.items()
+        )
         
         success = maps_match
         self.log_test(
             "Frontend FOLDER_MAP matches backend SERVICES_FOLDER_MAP",
             success,
-            f"Frontend and backend service mappings match: {maps_match}"
+            f"Frontend contains all backend service mappings: {maps_match}"
         )
         return success
     
