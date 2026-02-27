@@ -375,6 +375,7 @@ class ExpressBannersAPITest:
             self.test_media_debug_endpoint,
             self.test_media_folders_endpoint,
             self.test_dynamic_folder_mode_support,
+            self.test_existing_gallery_endpoint,
         ]
         
         passed_count = 0
