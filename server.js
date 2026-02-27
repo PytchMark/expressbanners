@@ -164,7 +164,7 @@ app.get("/media", async (req, res) => {
   try {
     ensureCloudinaryConfig();
     const payload = await withCache(cacheKey, async () => {
-      const resources = await listByPrefix(folder, max);
+      const resources = await listByFolder(folder, max);
 
       const items = resources.map((asset) => ({
         public_id: asset.public_id,
@@ -185,12 +185,12 @@ app.get("/media", async (req, res) => {
 
     res.json(payload);
   } catch (error) {
-    console.error(`/media error for folder="${folder}":`, error.message);
+    console.error(`/media error for folder="${folder}":`, error.message || error);
     res.status(500).json({
       folder,
       count: 0,
       items: [],
-      error: "Unable to load media. Check Cloudinary env vars and folder path.",
+      error: error.message || "Unable to load media.",
     });
   }
 });
