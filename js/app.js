@@ -1271,6 +1271,7 @@ const initSettings = async () => {
       throw new Error(`Settings fetch failed with status ${settingsResponse.status}`);
     }
     state.settings = await settingsResponse.json();
+    // Load fallback portfolio data from static JSON first
     state.portfolio = await loadPortfolioData();
   } catch (error) {
     console.error("Failed to load settings:", error);
@@ -1280,6 +1281,8 @@ const initSettings = async () => {
   applySettings();
   updateWhatsAppLinks();
   updateCatalogueLinks();
+
+  // Render with static fallback data immediately
   renderPortfolio();
   initPortfolioFilters();
   initLightbox();
@@ -1287,6 +1290,10 @@ const initSettings = async () => {
   initWorkWall();
   initAllMotionWalls();
   runPortfolioSanityCheck();
+
+  // Now load real Cloudinary media (non-blocking)
+  loadCloudinaryMedia();
+  loadServiceMedia();
 };
 
 const init = () => {
