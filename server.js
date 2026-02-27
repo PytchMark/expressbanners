@@ -148,6 +148,52 @@ app.get("/api/services-media", async (req, res) => {
   }
 });
 
+app.get("/media", async (req, res) => {
+  const folder = req.query.folder;
+  const max = Math.min(Math.max(Number.parseInt(req.query.max, 10) || 50, 1), 200);
+
+  if (!folder) {
+    return res.status(400).json({ error: "folder query parameter is required" });
+  }
+
+  const cacheKey = `media:${folder}:${max}`;
+  setResponseCacheHeaders(res);
+  res.set("Content-Type", "application/json");
+
+  try {
+    ensureCloudinaryConfig();
+    const payload = await withCache(cacheKey, async () => {
+      const resources = await listByPrefix(folder, max);
+
+      const items = resources.map((asset) => ({
+        public_id: asset.public_id,
+        secure_url: asset.secure_url,
+        width: asset.width,
+        height: asset.height,
+        format: asset.format,
+        created_at: asset.created_at,
+        resource_type: asset.resource_type,
+      }));
+
+      return {
+        folder,
+        count: items.length,
+        items,
+      };
+    });
+
+    res.json(payload);
+  } catch (error) {
+    console.error(`/media error for folder="${folder}":`, error.message);
+    res.status(500).json({
+      folder,
+      count: 0,
+      items: [],
+      error: "Unable to load media. Check Cloudinary env vars and folder path.",
+    });
+  }
+});
+
 app.get("*", (req, res) => {
   const requestPath = req.path === "/" ? "/index.html" : req.path;
   const fullPath = path.resolve(__dirname, `.${requestPath}`);
