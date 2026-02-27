@@ -5,6 +5,7 @@ const {
   ensureCloudinaryConfig,
   withCache,
   searchAll,
+  listByFolder,
   listByPrefix,
   folderFromPublicId,
   CACHE_TTL_SECONDS,
