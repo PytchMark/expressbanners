@@ -42,26 +42,86 @@ const withCache = async (key, buildFn) => {
   return value;
 };
 
-const listByPrefix = async (folder, max = 50) => {
-  const prefix = folder.endsWith("/") ? folder : `${folder}/`;
-  const resources = [];
-  let nextCursor;
+/**
+ * List resources by asset folder (supports Dynamic Folder Mode).
+ * Falls back to prefix-based listing for Fixed Folder Mode accounts.
+ * Recursively includes subfolders.
+ */
+const listByFolder = async (folder, max = 50) => {
+  const allResources = [];
 
-  do {
-    const opts = {
-      type: "upload",
-      prefix,
-      max_results: Math.min(max - resources.length, 500),
-    };
-    if (nextCursor) opts.next_cursor = nextCursor;
+  // Helper: list a single folder with pagination
+  const listSingleFolder = async (folderPath) => {
+    let nextCursor;
+    do {
+      const opts = {
+        max_results: Math.min(max - allResources.length, 500),
+      };
+      if (nextCursor) opts.next_cursor = nextCursor;
 
-    const result = await cloudinary.api.resources(opts);
-    resources.push(...(result.resources || []));
-    nextCursor = result.next_cursor;
-  } while (nextCursor && resources.length < max);
+      const result = await cloudinary.api.resources_by_asset_folder(folderPath, opts);
+      allResources.push(...(result.resources || []));
+      nextCursor = result.next_cursor;
+    } while (nextCursor && allResources.length < max);
+  };
 
-  return resources.slice(0, max);
+  // Helper: get subfolders
+  const getSubfolders = async (folderPath) => {
+    try {
+      const result = await cloudinary.api.sub_folders(folderPath);
+      return (result.folders || []).map((f) => f.path);
+    } catch (e) {
+      // sub_folders may fail if folder has no subfolders
+      return [];
+    }
+  };
+
+  try {
+    // 1. List assets directly in this folder
+    await listSingleFolder(folder);
+
+    // 2. Recurse into subfolders if we haven't hit max
+    if (allResources.length < max) {
+      const subs = await getSubfolders(folder);
+      for (const sub of subs) {
+        if (allResources.length >= max) break;
+        await listSingleFolder(sub);
+
+        // Go one level deeper (for nested sub-subfolders)
+        if (allResources.length < max) {
+          const deepSubs = await getSubfolders(sub);
+          for (const deepSub of deepSubs) {
+            if (allResources.length >= max) break;
+            await listSingleFolder(deepSub);
+          }
+        }
+      }
+    }
+  } catch (firstError) {
+    // Fallback: try prefix-based listing (Fixed Folder Mode)
+    if (firstError.error?.message?.includes("dynamic") || allResources.length === 0) {
+      const prefix = folder.endsWith("/") ? folder : `${folder}/`;
+      let nextCursor;
+      do {
+        const opts = {
+          type: "upload",
+          prefix,
+          max_results: Math.min(max - allResources.length, 500),
+        };
+        if (nextCursor) opts.next_cursor = nextCursor;
+
+        const result = await cloudinary.api.resources(opts);
+        allResources.push(...(result.resources || []));
+        nextCursor = result.next_cursor;
+      } while (nextCursor && allResources.length < max);
+    }
+  }
+
+  return allResources.slice(0, max);
 };
+
+// Keep backward compat alias
+const listByPrefix = listByFolder;
 
 const searchAll = async ({ expression, resourceType, maxResults = 100 }) => {
   const resources = [];
