@@ -63,74 +63,42 @@ app.get("/api/gallery", async (req, res) => {
   }
 });
 
+const SERVICES_FOLDER_MAP = {
+  "Signs": "expressbanners/SignsandBanners",
+  "Banners": "expressbanners/SignsandBanners",
+  "Embroidery": "expressbanners/Embroidery",
+  "Screen Printing": "expressbanners/Promotional Printing",
+  "Graphic Designing": "expressbanners/catalogue",
+};
+
 app.get("/api/services-media", async (req, res) => {
   setResponseCacheHeaders(res);
   try {
     ensureCloudinaryConfig();
     const payload = await withCache("services", async () => {
-      const [videos, posters] = await Promise.all([
-        searchAll({
-          expression: `resource_type:video AND public_id:${SERVICES_ROOT_FOLDER}/*`,
-          resourceType: "video",
-        }),
-        searchAll({
-          expression: `resource_type:image AND public_id:${SERVICES_ROOT_FOLDER}/*`,
-          resourceType: "image",
-        }),
-      ]);
+      const uniqueFolders = [...new Set(Object.values(SERVICES_FOLDER_MAP))];
 
-      const pickPreferred = (assets) => {
-        if (!assets?.length) return null;
-        const featured = assets.filter((asset) => (asset.tags || []).includes("featured"));
-        return (featured[0] || assets[0]) ?? null;
-      };
+      // Fetch each folder in parallel
+      const folderResults = {};
+      await Promise.all(
+        uniqueFolders.map(async (folder) => {
+          const items = await listByFolder(folder, 10);
+          folderResults[folder] = items.filter((a) => a.resource_type === "image");
+        })
+      );
 
-      const bySlug = {};
-      videos.forEach((asset) => {
-        const slug = folderFromPublicId(asset.public_id, SERVICES_ROOT_FOLDER);
-        bySlug[slug] = bySlug[slug] || { videos: [], posters: [] };
-        bySlug[slug].videos.push(asset);
-      });
-
-      posters.forEach((asset) => {
-        const slug = folderFromPublicId(asset.public_id, SERVICES_ROOT_FOLDER);
-        bySlug[slug] = bySlug[slug] || { videos: [], posters: [] };
-        bySlug[slug].posters.push(asset);
-      });
-
-      const services = Object.entries(bySlug).reduce((acc, [slug, media]) => {
-        const pickedVideo = pickPreferred(media.videos);
-        const pickedPoster = pickPreferred(media.posters);
-
-        if (pickedVideo) {
-          acc[slug] = {
-            type: "video",
-            public_id: pickedVideo.public_id,
-            secure_url: pickedVideo.secure_url,
-            poster_url: pickedPoster
-              ? cloudinary.url(pickedPoster.public_id, {
-                  secure: true,
-                  format: pickedPoster.format,
-                  fetch_format: "auto",
-                  quality: "auto",
-                })
-              : undefined,
-          };
-        } else if (pickedPoster) {
-          acc[slug] = {
+      const services = {};
+      Object.entries(SERVICES_FOLDER_MAP).forEach(([service, folder]) => {
+        const items = folderResults[folder] || [];
+        if (items.length) {
+          const pick = items[0];
+          services[service] = {
             type: "image",
-            public_id: pickedPoster.public_id,
-            secure_url: cloudinary.url(pickedPoster.public_id, {
-              secure: true,
-              format: pickedPoster.format,
-              fetch_format: "auto",
-              quality: "auto",
-            }),
+            public_id: pick.public_id,
+            secure_url: pick.secure_url,
           };
         }
-
-        return acc;
-      }, {});
+      });
 
       return {
         updatedAt: new Date().toISOString(),
@@ -140,6 +108,7 @@ app.get("/api/services-media", async (req, res) => {
 
     res.json(payload);
   } catch (error) {
+    console.error("/api/services-media error:", error.message || error);
     res.status(500).json({
       updatedAt: new Date().toISOString(),
       services: {},
