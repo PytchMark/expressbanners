@@ -28,24 +28,23 @@ app.get("/api/gallery", async (req, res) => {
   try {
     ensureCloudinaryConfig();
     const payload = await withCache("gallery", async () => {
-      const images = await searchAll({
-        expression: `resource_type:image AND public_id:${GALLERY_ROOT_FOLDER}/*`,
-        resourceType: "image",
-      });
+      const images = await listByFolder(CATALOGUE_FOLDER, 100);
 
-      const items = images.map((asset) => ({
-        public_id: asset.public_id,
-        secure_url: cloudinary.url(asset.public_id, {
-          secure: true,
+      const items = images
+        .filter((asset) => asset.resource_type === "image")
+        .map((asset) => ({
+          public_id: asset.public_id,
+          secure_url: asset.secure_url || cloudinary.url(asset.public_id, {
+            secure: true,
+            format: asset.format,
+            fetch_format: "auto",
+            quality: "auto",
+          }),
+          width: asset.width,
+          height: asset.height,
           format: asset.format,
-          fetch_format: "auto",
-          quality: "auto",
-        }),
-        width: asset.width,
-        height: asset.height,
-        format: asset.format,
-        folder: folderFromPublicId(asset.public_id, GALLERY_ROOT_FOLDER),
-      }));
+          folder: asset.asset_folder || CATALOGUE_FOLDER,
+        }));
 
       return {
         updatedAt: new Date().toISOString(),
@@ -55,6 +54,7 @@ app.get("/api/gallery", async (req, res) => {
 
     res.json(payload);
   } catch (error) {
+    console.error("/api/gallery error:", error.message || error);
     res.status(500).json({
       updatedAt: new Date().toISOString(),
       items: [],
