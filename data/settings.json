@@ -49,8 +49,8 @@
     "baseUrl": "https://res.cloudinary.com/dopxnugqn/image/upload"
   },
   "images": {
-    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1771041274/IMG-20260209-WA0229_phv4el.jpg",
-    "homeHero": "https://res.cloudinary.com/dopxnugqn/image/upload/v1771041274/IMG-20260209-WA0229_phv4el.jpg",
+    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
+    "homeHero": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
     "og": "https://res.cloudinary.com/dopxnugqn/image/upload/v1771041274/IMG-20260209-WA0229_phv4el.jpg",
     "fallback": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%231d4ed8' width='400' height='300'/%3E%3Ctext fill='%23fff' font-family='sans-serif' font-size='18' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EExpress Banners%3C/text%3E%3C/svg%3E"
   },
