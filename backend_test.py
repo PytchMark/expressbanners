@@ -9,7 +9,7 @@ import json
 from typing import Dict, Any, Tuple
 
 class ExpressBannersAPITest:
-    def __init__(self, base_url: str = "http://localhost:8080"):
+    def __init__(self, base_url: str = "https://expressbanners-834003823077.us-central1.run.app"):
         self.base_url = base_url
         self.test_results = []
         
