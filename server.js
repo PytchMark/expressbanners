@@ -5,6 +5,7 @@ const {
   ensureCloudinaryConfig,
   withCache,
   searchAll,
+  listByPrefix,
   folderFromPublicId,
   CACHE_TTL_SECONDS,
 } = require("./server/lib/cloudinary");
