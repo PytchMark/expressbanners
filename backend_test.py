@@ -211,6 +211,14 @@ class ExpressBannersAPITest:
                         "Response not valid JSON"
                     )
                     return False
+            elif response.status_code == 404:
+                # If endpoint doesn't exist on production, that's a deployment issue
+                self.log_test(
+                    "GET /media/debug returns JSON with connection status",
+                    False,
+                    f"Endpoint not found (404) - may not be deployed to production"
+                )
+                return False
             else:
                 self.log_test(
                     "GET /media/debug returns JSON with connection status",
@@ -256,6 +264,14 @@ class ExpressBannersAPITest:
                         "Response not valid JSON"
                     )
                     return False
+            elif response.status_code == 404:
+                # If endpoint doesn't exist on production, that's a deployment issue  
+                self.log_test(
+                    "GET /media/folders returns JSON with subfolder list",
+                    False,
+                    f"Endpoint not found (404) - may not be deployed to production"
+                )
+                return False
             else:
                 self.log_test(
                     "GET /media/folders returns JSON with subfolder list",
