@@ -1185,7 +1185,9 @@ const loadServiceMedia = async () => {
     })
   );
 
-  // Apply to service image elements
+  // Apply to service image elements  
+  // Track usage per folder to avoid duplicate images across services sharing a folder
+  const folderUsedIndex = {};
   elements.serviceMediaBlocks.forEach((block) => {
     const serviceName = block.dataset.service;
     if (!serviceName) return;
@@ -1197,9 +1199,10 @@ const loadServiceMedia = async () => {
     const img = block.querySelector("img[data-service-image]");
     if (!img) return;
 
-    // Pick a random item so each service gets a different image
-    const shuffled = [...items].sort(() => 0.5 - Math.random());
-    const pick = shuffled[0];
+    // Use sequential index so shared folders get different images
+    const idx = folderUsedIndex[folder] || 0;
+    folderUsedIndex[folder] = idx + 1;
+    const pick = items[idx % items.length];
     if (pick?.secure_url) {
       img.src = getCloudinaryTileSrc(pick.secure_url, 600);
       img.onerror = () => {
