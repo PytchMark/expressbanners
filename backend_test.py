@@ -321,6 +321,9 @@ class ExpressBannersAPITest:
             self.test_media_endpoint_missing_folder,
             self.test_route_ordering,
             self.test_cloudinary_function_exists,
+            self.test_media_debug_endpoint,
+            self.test_media_folders_endpoint,
+            self.test_dynamic_folder_mode_support,
         ]
         
         passed_count = 0
