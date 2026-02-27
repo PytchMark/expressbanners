@@ -3,6 +3,7 @@
   "tagline": "Fast. Affordable. Reliable.",
   "whatsappNumber": "18765551234",
   "whatsappDefaultMessage": "Hi Express Banners! I would like a quote.",
+  "catalogueMessage": "Hi Express Banners! I'd like to see your full catalogue.",
   "social": {
     "instagram": "https://instagram.com/",
     "facebook": "https://facebook.com/",
@@ -43,21 +44,32 @@
       "description": "Review turnaround, revisions, file responsibility, deposits, and refunds for Express Banners orders."
     }
   },
+  "cloudinary": {
+    "cloudName": "dopxnuqn",
+    "baseUrl": "https://res.cloudinary.com/dopxnuqn/image/upload",
+    "folders": {
+      "root": "expressbanners",
+      "catalogue": "expressbanners/catalogue",
+      "embroidery": "expressbanners/Embroidery",
+      "printing": "expressbanners/Promotional Printing",
+      "signs": "expressbanners/SignsandBanners"
+    }
+  },
   "images": {
-    "logo": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
-    "homeHero": "https://res.cloudinary.com/dopxnugqn/image/upload/v1770056489/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
-    "og": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg"
+    "logo": "https://res.cloudinary.com/dopxnuqn/image/upload/v1740652089/expressbanners/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png",
+    "homeHero": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0028_y1hcya.jpg",
+    "og": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0028_y1hcya.jpg",
+    "fallback": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect fill='%231d4ed8' width='400' height='300'/%3E%3Ctext fill='%23fff' font-family='sans-serif' font-size='18' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EExpress Banners%3C/text%3E%3C/svg%3E"
   },
   "orderHero": {
-    "videoMp4": "https://res.cloudinary.com/YOUR_CLOUD_NAME/video/upload/v1/express-banners/order-hero.mp4",
-    "poster": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/order-hero-poster.jpg"
+    "poster": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0028_y1hcya.jpg"
   },
   "servicesMedia": {
-    "Signs": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-signs.jpg",
-    "Banners": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-banners.jpg",
-    "Embroidery": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-embroidery.jpg",
-    "Graphic Designing": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-design.jpg",
-    "Screen Printing": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/services-screen-printing.jpg"
+    "Signs": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto,c_fill,ar_4:3,w_600/expressbanners/SignsandBanners/IMG-20260209-WA0028_y1hcya.jpg",
+    "Banners": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto,c_fill,ar_4:3,w_600/expressbanners/SignsandBanners/IMG-20260209-WA0035_pdwpqq.jpg",
+    "Embroidery": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto,c_fill,ar_4:3,w_600/expressbanners/Embroidery/IMG-20260209-WA0046_llcmr7.jpg",
+    "Graphic Designing": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto,c_fill,ar_4:3,w_600/expressbanners/Promotional%20Printing/IMG-20260209-WA0040_rj6xms.jpg",
+    "Screen Printing": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto,c_fill,ar_4:3,w_600/expressbanners/Promotional%20Printing/IMG-20260209-WA0042_v6c4xf.jpg"
   },
   "contact": {
     "email": "expressbannersja@mail.com",

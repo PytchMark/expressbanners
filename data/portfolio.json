@@ -1,110 +1,110 @@
 [
   {
     "id": 1,
-    "title": "Kingston Storefront Launch Banner",
+    "title": "Premium Storefront Banner",
     "category": "Banners",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/banner-01.jpg",
-    "alt": "Large storefront banner announcing a Kingston launch",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0028_y1hcya.jpg",
+    "alt": "Large storefront banner for Kingston business",
     "featured": true,
-    "blurb": "Lifted opening-week walk-ins by 32%."
+    "blurb": "Bold visibility that drives walk-ins."
   },
   {
     "id": 2,
-    "title": "Mall Wayfinding Sign Suite",
-    "category": "Signs",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/signs-01.jpg",
-    "alt": "Directional sign system inside a retail mall",
+    "title": "Event Roll-Up Display",
+    "category": "Banners",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0035_pdwpqq.jpg",
+    "alt": "Roll-up banner display for events",
     "featured": true,
-    "blurb": "Reduced visitor confusion during peak hours."
+    "blurb": "Portable branding for any venue."
   },
   {
     "id": 3,
-    "title": "Embroidery Uniform Refresh",
+    "title": "Corporate Embroidered Polo",
     "category": "Embroidery",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/embroidery-01.jpg",
-    "alt": "Embroidered polo shirts folded neatly on a table",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Embroidery/IMG-20260209-WA0046_llcmr7.jpg",
+    "alt": "Embroidered corporate polo shirt",
     "featured": true,
-    "blurb": "Boosted team pride and on-site recognition."
+    "blurb": "Clean stitched branding for teams."
   },
   {
     "id": 4,
-    "title": "Tour Promo Roll-Up",
-    "category": "Banners",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/banner-02.jpg",
-    "alt": "Roll-up banner promoting a Jamaica tour company",
+    "title": "Custom Team Jerseys",
+    "category": "Embroidery",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Embroidery/IMG-20260209-WA0047_jkf8sd.jpg",
+    "alt": "Custom embroidered team jerseys",
     "featured": false,
-    "blurb": "Captured bookings at every event stop."
+    "blurb": "Professional uniforms that stand out."
   },
   {
     "id": 5,
-    "title": "Night-Time Lightbox Sign",
-    "category": "Signs",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/signs-02.jpg",
-    "alt": "Illuminated storefront sign at night",
-    "featured": false,
-    "blurb": "Extended brand visibility after dark."
+    "title": "Promotional T-Shirt Run",
+    "category": "Screen Printing",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Promotional%20Printing/IMG-20260209-WA0040_rj6xms.jpg",
+    "alt": "Screen printed promotional t-shirts",
+    "featured": true,
+    "blurb": "Vibrant prints for events and merch."
   },
   {
     "id": 6,
-    "title": "Screen Print Merch Drop",
+    "title": "Branded Apparel Collection",
     "category": "Screen Printing",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/screen-01.jpg",
-    "alt": "Screen printed t-shirts arranged on a rack",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Promotional%20Printing/IMG-20260209-WA0042_v6c4xf.jpg",
+    "alt": "Collection of branded apparel",
     "featured": true,
-    "blurb": "Sold out the first merch run in 48 hours."
+    "blurb": "Consistent brand across all items."
   },
   {
     "id": 7,
-    "title": "Graphic Design Brand Kit",
-    "category": "Graphic Designing",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/design-01.jpg",
-    "alt": "Graphic design branding kit laid out on a desk",
+    "title": "Outdoor Signage Installation",
+    "category": "Signs",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0030_xk7mne.jpg",
+    "alt": "Outdoor business signage",
     "featured": true,
-    "blurb": "Unified campaign visuals across channels."
+    "blurb": "Weather-resistant visibility."
   },
   {
     "id": 8,
-    "title": "Community Event Backdrop",
-    "category": "Banners",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/banner-03.jpg",
-    "alt": "Event step-and-repeat banner on a stage",
+    "title": "Campaign Graphics Package",
+    "category": "Graphic Designing",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Promotional%20Printing/IMG-20260209-WA0043_kl9prt.jpg",
+    "alt": "Marketing campaign graphics",
     "featured": false,
-    "blurb": "Generated shareable photo moments."
+    "blurb": "Cohesive visuals across channels."
   },
   {
     "id": 9,
-    "title": "Cafe Window Graphics",
-    "category": "Signs",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/signs-03.jpg",
-    "alt": "Window graphics on a cafe storefront",
+    "title": "Retail Display Banner",
+    "category": "Banners",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0032_ht5rvd.jpg",
+    "alt": "Retail store display banner",
     "featured": false,
-    "blurb": "Drove daily walk-in traffic uptick."
+    "blurb": "Eye-catching in-store promotion."
   },
   {
     "id": 10,
-    "title": "Embroidery Team Jerseys",
+    "title": "Staff Uniform Set",
     "category": "Embroidery",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/embroidery-02.jpg",
-    "alt": "Embroidered jerseys hanging in a studio",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Embroidery/IMG-20260209-WA0048_mw2xyz.jpg",
+    "alt": "Complete staff uniform set",
     "featured": false,
-    "blurb": "Improved sponsor visibility on camera."
+    "blurb": "Professional team appearance."
   },
   {
     "id": 11,
-    "title": "Screen Printed Event Tees",
+    "title": "Event Merchandise",
     "category": "Screen Printing",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/screen-02.jpg",
-    "alt": "Stack of printed event t-shirts",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/Promotional%20Printing/IMG-20260209-WA0044_np8qwe.jpg",
+    "alt": "Event merchandise collection",
     "featured": false,
-    "blurb": "Created consistent brand presence on-site."
+    "blurb": "Memorable event keepsakes."
   },
   {
     "id": 12,
-    "title": "Festival Promotion Toolkit",
-    "category": "Graphic Designing",
-    "src": "https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/portfolio/design-02.jpg",
-    "alt": "Graphic design layouts for festival marketing",
-    "featured": true,
-    "blurb": "Lifted advance ticket sales by 22%."
+    "title": "Directional Signage",
+    "category": "Signs",
+    "src": "https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0034_wm6ytz.jpg",
+    "alt": "Directional wayfinding signs",
+    "featured": false,
+    "blurb": "Clear guidance for visitors."
   }
 ]
