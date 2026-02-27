@@ -11,7 +11,7 @@ import os
 from typing import Dict, Any, Tuple
 
 class ExpressBannersAPITest:
-    def __init__(self, base_url: str = "http://localhost:8080"):
+    def __init__(self, base_url: str = "http://localhost:8081"):
         self.base_url = base_url
         self.test_results = []
         
