@@ -234,7 +234,7 @@ class CodeValidationTest:
         
         all_routes_before = True
         for route in routes_to_check:
-            route_pattern = f'app.get("{route}"'
+            route_pattern = f'app\\.get\\("{re.escape(route)}"'
             route_match = re.search(route_pattern, content)
             if route_match:
                 route_pos = route_match.start()
