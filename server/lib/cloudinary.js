@@ -100,6 +100,7 @@ module.exports = {
   ensureCloudinaryConfig,
   withCache,
   searchAll,
+  listByPrefix,
   folderFromPublicId,
   CACHE_TTL_SECONDS,
 };
