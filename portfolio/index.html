@@ -16,7 +16,7 @@
 
     <meta property="og:title" content="Express Banners Portfolio" />
     <meta property="og:description" content="Banners, signs, embroidery, screen printing, and design across Jamaica." />
-    <meta property="og:image" content="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/og-image.jpg" data-og-image />
+    <meta property="og:image" content="https://res.cloudinary.com/dopxnuqn/image/upload/f_auto,q_auto/expressbanners/SignsandBanners/IMG-20260209-WA0028_y1hcya.jpg" data-og-image />
     <meta property="og:type" content="website" />
 
     <link rel="stylesheet" href="../css/styles.css" />
@@ -47,7 +47,7 @@
       <nav class="nav-pill" aria-label="Primary">
         <a class="nav-logo" href="../" aria-label="Express Banners home">
           <span class="logo-wrap">
-            <img id="siteLogo" src="https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/v1/express-banners/logo-mark.png" width="120" height="36" alt="Express Banners logo" data-logo />
+            <img id="siteLogo" src="https://res.cloudinary.com/dopxnuqn/image/upload/v1740652089/expressbanners/ChatGPT_Image_Feb_2_2026_01_19_28_PM_j8gwcg.png" width="120" height="36" alt="Express Banners logo" data-logo />
           </span>
         </a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
@@ -71,19 +71,11 @@
         <div class="container">
           <div class="section-head reveal">
             <p class="eyebrow">Portfolio</p>
-            <h1 id="portfolio-title">Proof that <span class="text-accent">sharp</span> print sells in Jamaica.</h1>
+            <h1 id="portfolio-title">Proof that <span class="em">sharp</span> print sells in Jamaica.</h1>
             <p class="lead">
-              Express Banners supports Jamaican brands with premium banners, signs, embroidery, screen printing, and
+              Express Banners supports Jamaican brands with <span class="em">premium</span> banners, signs, embroidery, screen printing, and
               graphic design that converts attention into action. From Kingston storefront launches to island-wide event
               tours, we craft signage that stays crisp, apparel that feels premium, and campaigns that stay cohesive.
-              Our team aligns sizes, materials, and finishes so every banner is readable, every sign guides customers
-              clearly, and every uniform feels polished. We work with retailers, hospitality teams, schools, and
-              corporate brands that need visibility fast, without sacrificing durability. Each job includes proofing,
-              file checks, and turnaround guidance so you can plan marketing moments with confidence. We can also
-              coordinate installs, pickups, and deliveries across the island. Browse the featured work below, filter by
-              service, and imagine your campaign with the same bold visibility. Whether you need a single banner or a
-              full multi-location rollout, we deliver design-ready, high-impact print that keeps your brand consistent
-              across Jamaica.
             </p>
           </div>
 
@@ -91,38 +83,29 @@
             <h3>Ready to launch your next visual campaign?</h3>
             <p class="muted">Start with a quick brief and we'll guide the rest.</p>
             <div class="hero-actions" style="justify-content: center;">
-              <a class="btn btn-primary" href="../order/">Start Your Design</a>
-              <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Quote</a>
+              <a class="btn btn-primary" href="../order/" data-testid="portfolio-start-order">Start Your Design</a>
+              <a class="btn btn-outline" data-whatsapp href="#" data-testid="portfolio-whatsapp">WhatsApp Quote</a>
             </div>
           </div>
 
           <div class="section-head reveal">
             <p class="eyebrow">Featured</p>
-            <h2>High-impact projects clients <span class="text-accent">love</span>.</h2>
-            <p>These launches show how confident print can shift attention fast.</p>
+            <h2>High-impact projects clients love.</h2>
+            <p>These launches show how confident print can shift attention <span class="em">fast</span>.</p>
           </div>
-          <div class="portfolio-grid" data-portfolio-featured></div>
+          <div class="portfolio-grid" data-portfolio-featured data-testid="portfolio-featured-grid"></div>
         </div>
       </section>
 
       <section class="section theme-light" aria-labelledby="gallery-title">
         <div class="container">
-          <div class="cta-band reveal" style="margin-bottom: 32px;">
-            <h3>Need help choosing the right service?</h3>
-            <p class="muted">Chat with our team and we'll match materials to your goals.</p>
-            <div class="hero-actions" style="justify-content: center;">
-              <a class="btn btn-primary" href="../order/">Start a Project</a>
-              <a class="btn btn-outline" href="../services/">Review Services</a>
-            </div>
-          </div>
-
           <div class="section-head reveal">
-            <p class="eyebrow">Gallery</p>
-            <h2 id="gallery-title">Filter by service to find your <span class="text-accent">fit</span>.</h2>
-            <p>Browse the full range of banners, signage, embroidery, and print work.</p>
+            <p class="eyebrow">Gallery Wall</p>
+            <h2 id="gallery-title">Browse our <span class="em">quality</span> work.</h2>
+            <p>Scroll through the 3-way motion gallery. Tap any image for details.</p>
           </div>
 
-          <div class="gallery-wall" data-gallery-wall aria-live="polite"></div>
+          <div class="motion-wall" data-gallery-wall data-testid="portfolio-motion-wall" aria-live="polite"></div>
 
           <div class="cta-band reveal" style="margin-top: 32px;">
             <h3>Turn your idea into a finished print.</h3>
@@ -130,6 +113,21 @@
             <div class="hero-actions" style="justify-content: center;">
               <a class="btn btn-primary" href="../order/">Start an Order</a>
               <a class="btn btn-outline" data-whatsapp href="#">WhatsApp Us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section theme-light">
+        <div class="container">
+          <div class="cta-band catalogue-cta reveal">
+            <h3>Want to see our full catalogue?</h3>
+            <p class="muted">Message us on WhatsApp and we'll send you our complete PDF catalogues in minutes.</p>
+            <div class="hero-actions" style="justify-content: center;">
+              <a class="btn btn-catalogue" data-catalogue href="#" data-testid="portfolio-catalogue-whatsapp">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Get Catalogue on WhatsApp
+              </a>
             </div>
           </div>
         </div>
