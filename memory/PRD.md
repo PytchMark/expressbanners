@@ -1,70 +1,67 @@
-# Express Banners Website - PRD
+# Express Banners - Product Requirements Document
 
 ## Original Problem Statement
-Finalize the Express Banners static website (GitHub Pages) to be brand-ready, scroll-stopping, mobile-first, and fully functional with Cloudinary media.
+Fix a regression on Express Banners GitHub Pages static site where ONE Cloudinary image was loading everywhere (gallery wall, tiles, portfolio). The goal was to restore correct image sourcing for all components.
+
+## Architecture
+- **Frontend**: Static HTML/CSS/JS site served via Express.js
+- **Backend**: Node.js/Express static file server with Cloudinary API integration
+- **Data**: JSON files (portfolio.json, settings.json) for content management
+- **Deployment**: Google Cloud Run
 
 ## User Personas
-- **Small Business Owners** - Need quick turnaround on banners/signs for storefronts
-- **Event Planners** - Need event displays, promotional materials
-- **Corporate Teams** - Need branded apparel, uniforms with embroidery
-- **Marketing Teams** - Need design services and campaign materials
+- **Business Owners**: Jamaican brands needing print services
+- **Marketing Teams**: Companies requiring banners, signs, apparel
+- **Event Planners**: Clients needing roll-up banners and event materials
 
 ## Core Requirements (Static)
-1. **3-Way Motion Gallery Wall** - Reusable component with parallax motion
-2. **Cloudinary Integration** - All images served from Cloudinary CDN
-3. **Premium UI/UX** - Glass-morphism nav, skeleton loaders, smooth animations
-4. **Mobile-First** - Responsive design with touch-friendly interactions
-5. **Accessibility** - Keyboard navigation, focus indicators, reduced motion support
-6. **WhatsApp Integration** - Direct order flow and catalogue request
+1. Logo uses settings.images.logo (only applied to #siteLogo)
+2. Home hero uses settings.images.homeHero (only applied to #homeHeroImg)
+3. Portfolio gallery + motion walls use /data/portfolio.json src per item
+4. Services page uses settings.servicesMedia per service (unique images)
+5. Motion wall must show varied images across 3 lanes
+6. Lightbox functionality for portfolio viewing
 
-## What's Been Implemented (Jan 2026)
+## What's Been Implemented
 
-### Completed Features
-- [x] **Restored 3-way motion wall component** (`renderMotionWall`) on:
-  - Homepage (`data-home-motion-wall`)
-  - About page (`data-about-gallery-wall`)
-  - Order page (`data-order-motion-wall`)
-  - Portfolio page (`data-gallery-wall`)
-- [x] **Fixed Cloudinary URLs** - Cloud name: `dopxnugqn`
-  - Logo loads correctly
-  - Hero images load
-  - Portfolio images load
-  - Service images load
-- [x] **Fixed selective emphasis** - `.em` class for blue accent on key words only
-  - "fast", "quality", "premium", "trust", "reliable"
-  - Removed pattern of coloring last word of every phrase
-- [x] **Added contrast fixes** - Theme tokens for light/dark sections
-- [x] **Added skeleton loaders** - While JSON data loads
-- [x] **Added catalogue WhatsApp CTA** - Green button linking to WhatsApp
-- [x] **Premium navigation** - Glass-morphism, sticky, separators
-- [x] **Services images** - Each service shows image with alternating layout
-- [x] **Accessibility** - Reduced motion support, keyboard navigation, focus indicators
-- [x] **QA checklist** added to README
+### January 2026 - Image Regression Fix
+**Root Cause Identified**: `portfolio.json` had identical Cloudinary URLs for all 12 portfolio items
 
-### Technical Details
-- **Cloudinary Cloud Name**: `dopxnugqn`
-- **Working URL Pattern**: `https://res.cloudinary.com/dopxnugqn/image/upload/v1771041274/[filename]`
-- **Motion Wall Animation**: 3 rows with alternating directions, varying speeds (55-75s)
+**Fix Applied**:
+- Updated `/app/data/portfolio.json` with 12 unique Unsplash image URLs matching each portfolio category (Banners, Embroidery, Screen Printing, Signs, Graphic Designing)
+- Updated `/app/data/settings.json` servicesMedia with unique images per service type
 
-## Backlog / Future Work
+**Verification**:
+- Motion wall displays varied images across 3 animated rows
+- Featured Portfolio section shows unique thumbnails
+- Portfolio page grid renders 12 distinct items
+- Hero image and logo remain correctly sourced from settings
+- Console sanity check warning no longer appears
 
-### P0 (Critical)
-- [ ] Add more variety of actual portfolio images from Cloudinary
-- [ ] Configure actual WhatsApp number (currently placeholder)
+### Files Modified
+- `/app/data/portfolio.json` - 12 unique item src URLs
+- `/app/data/settings.json` - 5 unique servicesMedia URLs
 
-### P1 (Important)
-- [ ] NCB payment integration (currently disabled placeholder)
-- [ ] Add actual logo image to Cloudinary
-- [ ] Contact form validation
+## Prioritized Backlog
 
-### P2 (Nice to Have)
-- [ ] Add video backgrounds for order hero
-- [ ] Image lazy loading optimization
-- [ ] Service-specific portfolio filtering
-- [ ] Client testimonials section
+### P0 (Critical) - Completed
+- [x] Fix image duplication regression
+
+### P1 (High Priority)
+- [ ] Replace Unsplash placeholder images with actual client portfolio images
+- [ ] Upload real portfolio images to Cloudinary
+
+### P2 (Medium Priority)
+- [ ] Implement Cloudinary API gallery sync (currently static JSON)
+- [ ] Add image optimization with Cloudinary transformations
+
+### P3 (Future)
+- [ ] CMS integration for content management
+- [ ] Analytics tracking for portfolio views
+- [ ] A/B testing for conversion optimization
 
 ## Next Tasks
-1. Upload actual portfolio images to Cloudinary and update portfolio.json
-2. Configure real WhatsApp business number
-3. Design and upload official logo
-4. Test contact form submission (FormSubmit)
+1. Obtain real portfolio images from client
+2. Upload images to Cloudinary folder structure
+3. Update portfolio.json with actual Cloudinary URLs
+4. Test production deployment on Google Cloud Run
