@@ -144,6 +144,25 @@ Set these on your Cloud Run service:
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret |
 | `PORT` | (Optional) Defaults to `8080` |
 
+#### Important: Dynamic Folder Mode
+
+This site uses Cloudinary's **Dynamic Folder Mode**. The backend uses `resources_by_asset_folder()` API (not `prefix`-based listing) to correctly list images in your Cloudinary folders. This is the key reason images load properly.
+
+#### Diagnostic Endpoints
+
+After deploying, use these to verify your setup:
+
+```bash
+# Check Cloudinary connection and env vars
+curl https://your-app-url/media/debug
+
+# List subfolders under expressbanners
+curl https://your-app-url/media/folders?folder=expressbanners
+
+# Fetch catalogue images
+curl "https://your-app-url/media?folder=expressbanners/catalogue&max=5"
+```
+
 #### `/media` Endpoint
 
 The backend exposes a JSON API for fetching Cloudinary media:
