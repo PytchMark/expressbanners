@@ -98,7 +98,7 @@ class CodeValidationTest:
         content = server_file.read_text()
         
         # Find the /media route handler
-        media_route_pattern = r'app\.get\("/media".*?^\});'
+        media_route_pattern = r'app\.get\("/media".*?\}\);'
         media_route_match = re.search(media_route_pattern, content, re.MULTILINE | re.DOTALL)
         
         has_json_content_type = False
