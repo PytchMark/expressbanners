@@ -12,8 +12,7 @@ const {
 } = require("./server/lib/cloudinary");
 
 // Cloudinary folder roots: set these to match your media organization.
-const GALLERY_ROOT_FOLDER = "expressbanners/gallery";
-const SERVICES_ROOT_FOLDER = "expressbanners/services";
+const CATALOGUE_FOLDER = "expressbanners/catalogue";
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || "8080", 10);
