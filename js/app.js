@@ -22,6 +22,80 @@ const state = {
 const NEUTRAL_IMAGE_PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='480' viewBox='0 0 640 480'%3E%3Crect fill='%23d1d5db' width='640' height='480'/%3E%3Ctext fill='%234b5563' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EImage unavailable%3C/text%3E%3C/svg%3E";
 
+/**
+ * Cloudinary folder mapping
+ */
+const FOLDER_MAP = {
+  portfolio: "expressbanners/catalogue",
+  Signs: "expressbanners/SignsandBanners",
+  Banners: "expressbanners/SignsandBanners",
+  Embroidery: "expressbanners/Embroidery",
+  "Screen Printing": "expressbanners/Promotional Printing",
+  "Graphic Designing": "expressbanners/catalogue",
+};
+
+const MEDIA_CACHE_TTL = 12 * 60 * 60 * 1000; // 12 hours
+
+/**
+ * MediaLoader: fetch from /media endpoint with localStorage cache
+ */
+const fetchMedia = async (folder, max = 50) => {
+  const cacheKey = `media_cache:${folder}:${max}`;
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed.expiresAt > Date.now() && parsed.data?.items?.length) {
+        return parsed.data;
+      }
+      localStorage.removeItem(cacheKey);
+    }
+  } catch (e) {
+    // ignore corrupt cache
+  }
+
+  try {
+    const resp = await fetch(`/media?folder=${encodeURIComponent(folder)}&max=${max}`);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const contentType = resp.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("Response is not JSON (likely HTML fallback)");
+    }
+    const data = await resp.json();
+    if (data.items?.length) {
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({
+          data,
+          expiresAt: Date.now() + MEDIA_CACHE_TTL,
+        }));
+      } catch (e) {
+        // localStorage full, ignore
+      }
+    }
+    return data;
+  } catch (error) {
+    console.warn(`fetchMedia(${folder}) failed:`, error.message);
+    return { folder, count: 0, items: [] };
+  }
+};
+
+/**
+ * Convert Cloudinary items to portfolio-compatible objects
+ */
+const mediaItemsToPortfolio = (items, category = "Portfolio") => {
+  return items.map((item, idx) => ({
+    id: `cloud-${item.public_id.replace(/[^a-zA-Z0-9]/g, "-")}-${idx}`,
+    title: (item.public_id.split("/").pop() || "Image").replace(/[-_]/g, " "),
+    category,
+    src: item.secure_url,
+    alt: `${category} work by Express Banners`,
+    featured: idx < 6,
+    blurb: category,
+    width: item.width,
+    height: item.height,
+  }));
+};
+
 const elements = {
   businessName: document.querySelectorAll("[data-business-name]"),
   tagline: document.querySelectorAll("[data-tagline]"),
