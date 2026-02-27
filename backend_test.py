@@ -326,6 +326,41 @@ class ExpressBannersAPITest:
                 f"Request failed: {str(e)}"
             )
             return False
+
+    def test_existing_gallery_endpoint(self) -> bool:
+        """Test that existing /api/gallery endpoint works with Cloudinary"""
+        try:
+            response = requests.get(f"{self.base_url}/api/gallery")
+            
+            content_type = response.headers.get('content-type', '')
+            is_json = 'application/json' in content_type
+            
+            if response.status_code == 200 and is_json:
+                data = response.json()
+                has_items = 'items' in data
+                has_updated_at = 'updatedAt' in data
+                
+                self.log_test(
+                    "Existing /api/gallery endpoint works with Cloudinary",
+                    has_items and has_updated_at,
+                    f"Status: {response.status_code}, Items: {len(data.get('items', []))}, Updated: {data.get('updatedAt', '')[:19]}"
+                )
+                return has_items and has_updated_at
+            else:
+                self.log_test(
+                    "Existing /api/gallery endpoint works with Cloudinary",
+                    False,
+                    f"Expected 200 JSON, got {response.status_code} {content_type}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test(
+                "Existing /api/gallery endpoint works with Cloudinary",
+                False,
+                f"Request failed: {str(e)}"
+            )
+            return False
     
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all backend tests and return summary"""
