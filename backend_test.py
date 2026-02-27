@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
 Backend API Test Suite for Express Banners
-Tests the /media endpoint functionality and route ordering.
+CODE VALIDATION TESTING - verifies code structure and local server functionality.
 """
 
 import requests
 import json
+import re
+import os
 from typing import Dict, Any, Tuple
 
 class ExpressBannersAPITest:
-    def __init__(self, base_url: str = "https://expressbanners-834003823077.us-central1.run.app"):
+    def __init__(self, base_url: str = "http://localhost:8080"):
         self.base_url = base_url
         self.test_results = []
         
