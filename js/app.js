@@ -19,11 +19,15 @@ const state = {
   },
 };
 
+const NEUTRAL_IMAGE_PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='480' viewBox='0 0 640 480'%3E%3Crect fill='%23d1d5db' width='640' height='480'/%3E%3Ctext fill='%234b5563' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EImage unavailable%3C/text%3E%3C/svg%3E";
+
 const elements = {
   businessName: document.querySelectorAll("[data-business-name]"),
   tagline: document.querySelectorAll("[data-tagline]"),
   heroTitle: document.querySelector("[data-hero-title]"),
-  heroImage: document.querySelector("[data-hero-image]"),
+  homeHeroImage: document.querySelector("#homeHeroImg"),
+  heroMedia: document.querySelector("#heroMedia"),
   whatsappLinks: document.querySelectorAll("[data-whatsapp]"),
   catalogueLinks: document.querySelectorAll("[data-catalogue]"),
   uploadLink: document.querySelector("[data-upload-link]"),
@@ -34,7 +38,7 @@ const elements = {
   instagram: document.querySelector("[data-instagram]"),
   facebook: document.querySelector("[data-facebook]"),
   tiktok: document.querySelector("[data-tiktok]"),
-  logo: document.querySelector("#siteLogo") || document.querySelector("[data-logo]"),
+  logo: document.querySelector("#siteLogo"),
   ogImage: document.querySelector("[data-og-image]"),
   navToggle: document.querySelector(".nav-toggle"),
   navMenu: document.querySelector(".nav-links"),
@@ -125,6 +129,14 @@ const setText = (nodes, value) => {
 };
 
 const clampNumber = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const getBasePath = () => {
+  const path = window.location.pathname;
+  const nestedSections = ["/about/", "/services/", "/portfolio/", "/order/", "/contact/", "/terms/"];
+  return nestedSections.some((section) => path.includes(section)) ? "../" : "./";
+};
+
+const getPortfolioItemSrc = (item) => item?.src || NEUTRAL_IMAGE_PLACEHOLDER;
 
 const setActivePill = (pills, value) => {
   pills.forEach((pill) => {
@@ -394,12 +406,12 @@ const renderPortfolioItem = (item, index, isFeatured = false) => {
   const article = document.createElement("article");
   article.className = "card portfolio-card reveal";
   article.setAttribute("data-testid", `portfolio-item-${item.id}`);
-  
-  const fallbackSrc = state.settings?.images?.fallback || "";
-  
+
+  const tileSrc = getPortfolioItemSrc(item);
+
   article.innerHTML = `
     <button type="button" class="portfolio-thumb" data-portfolio-index="${index}" aria-label="Open ${item.title}" data-testid="portfolio-thumb-${item.id}">
-      <img src="${item.src}" alt="${item.alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackSrc}'" />
+      <img src="${tileSrc}" alt="${item.alt}" loading="lazy" onerror="this.onerror=null;this.src='${NEUTRAL_IMAGE_PLACEHOLDER}'" />
     </button>
     <div class="meta">
       <strong>${item.title}</strong>
@@ -413,27 +425,42 @@ const renderPortfolioItem = (item, index, isFeatured = false) => {
   return article;
 };
 
+const renderPortfolioGrid = (container, items) => {
+  if (!container) return;
+  container.innerHTML = "";
+  items.forEach((item) => {
+    const index = state.portfolio.findIndex((entry) => entry.id === item.id);
+    container.appendChild(renderPortfolioItem(item, index));
+  });
+};
+
+const runPortfolioSanityCheck = () => {
+  const renderedImages = Array.from(
+    document.querySelectorAll("[data-portfolio-grid] img, [data-portfolio-featured] img, [data-motion-wall] img, [data-gallery-wall] img, [data-home-motion-wall] img, [data-about-gallery-wall] img, [data-order-motion-wall] img")
+  )
+    .map((img) => img.getAttribute("src"))
+    .filter(Boolean);
+  const uniqueCount = new Set(renderedImages).size;
+  if (renderedImages.length && uniqueCount < 3) {
+    console.warn("Portfolio rendering may be using a single image; check portfolio.json/src mapping.");
+  }
+};
+
 const renderPortfolio = () => {
   if (!elements.portfolioGrid && !elements.portfolioFeatured) return;
-  const featuredWrap = elements.portfolioFeatured && elements.portfolioFeatured !== elements.portfolioGrid
-    ? elements.portfolioFeatured
-    : elements.portfolioFeatured;
   const featuredItems = state.portfolio.filter((item) => item.featured);
   const allItems = state.portfolio;
 
-  if (featuredWrap) {
-    featuredWrap.innerHTML = "";
+  if (elements.portfolioFeatured) {
+    elements.portfolioFeatured.innerHTML = "";
     featuredItems.forEach((item) => {
       const itemIndex = allItems.findIndex((entry) => entry.id === item.id);
-      featuredWrap.appendChild(renderPortfolioItem(item, itemIndex, true));
+      elements.portfolioFeatured.appendChild(renderPortfolioItem(item, itemIndex, true));
     });
   }
 
   if (elements.portfolioGrid) {
-    elements.portfolioGrid.innerHTML = "";
-    allItems.forEach((item, index) => {
-      elements.portfolioGrid.appendChild(renderPortfolioItem(item, index));
-    });
+    renderPortfolioGrid(elements.portfolioGrid, allItems);
   }
 
   bindPortfolioClicks();
@@ -441,14 +468,8 @@ const renderPortfolio = () => {
 
 const filterPortfolio = (category) => {
   if (!elements.portfolioGrid) return;
-  const items = category === "All"
-    ? state.portfolio
-    : state.portfolio.filter((item) => item.category === category);
-  elements.portfolioGrid.innerHTML = "";
-  items.forEach((item) => {
-    const index = state.portfolio.findIndex((entry) => entry.id === item.id);
-    elements.portfolioGrid.appendChild(renderPortfolioItem(item, index));
-  });
+  const items = category === "All" ? state.portfolio : state.portfolio.filter((item) => item.category === category);
+  renderPortfolioGrid(elements.portfolioGrid, items);
   bindPortfolioClicks();
 };
 
@@ -469,7 +490,7 @@ const openLightbox = (index) => {
   state.currentIndex = index;
   const item = state.portfolio[index];
   if (!item) return;
-  elements.lightboxImage.src = item.src;
+  elements.lightboxImage.src = getPortfolioItemSrc(item);
   elements.lightboxImage.alt = item.alt;
   elements.lightboxCaption.textContent = `${item.title} — ${item.blurb || item.category}`;
   elements.lightbox.classList.add("is-open");
@@ -488,7 +509,7 @@ const showLightboxItem = (direction) => {
   const total = state.portfolio.length;
   state.currentIndex = (state.currentIndex + direction + total) % total;
   const item = state.portfolio[state.currentIndex];
-  elements.lightboxImage.src = item.src;
+  elements.lightboxImage.src = getPortfolioItemSrc(item);
   elements.lightboxImage.alt = item.alt;
   elements.lightboxCaption.textContent = `${item.title} — ${item.blurb || item.category}`;
 };
@@ -668,6 +689,42 @@ const initActiveNav = () => {
   });
 };
 
+const applyBrandMedia = (settings) => {
+  if (!settings) return;
+  if (elements.logo && settings.images?.logo) {
+    elements.logo.src = settings.images.logo;
+    elements.logo.onerror = () => {
+      elements.logo.style.display = "none";
+    };
+  }
+
+  if (elements.homeHeroImage && settings.images?.homeHero) {
+    elements.homeHeroImage.src = settings.images.homeHero;
+    elements.homeHeroImage.onerror = () => {
+      elements.homeHeroImage.src = NEUTRAL_IMAGE_PLACEHOLDER;
+    };
+  } else if (elements.heroMedia && settings.images?.homeHero) {
+    elements.heroMedia.style.backgroundImage = `url("${settings.images.homeHero}")`;
+  }
+};
+
+const applyServicesMedia = (settings) => {
+  if (!settings?.servicesMedia) return;
+  elements.serviceMediaBlocks.forEach((block) => {
+    const serviceName = block.dataset.service;
+    if (!serviceName) return;
+    const serviceImageUrl = settings.servicesMedia[serviceName];
+    if (!serviceImageUrl) return;
+    const img = block.querySelector("img[data-service-image]");
+    if (!img) return;
+    img.src = serviceImageUrl;
+    img.onerror = () => {
+      img.onerror = null;
+      img.src = NEUTRAL_IMAGE_PLACEHOLDER;
+    };
+  });
+};
+
 const applySettings = () => {
   if (!state.settings) return;
   if (elements.businessName.length) {
@@ -679,20 +736,7 @@ const applySettings = () => {
   if (elements.heroTitle && state.settings.heroTitle) {
     elements.heroTitle.textContent = state.settings.heroTitle;
   }
-  if (elements.logo && state.settings.images?.logo) {
-    elements.logo.src = state.settings.images.logo;
-    elements.logo.onerror = () => {
-      elements.logo.style.display = "none";
-    };
-  }
-  if (elements.heroImage && state.settings.images?.homeHero) {
-    elements.heroImage.src = state.settings.images.homeHero;
-    elements.heroImage.onerror = () => {
-      if (state.settings.images?.fallback) {
-        elements.heroImage.src = state.settings.images.fallback;
-      }
-    };
-  }
+  applyBrandMedia(state.settings);
   if (elements.ogImage && state.settings.images?.og) {
     elements.ogImage.setAttribute("content", state.settings.images.og);
   }
@@ -736,17 +780,7 @@ const applySettings = () => {
     elements.contactNext.value = "./?sent=1";
   }
 
-  elements.serviceImages?.forEach((img) => {
-    const key = img.dataset.serviceImage;
-    if (key && state.settings.servicesMedia?.[key]) {
-      img.src = state.settings.servicesMedia[key];
-      img.onerror = () => {
-        if (state.settings.images?.fallback) {
-          img.src = state.settings.images.fallback;
-        }
-      };
-    }
-  });
+  applyServicesMedia(state.settings);
 
   if (elements.orderVideo && state.settings.orderHero?.poster) {
     elements.orderVideo.setAttribute("poster", state.settings.orderHero.poster);
@@ -789,10 +823,21 @@ const getCloudinaryTileSrc = (sourceUrl, width = 480) => {
 /**
  * Split items into rows for motion wall
  */
+const shuffleItems = (items) => {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
+
 const splitIntoRows = (items, rowCount) => {
-  const rows = Array.from({ length: rowCount }, () => []);
-  items.forEach((item, index) => {
-    rows[index % rowCount].push(item);
+  const shuffled = shuffleItems(items);
+  const rows = Array.from({ length: rowCount }, (_, rowIndex) => []);
+  rows.forEach((_, rowIndex) => {
+    const rotated = shuffled.slice(rowIndex).concat(shuffled.slice(0, rowIndex));
+    rows[rowIndex] = rotated.filter((__, index) => index % rowCount === 0);
   });
   return rows;
 };
@@ -813,12 +858,11 @@ const createMotionTile = (item, onClickIndex) => {
   img.alt = item.alt || item.title || "Portfolio image";
   img.loading = "lazy";
   img.decoding = "async";
-  img.src = getCloudinaryTileSrc(item.src || item.secure_url, 480);
-  
-  const fallbackSrc = state.settings?.images?.fallback || "";
+  img.src = getCloudinaryTileSrc(getPortfolioItemSrc(item), 480);
+
   img.onerror = () => {
     img.onerror = null;
-    img.src = fallbackSrc;
+    img.src = NEUTRAL_IMAGE_PLACEHOLDER;
   };
 
   tile.appendChild(img);
@@ -930,7 +974,8 @@ const renderMotionWall = (containerEl, items, options = {}) => {
     track.style.setProperty("--motion-duration", `${duration}s`);
 
     // Duplicate items for seamless loop
-    const duplicatedItems = [...rowItems, ...rowItems];
+    const laneItems = rowItems.length ? rowItems : items;
+    const duplicatedItems = [...laneItems, ...laneItems];
     
     duplicatedItems.forEach((item) => {
       const portfolioIndex = state.portfolio.findIndex((p) => p.id === item.id);
@@ -1014,8 +1059,7 @@ const initWorkWall = () => {
     card.setAttribute("data-portfolio-index", String(index));
     card.setAttribute("aria-label", `Open ${item.title}`);
     
-    const fallbackSrc = state.settings?.images?.fallback || "";
-    card.innerHTML = `<img src="${item.src}" alt="${item.alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackSrc}'" />`;
+    card.innerHTML = `<img src="${getPortfolioItemSrc(item)}" alt="${item.alt}" loading="lazy" onerror="this.onerror=null;this.src='${NEUTRAL_IMAGE_PLACEHOLDER}'" />`;
     elements.workWall.appendChild(card);
   });
   bindPortfolioClicks();
@@ -1031,9 +1075,19 @@ const initAllMotionWalls = () => {
   initOrderMotionWall();
 };
 
+const loadPortfolioData = async () => {
+  const basePath = getBasePath();
+  const portfolioResponse = await fetch(`${basePath}data/portfolio.json`);
+  if (!portfolioResponse.ok) {
+    throw new Error(`Portfolio fetch failed with status ${portfolioResponse.status}`);
+  }
+  const portfolioItems = await portfolioResponse.json();
+  return Array.isArray(portfolioItems) ? portfolioItems : [];
+};
+
 const initSettings = async () => {
-  const basePath = document.body.dataset.base || "./";
-  
+  const basePath = getBasePath();
+
   // Show skeleton loaders
   if (elements.portfolioFeatured) {
     renderSkeletons(elements.portfolioFeatured, 6);
@@ -1058,12 +1112,12 @@ const initSettings = async () => {
   }
 
   try {
-    const [settingsResponse, portfolioResponse] = await Promise.all([
-      fetch(`${basePath}data/settings.json`),
-      fetch(`${basePath}data/portfolio.json`),
-    ]);
+    const settingsResponse = await fetch(`${basePath}data/settings.json`);
+    if (!settingsResponse.ok) {
+      throw new Error(`Settings fetch failed with status ${settingsResponse.status}`);
+    }
     state.settings = await settingsResponse.json();
-    state.portfolio = await portfolioResponse.json();
+    state.portfolio = await loadPortfolioData();
   } catch (error) {
     console.error("Failed to load settings:", error);
     return;
@@ -1078,6 +1132,7 @@ const initSettings = async () => {
   initOrderForm();
   initWorkWall();
   initAllMotionWalls();
+  runPortfolioSanityCheck();
 };
 
 const init = () => {
