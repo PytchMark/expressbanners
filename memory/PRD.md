@@ -1,67 +1,57 @@
-# Express Banners - Product Requirements Document
+# Express Banners - PRD
 
 ## Original Problem Statement
-Fix a regression on Express Banners GitHub Pages static site where ONE Cloudinary image was loading everywhere (gallery wall, tiles, portfolio). The goal was to restore correct image sourcing for all components.
+Express Banners site hosted on Cloud Run at https://expressbanners-834003823077.us-central1.run.app. The /media endpoint was returning website HTML instead of JSON. Frontend was falling back to dummy unsplash images or repeating one image everywhere. Need to implement real Cloudinary media loading from specific folders.
 
 ## Architecture
-- **Frontend**: Static HTML/CSS/JS site served via Express.js
-- **Backend**: Node.js/Express static file server with Cloudinary API integration
-- **Data**: JSON files (portfolio.json, settings.json) for content management
-- **Deployment**: Google Cloud Run
+- **Backend**: Node.js/Express (server.js) on Cloud Run, port 8080
+- **Frontend**: Vanilla HTML/CSS/JS, multi-page static site
+- **Media**: Cloudinary Admin API accessed server-side
+- **Deployment**: Docker → Cloud Run via cloudbuild.yaml
 
 ## User Personas
-- **Business Owners**: Jamaican brands needing print services
-- **Marketing Teams**: Companies requiring banners, signs, apparel
-- **Event Planners**: Clients needing roll-up banners and event materials
+- Express Banners business owner (Jamaica-based printing company)
+- Customers browsing services, portfolio, placing orders via WhatsApp
 
 ## Core Requirements (Static)
-1. Logo uses settings.images.logo (only applied to #siteLogo)
-2. Home hero uses settings.images.homeHero (only applied to #homeHeroImg)
-3. Portfolio gallery + motion walls use /data/portfolio.json src per item
-4. Services page uses settings.servicesMedia per service (unique images)
-5. Motion wall must show varied images across 3 lanes
-6. Lightbox functionality for portfolio viewing
+1. Backend `/media` endpoint returns JSON from Cloudinary Admin API
+2. Frontend loads real images from Cloudinary folders
+3. Folder mapping: catalogue, SignsandBanners, Embroidery, Promotional Printing
+4. 3-lane motion wall component on homepage, portfolio, order, about pages
+5. Service-specific images from correct folders
+6. No "one image everywhere" behavior
 
-## What's Been Implemented
-
-### January 2026 - Image Regression Fix
-**Root Cause Identified**: `portfolio.json` had identical Cloudinary URLs for all 12 portfolio items
-
-**Fix Applied**:
-- Updated `/app/data/portfolio.json` with 12 unique Unsplash image URLs matching each portfolio category (Banners, Embroidery, Screen Printing, Signs, Graphic Designing)
-- Updated `/app/data/settings.json` servicesMedia with unique images per service type
-
-**Verification**:
-- Motion wall displays varied images across 3 animated rows
-- Featured Portfolio section shows unique thumbnails
-- Portfolio page grid renders 12 distinct items
-- Hero image and logo remain correctly sourced from settings
-- Console sanity check warning no longer appears
-
-### Files Modified
-- `/app/data/portfolio.json` - 12 unique item src URLs
-- `/app/data/settings.json` - 5 unique servicesMedia URLs
+## What's Been Implemented (Jan 2026)
+- [x] Backend: `/media?folder=<folder>&max=<n>` endpoint in server.js
+- [x] Backend: `listByPrefix` function in server/lib/cloudinary.js using Cloudinary Admin API
+- [x] Backend: Dynamic caching for `/media` responses
+- [x] Backend: `/media` route registered BEFORE `*` SPA fallback (returns JSON, not HTML)
+- [x] Frontend: `fetchMedia(folder, max)` function with localStorage cache (12h TTL)
+- [x] Frontend: `FOLDER_MAP` with correct Cloudinary folder mappings
+- [x] Frontend: `mediaItemsToPortfolio` converter for Cloudinary items → portfolio objects
+- [x] Frontend: `loadCloudinaryMedia()` loads catalogue for portfolio/motion walls
+- [x] Frontend: `loadServiceMedia()` loads folder-specific images for each service
+- [x] Frontend: Sequential index distribution for shared folders (Signs/Banners get different images)
+- [x] README updated with /media endpoint docs, env var requirements, deployment guidance
+- [x] All 16 acceptance tests passed (100%)
 
 ## Prioritized Backlog
+### P0 (Critical - Done)
+- [x] /media endpoint returning JSON
+- [x] Frontend media loading from Cloudinary
 
-### P0 (Critical) - Completed
-- [x] Fix image duplication regression
+### P1 (Important - Next)
+- [ ] Deploy to Cloud Run with CLOUDINARY env vars set
+- [ ] Verify /media works on production Cloud Run
+- [ ] Test all pages with real Cloudinary data
 
-### P1 (High Priority)
-- [ ] Replace Unsplash placeholder images with actual client portfolio images
-- [ ] Upload real portfolio images to Cloudinary
-
-### P2 (Medium Priority)
-- [ ] Implement Cloudinary API gallery sync (currently static JSON)
-- [ ] Add image optimization with Cloudinary transformations
-
-### P3 (Future)
-- [ ] CMS integration for content management
-- [ ] Analytics tracking for portfolio views
-- [ ] A/B testing for conversion optimization
+### P2 (Nice to have)
+- [ ] Premium UX: contrast fixes across sections
+- [ ] Remove overuse of .em class (only 1-2 words per heading)
+- [ ] Add skeleton loader animations in CSS
+- [ ] Add service card images on homepage
 
 ## Next Tasks
-1. Obtain real portfolio images from client
-2. Upload images to Cloudinary folder structure
-3. Update portfolio.json with actual Cloudinary URLs
-4. Test production deployment on Google Cloud Run
+1. User deploys to Cloud Run with Cloudinary env vars
+2. Verify /media endpoint on production URL
+3. UX polish pass (contrast, emphasis, animations)
