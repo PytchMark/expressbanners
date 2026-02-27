@@ -150,27 +150,27 @@ class ExpressBannersAPITest:
             return False
     
     def test_cloudinary_function_exists(self) -> bool:
-        """Test that server/lib/cloudinary.js exports listByPrefix function"""
+        """Test that server/lib/cloudinary.js exports listByFolder function"""
         # This is tested indirectly through the /media endpoint functionality
-        # If /media works, then listByPrefix must exist and be imported
+        # If /media works, then listByFolder must exist and be imported
         try:
-            response = requests.get(f"{self.base_url}/media", params={"folder": "test"})
+            response = requests.get(f"{self.base_url}/media", params={"folder": "expressbanners/catalogue"})
             
-            # If we get a proper JSON response (even error), it means the route
+            # If we get a proper JSON response, it means the route
             # successfully imported and can call cloudinary functions
             content_type = response.headers.get('content-type', '')
             is_json = 'application/json' in content_type
             
             if is_json:
                 self.log_test(
-                    "server/lib/cloudinary.js listByPrefix function exists",
+                    "server/lib/cloudinary.js listByFolder function exists",
                     True,
                     "Confirmed by /media endpoint functionality"
                 )
                 return True
             else:
                 self.log_test(
-                    "server/lib/cloudinary.js listByPrefix function exists",
+                    "server/lib/cloudinary.js listByFolder function exists",
                     False,
                     "Media endpoint doesn't work, suggesting missing cloudinary functions"
                 )
@@ -178,9 +178,136 @@ class ExpressBannersAPITest:
                 
         except Exception as e:
             self.log_test(
-                "server/lib/cloudinary.js listByPrefix function exists",
+                "server/lib/cloudinary.js listByFolder function exists",
                 False,
                 f"Cannot test cloudinary functions: {str(e)}"
+            )
+            return False
+
+    def test_media_debug_endpoint(self) -> bool:
+        """Test /media/debug returns JSON with Cloudinary connection status"""
+        try:
+            response = requests.get(f"{self.base_url}/media/debug")
+            
+            content_type = response.headers.get('content-type', '')
+            is_json = 'application/json' in content_type
+            
+            if response.status_code == 200 and is_json:
+                try:
+                    data = response.json()
+                    required_fields = ['hasCloudName', 'hasApiKey', 'hasApiSecret', 'connected']
+                    has_all_fields = all(field in data for field in required_fields)
+                    
+                    self.log_test(
+                        "GET /media/debug returns JSON with connection status",
+                        has_all_fields,
+                        f"Status: {response.status_code}, Fields: {list(data.keys())}, Connected: {data.get('connected')}"
+                    )
+                    return has_all_fields
+                except json.JSONDecodeError:
+                    self.log_test(
+                        "GET /media/debug returns JSON with connection status",
+                        False,
+                        "Response not valid JSON"
+                    )
+                    return False
+            else:
+                self.log_test(
+                    "GET /media/debug returns JSON with connection status",
+                    False,
+                    f"Expected 200 JSON, got {response.status_code} {content_type}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test(
+                "GET /media/debug returns JSON with connection status",
+                False,
+                f"Request failed: {str(e)}"
+            )
+            return False
+
+    def test_media_folders_endpoint(self) -> bool:
+        """Test /media/folders returns JSON listing subfolders"""
+        try:
+            response = requests.get(f"{self.base_url}/media/folders", params={
+                "folder": "expressbanners"
+            })
+            
+            content_type = response.headers.get('content-type', '')
+            is_json = 'application/json' in content_type
+            
+            if response.status_code == 200 and is_json:
+                try:
+                    data = response.json()
+                    has_parent = 'parent' in data
+                    has_folders = 'folders' in data and isinstance(data['folders'], list)
+                    
+                    self.log_test(
+                        "GET /media/folders returns JSON with subfolder list",
+                        has_parent and has_folders,
+                        f"Status: {response.status_code}, Parent: {data.get('parent')}, Folders count: {len(data.get('folders', []))}"
+                    )
+                    return has_parent and has_folders
+                except json.JSONDecodeError:
+                    self.log_test(
+                        "GET /media/folders returns JSON with subfolder list",
+                        False,
+                        "Response not valid JSON"
+                    )
+                    return False
+            else:
+                self.log_test(
+                    "GET /media/folders returns JSON with subfolder list",
+                    False,
+                    f"Expected 200 JSON, got {response.status_code} {content_type}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test(
+                "GET /media/folders returns JSON with subfolder list",
+                False,
+                f"Request failed: {str(e)}"
+            )
+            return False
+
+    def test_dynamic_folder_mode_support(self) -> bool:
+        """Test that listByFolder function uses resources_by_asset_folder API"""
+        # This is tested indirectly - if the production environment returns media
+        # from dynamic folders, it confirms the API switch was successful
+        try:
+            response = requests.get(f"{self.base_url}/media", params={
+                "folder": "expressbanners/catalogue",
+                "max": "3"
+            })
+            
+            if response.status_code == 200:
+                data = response.json()
+                items = data.get('items', [])
+                
+                # If we get items, it suggests dynamic folder mode is working
+                success = len(items) > 0
+                
+                self.log_test(
+                    "Dynamic Folder Mode support (resources_by_asset_folder API)",
+                    success,
+                    f"Retrieved {len(items)} items from dynamic folder structure"
+                )
+                return success
+            else:
+                self.log_test(
+                    "Dynamic Folder Mode support (resources_by_asset_folder API)",
+                    False,
+                    f"Media endpoint returned {response.status_code}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test(
+                "Dynamic Folder Mode support (resources_by_asset_folder API)",
+                False,
+                f"Request failed: {str(e)}"
             )
             return False
     
