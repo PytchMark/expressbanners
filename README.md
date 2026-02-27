@@ -129,13 +129,84 @@ Use `.em` class for blue accent on important words only:
 
 ## Deployment
 
-This site is designed for GitHub Pages static hosting:
+### Cloud Run (Production)
 
-1. Push to `main` branch
-2. Enable GitHub Pages in repository settings
-3. Site will be available at `https://username.github.io/repo-name/`
+This site is deployed on Google Cloud Run. The Docker container runs a Node.js/Express server that serves both static files and the `/media` API endpoint.
 
-No build step required - all files are production-ready.
+#### Required Environment Variables
+
+Set these on your Cloud Run service:
+
+| Variable | Description |
+|---|---|
+| `CLOUDINARY_CLOUD_NAME` | Your Cloudinary cloud name (e.g. `dopxnugqn`) |
+| `CLOUDINARY_API_KEY` | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
+| `PORT` | (Optional) Defaults to `8080` |
+
+#### `/media` Endpoint
+
+The backend exposes a JSON API for fetching Cloudinary media:
+
+```
+GET /media?folder=<cloudinary-folder>&max=<n>
+```
+
+**Example:**
+```bash
+curl "https://expressbanners-834003823077.us-central1.run.app/media?folder=expressbanners/catalogue&max=5"
+```
+
+**Response:**
+```json
+{
+  "folder": "expressbanners/catalogue",
+  "count": 5,
+  "items": [
+    {
+      "public_id": "expressbanners/catalogue/image1",
+      "secure_url": "https://res.cloudinary.com/...",
+      "width": 1200,
+      "height": 800,
+      "format": "jpg",
+      "created_at": "2026-01-15T...",
+      "resource_type": "image"
+    }
+  ]
+}
+```
+
+#### Testing `/media`
+
+1. Visit `/media?folder=expressbanners/catalogue&max=5` in your browser
+2. If you see JSON → endpoint is working
+3. If you see HTML → the SPA fallback is swallowing the route (fix route order in `server.js`)
+4. If you get 500 → check that `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` env vars are set
+
+**Common failure:** `/media` returning HTML means the `app.get("/media", ...)` route is registered AFTER the `app.get("*", ...)` SPA fallback. The `/media` route MUST come first.
+
+#### Deploy Steps
+
+```bash
+# Build and deploy via Cloud Build
+gcloud builds submit --config=cloudbuild.yaml
+
+# Or direct deploy
+gcloud run deploy expressbanners \
+  --source . \
+  --set-env-vars CLOUDINARY_CLOUD_NAME=xxx,CLOUDINARY_API_KEY=xxx,CLOUDINARY_API_SECRET=xxx
+```
+
+### Cloudinary Folder Mapping
+
+| Use | Cloudinary Folder |
+|---|---|
+| Portfolio / Homepage motion wall | `expressbanners/catalogue` |
+| Signs service | `expressbanners/SignsandBanners` |
+| Banners service | `expressbanners/SignsandBanners` |
+| Embroidery service | `expressbanners/Embroidery` |
+| Screen Printing service | `expressbanners/Promotional Printing` |
+| Graphic Designing service | `expressbanners/catalogue` |
 
 ---
 
