@@ -1,3 +1,8 @@
+/**
+ * Express Banners - Premium Static Site
+ * Client-side JavaScript for GitHub Pages deployment
+ */
+
 const state = {
   settings: null,
   portfolio: [],
@@ -20,6 +25,7 @@ const elements = {
   heroTitle: document.querySelector("[data-hero-title]"),
   heroImage: document.querySelector("[data-hero-image]"),
   whatsappLinks: document.querySelectorAll("[data-whatsapp]"),
+  catalogueLinks: document.querySelectorAll("[data-catalogue]"),
   uploadLink: document.querySelector("[data-upload-link]"),
   mapLink: document.querySelector("[data-map-link]"),
   address: document.querySelector("[data-address]"),
@@ -77,6 +83,9 @@ const elements = {
   workWall: document.querySelector("[data-work-wall]"),
   galleryWall: document.querySelector("[data-gallery-wall]"),
   aboutGalleryWall: document.querySelector("[data-about-gallery-wall]"),
+  motionWalls: document.querySelectorAll("[data-motion-wall]"),
+  homeMotionWall: document.querySelector("[data-home-motion-wall]"),
+  orderMotionWall: document.querySelector("[data-order-motion-wall]"),
 };
 
 const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -246,6 +255,17 @@ const updateWhatsAppLinks = () => {
   });
 };
 
+const updateCatalogueLinks = () => {
+  if (!state.settings) return;
+  const message = state.settings.catalogueMessage || "Hi Express Banners! I'd like to see your full catalogue.";
+  const link = buildWhatsAppLink(message);
+  elements.catalogueLinks.forEach((linkEl) => {
+    linkEl.href = link;
+    linkEl.target = "_blank";
+    linkEl.rel = "noopener";
+  });
+};
+
 const initNav = () => {
   if (!elements.navToggle || !elements.navMenu || !elements.header) return;
   const focusableSelector = "a, button";
@@ -341,22 +361,45 @@ const initReveal = () => {
   revealEls.forEach((el) => observer.observe(el));
 };
 
-const renderSkeletons = (target, count = 6) => {
+const renderSkeletons = (target, count = 6, className = "skeleton") => {
   if (!target) return;
   target.innerHTML = "";
   Array.from({ length: count }).forEach(() => {
     const skeleton = document.createElement("div");
-    skeleton.className = "skeleton";
+    skeleton.className = className;
     target.appendChild(skeleton);
+  });
+};
+
+const renderMotionWallSkeletons = (target, rowCount = 3) => {
+  if (!target) return;
+  target.innerHTML = "";
+  target.classList.add("motion-wall");
+  Array.from({ length: rowCount }).forEach(() => {
+    const row = document.createElement("div");
+    row.className = "motion-wall-row";
+    const track = document.createElement("div");
+    track.className = "motion-wall-track";
+    Array.from({ length: 6 }).forEach(() => {
+      const skeleton = document.createElement("div");
+      skeleton.className = "motion-wall-tile skeleton-tile";
+      track.appendChild(skeleton);
+    });
+    row.appendChild(track);
+    target.appendChild(row);
   });
 };
 
 const renderPortfolioItem = (item, index, isFeatured = false) => {
   const article = document.createElement("article");
   article.className = "card portfolio-card reveal";
+  article.setAttribute("data-testid", `portfolio-item-${item.id}`);
+  
+  const fallbackSrc = state.settings?.images?.fallback || "";
+  
   article.innerHTML = `
-    <button type="button" class="portfolio-thumb" data-portfolio-index="${index}" aria-label="Open ${item.title}">
-      <img src="${item.src}" alt="${item.alt}" loading="lazy" />
+    <button type="button" class="portfolio-thumb" data-portfolio-index="${index}" aria-label="Open ${item.title}" data-testid="portfolio-thumb-${item.id}">
+      <img src="${item.src}" alt="${item.alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackSrc}'" />
     </button>
     <div class="meta">
       <strong>${item.title}</strong>
@@ -638,9 +681,17 @@ const applySettings = () => {
   }
   if (elements.logo && state.settings.images?.logo) {
     elements.logo.src = state.settings.images.logo;
+    elements.logo.onerror = () => {
+      elements.logo.style.display = "none";
+    };
   }
   if (elements.heroImage && state.settings.images?.homeHero) {
     elements.heroImage.src = state.settings.images.homeHero;
+    elements.heroImage.onerror = () => {
+      if (state.settings.images?.fallback) {
+        elements.heroImage.src = state.settings.images.fallback;
+      }
+    };
   }
   if (elements.ogImage && state.settings.images?.og) {
     elements.ogImage.setAttribute("content", state.settings.images.og);
@@ -689,12 +740,14 @@ const applySettings = () => {
     const key = img.dataset.serviceImage;
     if (key && state.settings.servicesMedia?.[key]) {
       img.src = state.settings.servicesMedia[key];
+      img.onerror = () => {
+        if (state.settings.images?.fallback) {
+          img.src = state.settings.images.fallback;
+        }
+      };
     }
   });
 
-  if (elements.orderVideo && state.settings.orderHero?.videoMp4) {
-    elements.orderVideo.src = state.settings.orderHero.videoMp4;
-  }
   if (elements.orderVideo && state.settings.orderHero?.poster) {
     elements.orderVideo.setAttribute("poster", state.settings.orderHero.poster);
   }
@@ -722,12 +775,20 @@ const applySettings = () => {
   }
 };
 
-
+/**
+ * Cloudinary URL transformation helper
+ */
 const getCloudinaryTileSrc = (sourceUrl, width = 480) => {
-  if (!sourceUrl || !sourceUrl.includes("/upload/")) return sourceUrl;
-  return sourceUrl.replace("/upload/", `/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_${width}/`);
+  if (!sourceUrl) return "";
+  if (sourceUrl.includes("/upload/") && !sourceUrl.includes("/upload/f_auto")) {
+    return sourceUrl.replace("/upload/", `/upload/f_auto,q_auto,c_fill,g_auto,ar_4:3,w_${width}/`);
+  }
+  return sourceUrl;
 };
 
+/**
+ * Split items into rows for motion wall
+ */
 const splitIntoRows = (items, rowCount) => {
   const rows = Array.from({ length: rowCount }, () => []);
   items.forEach((item, index) => {
@@ -736,158 +797,211 @@ const splitIntoRows = (items, rowCount) => {
   return rows;
 };
 
-const createGalleryTile = (item) => {
-  const tile = document.createElement("article");
-  tile.className = "gallery-wall-tile";
+/**
+ * Create a single gallery tile element
+ */
+const createMotionTile = (item, onClickIndex) => {
+  const tile = document.createElement("button");
+  tile.type = "button";
+  tile.className = "motion-wall-tile";
+  tile.setAttribute("aria-label", `View ${item.title || item.category || "portfolio item"}`);
+  if (typeof onClickIndex === "number") {
+    tile.setAttribute("data-portfolio-index", String(onClickIndex));
+  }
 
   const img = document.createElement("img");
-  img.alt = item.folder ? `${item.folder} portfolio image` : "Portfolio image";
+  img.alt = item.alt || item.title || "Portfolio image";
   img.loading = "lazy";
   img.decoding = "async";
-  img.src = getCloudinaryTileSrc(item.secure_url, 480);
-  img.srcset = [
-    `${getCloudinaryTileSrc(item.secure_url, 320)} 320w`,
-    `${getCloudinaryTileSrc(item.secure_url, 480)} 480w`,
-    `${getCloudinaryTileSrc(item.secure_url, 640)} 640w`,
-  ].join(", ");
-  img.sizes = "(max-width: 640px) 42vw, (max-width: 1024px) 24vw, 16vw";
+  img.src = getCloudinaryTileSrc(item.src || item.secure_url, 480);
+  
+  const fallbackSrc = state.settings?.images?.fallback || "";
+  img.onerror = () => {
+    img.onerror = null;
+    img.src = fallbackSrc;
+  };
 
   tile.appendChild(img);
   return tile;
 };
 
-const bindRowPause = (rowTrack) => {
-  const setPaused = (paused) => rowTrack.classList.toggle("is-paused", paused);
+/**
+ * Bind pause/drag events to motion track
+ */
+const bindTrackInteraction = (track) => {
+  const setPaused = (paused) => track.classList.toggle("is-paused", paused);
 
-  rowTrack.addEventListener("mouseenter", () => setPaused(true));
-  rowTrack.addEventListener("mouseleave", () => setPaused(false));
-  rowTrack.addEventListener("focusin", () => setPaused(true));
-  rowTrack.addEventListener("focusout", () => setPaused(false));
-  rowTrack.addEventListener("touchstart", () => setPaused(true), { passive: true });
-  rowTrack.addEventListener("touchend", () => setPaused(false));
+  track.addEventListener("mouseenter", () => setPaused(true));
+  track.addEventListener("mouseleave", () => setPaused(false));
+  track.addEventListener("focusin", () => setPaused(true));
+  track.addEventListener("focusout", () => setPaused(false));
+  track.addEventListener("touchstart", () => setPaused(true), { passive: true });
+  track.addEventListener("touchend", () => setPaused(false));
 
   let pointerDown = false;
   let startX = 0;
   let startScrollLeft = 0;
 
-  rowTrack.addEventListener("pointerdown", (event) => {
+  track.addEventListener("pointerdown", (event) => {
     pointerDown = true;
     setPaused(true);
     startX = event.clientX;
-    startScrollLeft = rowTrack.scrollLeft;
-    rowTrack.setPointerCapture(event.pointerId);
+    startScrollLeft = track.scrollLeft;
+    track.setPointerCapture(event.pointerId);
   });
 
-  rowTrack.addEventListener("pointermove", (event) => {
+  track.addEventListener("pointermove", (event) => {
     if (!pointerDown) return;
     const delta = event.clientX - startX;
-    rowTrack.scrollLeft = startScrollLeft - delta;
+    track.scrollLeft = startScrollLeft - delta;
   });
 
   const stopPointer = (event) => {
     if (!pointerDown) return;
     pointerDown = false;
-    rowTrack.releasePointerCapture(event.pointerId);
+    track.releasePointerCapture(event.pointerId);
   };
 
-  rowTrack.addEventListener("pointerup", stopPointer);
-  rowTrack.addEventListener("pointercancel", stopPointer);
+  track.addEventListener("pointerup", stopPointer);
+  track.addEventListener("pointercancel", stopPointer);
 };
 
-const renderGalleryWall = (target, items) => {
-  if (!target) return;
-  target.innerHTML = "";
+/**
+ * REUSABLE 3-WAY MOTION WALL COMPONENT
+ * Renders a 3-row animated gallery with parallax-like motion
+ * 
+ * @param {HTMLElement} containerEl - Target container element
+ * @param {Array} items - Array of portfolio items with src, title, alt, category
+ * @param {Object} options - Configuration options
+ * @param {number} options.rowCount - Number of rows (default: 3)
+ * @param {number} options.baseDuration - Base animation duration in seconds (default: 60)
+ * @param {boolean} options.clickable - Enable click to open lightbox (default: true)
+ */
+const renderMotionWall = (containerEl, items, options = {}) => {
+  if (!containerEl) return;
+  
+  const {
+    rowCount = 3,
+    baseDuration = 60,
+    clickable = true,
+  } = options;
+
+  containerEl.innerHTML = "";
+  containerEl.classList.add("motion-wall");
 
   if (!items?.length) {
-    renderSkeletons(target, 6);
+    renderMotionWallSkeletons(containerEl, rowCount);
     return;
   }
 
-  const rows = splitIntoRows(items, 3);
+  // Respect reduced motion preference
+  const reduceMotion = prefersReducedMotion();
 
-  rows.forEach((rowItems, index) => {
+  if (reduceMotion) {
+    // Static grid fallback
+    containerEl.classList.add("motion-wall--static");
+    const grid = document.createElement("div");
+    grid.className = "motion-wall-static-grid";
+    items.slice(0, 12).forEach((item, idx) => {
+      const portfolioIndex = state.portfolio.findIndex((p) => p.id === item.id);
+      const tile = createMotionTile(item, clickable ? portfolioIndex : null);
+      grid.appendChild(tile);
+    });
+    containerEl.appendChild(grid);
+    if (clickable) bindPortfolioClicks();
+    return;
+  }
+
+  const rows = splitIntoRows(items, rowCount);
+
+  rows.forEach((rowItems, rowIndex) => {
     const row = document.createElement("div");
-    row.className = "gallery-wall-row";
+    row.className = "motion-wall-row";
 
     const track = document.createElement("div");
-    track.className = "gallery-wall-track";
-    track.style.setProperty("--wall-direction", index % 2 === 0 ? "normal" : "reverse");
-    track.style.setProperty("--wall-duration", `${80 + index * 12}s`);
+    track.className = "motion-wall-track";
+    
+    // Alternating directions for 3-way movement
+    const direction = rowIndex % 2 === 0 ? "normal" : "reverse";
+    // Varying speeds for parallax effect
+    const duration = baseDuration + (rowIndex * 15);
+    
+    track.style.setProperty("--motion-direction", direction);
+    track.style.setProperty("--motion-duration", `${duration}s`);
 
-    const repeated = rowItems.concat(rowItems);
-    repeated.forEach((item) => {
-      track.appendChild(createGalleryTile(item));
+    // Duplicate items for seamless loop
+    const duplicatedItems = [...rowItems, ...rowItems];
+    
+    duplicatedItems.forEach((item) => {
+      const portfolioIndex = state.portfolio.findIndex((p) => p.id === item.id);
+      const tile = createMotionTile(item, clickable ? portfolioIndex : null);
+      track.appendChild(tile);
     });
 
-    bindRowPause(track);
+    bindTrackInteraction(track);
     row.appendChild(track);
-    target.appendChild(row);
+    containerEl.appendChild(row);
+  });
+
+  if (clickable) {
+    bindPortfolioClicks();
+  }
+};
+
+/**
+ * Initialize gallery wall (portfolio page)
+ */
+const initGalleryWall = () => {
+  if (!elements.galleryWall) return;
+  renderMotionWall(elements.galleryWall, state.portfolio, {
+    rowCount: 3,
+    baseDuration: 70,
+    clickable: true,
   });
 };
 
-const initGalleryWall = async () => {
-  if (!elements.galleryWall) return;
-  renderSkeletons(elements.galleryWall, 6);
-
-  try {
-    const response = await fetch("/api/gallery");
-    if (!response.ok) throw new Error("gallery request failed");
-    const payload = await response.json();
-    renderGalleryWall(elements.galleryWall, payload.items || []);
-  } catch (error) {
-    elements.galleryWall.innerHTML = "";
-  }
-};
-
-
+/**
+ * Initialize about page gallery wall
+ */
 const initAboutGalleryWall = () => {
   if (!elements.aboutGalleryWall || !state.portfolio?.length) return;
-
-  renderGalleryWall(
-    elements.aboutGalleryWall,
-    state.portfolio.map((item) => ({
-      secure_url: item.src,
-      folder: item.category || "portfolio",
-    }))
-  );
+  renderMotionWall(elements.aboutGalleryWall, state.portfolio, {
+    rowCount: 3,
+    baseDuration: 65,
+    clickable: true,
+  });
 };
 
-const initServicesMedia = async () => {
-  if (!elements.serviceMediaBlocks?.length) return;
-
-  try {
-    const response = await fetch("/api/services-media");
-    if (!response.ok) throw new Error("services media request failed");
-    const payload = await response.json();
-
-    elements.serviceMediaBlocks.forEach((block) => {
-      const slug = block.dataset.serviceMedia;
-      const media = payload.services?.[slug];
-      if (!media || media.type !== "video" || !media.secure_url) return;
-
-      const fallbackImage = block.querySelector("img");
-      if (fallbackImage) {
-        fallbackImage.classList.add("is-hidden");
-      }
-
-      const video = document.createElement("video");
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
-      video.preload = "metadata";
-      video.autoplay = !prefersReducedMotion();
-      video.src = media.secure_url;
-      if (media.poster_url) {
-        video.poster = media.poster_url;
-      }
-
-      block.appendChild(video);
-    });
-  } catch (error) {
-    // Keep static service images when API is unavailable.
-  }
+/**
+ * Initialize home page motion wall
+ */
+const initHomeMotionWall = () => {
+  if (!elements.homeMotionWall || !state.portfolio?.length) return;
+  const featured = state.portfolio.filter((item) => item.featured);
+  const items = featured.length >= 6 ? featured : state.portfolio.slice(0, 9);
+  renderMotionWall(elements.homeMotionWall, items, {
+    rowCount: 3,
+    baseDuration: 55,
+    clickable: true,
+  });
 };
 
+/**
+ * Initialize order page motion wall
+ */
+const initOrderMotionWall = () => {
+  if (!elements.orderMotionWall || !state.portfolio?.length) return;
+  const shuffled = [...state.portfolio].sort(() => 0.5 - Math.random()).slice(0, 9);
+  renderMotionWall(elements.orderMotionWall, shuffled, {
+    rowCount: 3,
+    baseDuration: 60,
+    clickable: true,
+  });
+};
+
+/**
+ * Initialize work wall (order page legacy)
+ */
 const initWorkWall = () => {
   if (!elements.workWall || !state.portfolio.length) return;
   const items = [...state.portfolio].sort(() => 0.5 - Math.random()).slice(0, 8);
@@ -899,14 +1013,28 @@ const initWorkWall = () => {
     card.className = "work-card";
     card.setAttribute("data-portfolio-index", String(index));
     card.setAttribute("aria-label", `Open ${item.title}`);
-    card.innerHTML = `<img src="${item.src}" alt="${item.alt}" loading="lazy" />`;
+    
+    const fallbackSrc = state.settings?.images?.fallback || "";
+    card.innerHTML = `<img src="${item.src}" alt="${item.alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackSrc}'" />`;
     elements.workWall.appendChild(card);
   });
   bindPortfolioClicks();
 };
 
+/**
+ * Initialize all motion walls on the page
+ */
+const initAllMotionWalls = () => {
+  initGalleryWall();
+  initAboutGalleryWall();
+  initHomeMotionWall();
+  initOrderMotionWall();
+};
+
 const initSettings = async () => {
   const basePath = document.body.dataset.base || "./";
+  
+  // Show skeleton loaders
   if (elements.portfolioFeatured) {
     renderSkeletons(elements.portfolioFeatured, 6);
   }
@@ -917,8 +1045,18 @@ const initSettings = async () => {
     renderSkeletons(elements.workWall, 6);
   }
   if (elements.aboutGalleryWall) {
-    renderSkeletons(elements.aboutGalleryWall, 6);
+    renderMotionWallSkeletons(elements.aboutGalleryWall, 3);
   }
+  if (elements.galleryWall) {
+    renderMotionWallSkeletons(elements.galleryWall, 3);
+  }
+  if (elements.homeMotionWall) {
+    renderMotionWallSkeletons(elements.homeMotionWall, 3);
+  }
+  if (elements.orderMotionWall) {
+    renderMotionWallSkeletons(elements.orderMotionWall, 3);
+  }
+
   try {
     const [settingsResponse, portfolioResponse] = await Promise.all([
       fetch(`${basePath}data/settings.json`),
@@ -933,14 +1071,13 @@ const initSettings = async () => {
 
   applySettings();
   updateWhatsAppLinks();
+  updateCatalogueLinks();
   renderPortfolio();
   initPortfolioFilters();
   initLightbox();
   initOrderForm();
   initWorkWall();
-  initGalleryWall();
-  initAboutGalleryWall();
-  initServicesMedia();
+  initAllMotionWalls();
 };
 
 const init = () => {
