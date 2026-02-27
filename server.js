@@ -149,6 +149,45 @@ app.get("/api/services-media", async (req, res) => {
   }
 });
 
+app.get("/media/debug", async (req, res) => {
+  res.set("Content-Type", "application/json");
+  const info = {
+    hasCloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
+    hasApiKey: !!process.env.CLOUDINARY_API_KEY,
+    hasApiSecret: !!process.env.CLOUDINARY_API_SECRET,
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || "(not set)",
+  };
+
+  try {
+    ensureCloudinaryConfig();
+    // Try listing root folders to verify credentials work
+    const result = await cloudinary.api.root_folders();
+    info.connected = true;
+    info.rootFolders = (result.folders || []).map((f) => f.name);
+  } catch (error) {
+    info.connected = false;
+    info.error = error.message || String(error);
+  }
+
+  res.json(info);
+});
+
+app.get("/media/folders", async (req, res) => {
+  res.set("Content-Type", "application/json");
+  const parent = req.query.folder || "expressbanners";
+
+  try {
+    ensureCloudinaryConfig();
+    const result = await cloudinary.api.sub_folders(parent);
+    res.json({
+      parent,
+      folders: (result.folders || []).map((f) => ({ name: f.name, path: f.path })),
+    });
+  } catch (error) {
+    res.status(500).json({ parent, folders: [], error: error.message });
+  }
+});
+
 app.get("/media", async (req, res) => {
   const folder = req.query.folder;
   const max = Math.min(Math.max(Number.parseInt(req.query.max, 10) || 50, 1), 200);
