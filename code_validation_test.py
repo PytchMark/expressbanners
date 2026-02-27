@@ -188,7 +188,7 @@ class CodeValidationTest:
         has_catalogue_folder = 'CATALOGUE_FOLDER = "expressbanners/catalogue"' in content
         
         # Check /api/gallery route uses listByFolder
-        gallery_route_pattern = r'app\.get\("/api/gallery".*?^\});'
+        gallery_route_pattern = r'app\.get\("/api/gallery".*?\}\);'
         gallery_route_match = re.search(gallery_route_pattern, content, re.MULTILINE | re.DOTALL)
         
         uses_list_by_folder = False
