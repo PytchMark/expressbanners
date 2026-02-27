@@ -271,10 +271,15 @@ class CodeValidationTest:
         }
         
         # Check if frontend FOLDER_MAP contains all backend service mappings
-        maps_match = all(
-            f'{service}: "{folder}"' in frontend_content
-            for service, folder in backend_services.items()
-        )
+        maps_match = True
+        for service, folder in backend_services.items():
+            # Try different patterns for service keys (with and without quotes)
+            pattern1 = f'{service}: "{folder}"'
+            pattern2 = f'"{service}": "{folder}"'
+            
+            if not (pattern1 in frontend_content or pattern2 in frontend_content):
+                maps_match = False
+                break
         
         success = maps_match
         self.log_test(
