@@ -97,20 +97,18 @@ class CodeValidationTest:
         server_file = self.project_root / "server.js"
         content = server_file.read_text()
         
-        # Find the /media route handler
-        media_route_pattern = r'app\.get\("/media".*?\}\);'
-        media_route_match = re.search(media_route_pattern, content, re.MULTILINE | re.DOTALL)
+        # Check for Content-Type setting in /media route
+        has_json_content_type = 'res.set("Content-Type", "application/json")' in content
         
-        has_json_content_type = False
-        if media_route_match:
-            route_body = media_route_match.group(0)
-            has_json_content_type = 'res.set("Content-Type", "application/json")' in route_body
+        # Verify it's in the /media route context
+        media_route_section = content[content.find('app.get("/media"'):content.find('app.get("*"')]
+        has_json_in_media_route = 'res.set("Content-Type", "application/json")' in media_route_section
         
-        success = has_json_content_type
+        success = has_json_content_type and has_json_in_media_route
         self.log_test(
             "/media route returns JSON Content-Type, not HTML",
             success,
-            f"Found JSON Content-Type header in /media route: {has_json_content_type}"
+            f"Found JSON Content-Type header in /media route: {has_json_in_media_route}"
         )
         return success
     
