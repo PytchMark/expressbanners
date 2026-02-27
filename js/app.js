@@ -1149,6 +1149,86 @@ const initAllMotionWalls = () => {
   initOrderMotionWall();
 };
 
+/**
+ * Load real Cloudinary media for portfolio grids and motion walls
+ */
+const loadCloudinaryMedia = async () => {
+  // Load catalogue media for portfolio/motion walls
+  const catalogueData = await fetchMedia(FOLDER_MAP.portfolio, 60);
+  if (catalogueData.items.length) {
+    const cloudItems = mediaItemsToPortfolio(catalogueData.items, "Portfolio");
+    state.portfolio = cloudItems;
+  }
+
+  // Re-render everything with real Cloudinary data
+  renderPortfolio();
+  initPortfolioFilters();
+  initLightbox();
+  initWorkWall();
+  initAllMotionWalls();
+  runPortfolioSanityCheck();
+};
+
+/**
+ * Load service-specific images from Cloudinary folders
+ */
+const loadServiceMedia = async () => {
+  const serviceNames = ["Signs", "Banners", "Embroidery", "Screen Printing", "Graphic Designing"];
+  const uniqueFolders = [...new Set(serviceNames.map((s) => FOLDER_MAP[s]))];
+
+  // Fetch each unique folder in parallel
+  const folderResults = {};
+  await Promise.all(
+    uniqueFolders.map(async (folder) => {
+      const data = await fetchMedia(folder, 10);
+      folderResults[folder] = data.items || [];
+    })
+  );
+
+  // Apply to service image elements
+  elements.serviceMediaBlocks.forEach((block) => {
+    const serviceName = block.dataset.service;
+    if (!serviceName) return;
+    const folder = FOLDER_MAP[serviceName];
+    if (!folder) return;
+    const items = folderResults[folder] || [];
+    if (!items.length) return;
+
+    const img = block.querySelector("img[data-service-image]");
+    if (!img) return;
+
+    // Pick a random item so each service gets a different image
+    const shuffled = [...items].sort(() => 0.5 - Math.random());
+    const pick = shuffled[0];
+    if (pick?.secure_url) {
+      img.src = getCloudinaryTileSrc(pick.secure_url, 600);
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = NEUTRAL_IMAGE_PLACEHOLDER;
+      };
+    }
+  });
+
+  // Also update service images on homepage if they exist
+  elements.serviceImages.forEach((img) => {
+    const serviceName = img.dataset.serviceImage;
+    if (!serviceName) return;
+    const folder = FOLDER_MAP[serviceName];
+    if (!folder) return;
+    const items = folderResults[folder] || [];
+    if (!items.length) return;
+
+    const pick = items[Math.floor(Math.random() * items.length)];
+    if (pick?.secure_url) {
+      img.src = getCloudinaryTileSrc(pick.secure_url, 600);
+      img.onerror = () => {
+        img.onerror = null;
+        img.src = NEUTRAL_IMAGE_PLACEHOLDER;
+      };
+    }
+  });
+};
+
 const loadPortfolioData = async () => {
   const basePath = getBasePath();
   const portfolioResponse = await fetch(`${basePath}data/portfolio.json`);
