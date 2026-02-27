@@ -161,6 +161,7 @@ module.exports = {
   withCache,
   searchAll,
   listByPrefix,
+  listByFolder,
   folderFromPublicId,
   CACHE_TTL_SECONDS,
 };
