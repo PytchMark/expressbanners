@@ -47,6 +47,7 @@ a {
 
 button {
   font: inherit;
+  cursor: pointer;
 }
 
 a:focus-visible,
@@ -104,20 +105,41 @@ textarea:focus-visible {
   padding: 40px 0;
 }
 
+/* ============================================
+   THEME TOKENS - Proper contrast handling
+   ============================================ */
+
 .theme-light {
-  background: #ffffff;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --ink: #0b1020;
+  --muted: rgba(11, 16, 32, 0.72);
+  --line: rgba(11, 16, 32, 0.12);
+  background: var(--bg);
   color: var(--ink);
 }
 
 .theme-dark {
   --bg: #0b1020;
   --surface: rgba(255, 255, 255, 0.08);
-  --ink: rgba(255, 255, 255, 0.94);
-  --muted: rgba(255, 255, 255, 0.7);
+  --ink: #f8fafc;
+  --muted: rgba(255, 255, 255, 0.75);
   --line: rgba(255, 255, 255, 0.18);
   --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
   background: var(--bg);
   color: var(--ink);
+}
+
+.theme-dark h1,
+.theme-dark h2,
+.theme-dark h3,
+.theme-dark h4,
+.theme-dark strong {
+  color: #fff;
+}
+
+.theme-dark p {
+  color: var(--muted);
 }
 
 .theme-dark .card {
@@ -130,20 +152,55 @@ textarea:focus-visible {
 }
 
 .theme-dark .btn-outline {
-  color: var(--ink);
+  color: #fff;
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .theme-dark .btn-outline:hover {
   border-color: rgba(96, 165, 250, 0.7);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .theme-dark .muted {
   color: var(--muted);
 }
 
+.theme-dark .stat-chip {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.theme-dark .stat-chip .stat {
+  color: #fff;
+}
+
+.theme-dark .stat-chip .label {
+  color: var(--muted);
+}
+
 .theme-dark--slim {
   padding: 40px 0;
+}
+
+/* ============================================
+   SELECTIVE EMPHASIS - Use .em class only
+   ============================================ */
+
+/* Primary emphasis - blue accent for key words */
+.em {
+  color: var(--brand2);
+  font-weight: inherit;
+}
+
+/* Legacy support - remove auto-coloring from text-accent */
+.text-accent {
+  color: var(--brand2);
+}
+
+/* Dark theme emphasis adjustments */
+.theme-dark .em,
+.theme-dark .text-accent {
+  color: #60a5fa;
 }
 
 .section-head {
@@ -177,8 +234,8 @@ textarea:focus-visible {
   margin-bottom: 10px;
 }
 
-.text-accent {
-  color: var(--brand2);
+.theme-dark .eyebrow {
+  color: #60a5fa;
 }
 
 .lead {
@@ -191,6 +248,10 @@ textarea:focus-visible {
   color: var(--muted);
 }
 
+/* ============================================
+   BUTTONS
+   ============================================ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -201,12 +262,25 @@ textarea:focus-visible {
   border: 1px solid transparent;
   font-weight: 600;
   min-height: 44px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .btn-primary {
   background: var(--brand);
   color: #fff;
   box-shadow: 0 10px 24px rgba(225, 29, 46, 0.24);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 14px 30px rgba(225, 29, 46, 0.32);
 }
 
 .btn-outline {
@@ -217,7 +291,22 @@ textarea:focus-visible {
 
 .btn-outline:hover {
   border-color: rgba(29, 78, 216, 0.4);
+  background: rgba(29, 78, 216, 0.04);
 }
+
+.btn-catalogue {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.24);
+}
+
+.btn-catalogue:hover {
+  box-shadow: 0 14px 30px rgba(37, 211, 102, 0.32);
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
 
 .card {
   background: var(--surface);
@@ -232,6 +321,10 @@ textarea:focus-visible {
   transform: translateY(-2px);
   border-color: rgba(29, 78, 216, 0.35);
 }
+
+/* ============================================
+   REVEAL ANIMATIONS
+   ============================================ */
 
 .reveal {
   opacity: 0;
@@ -255,6 +348,10 @@ textarea:focus-visible {
     transition: none;
   }
 }
+
+/* ============================================
+   PROMO STRIP / MARQUEE
+   ============================================ */
 
 .promo-strip {
   background: var(--brand);
@@ -299,6 +396,10 @@ textarea:focus-visible {
     width: 100%;
   }
 }
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
 
 .site-header {
   position: sticky;
@@ -452,6 +553,10 @@ textarea:focus-visible {
   pointer-events: auto;
 }
 
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
 .hero {
   padding-top: 24px;
 }
@@ -465,16 +570,6 @@ textarea:focus-visible {
   font-family: "Manrope", system-ui, sans-serif;
   font-size: clamp(2.3rem, 4.4vw, 3.6rem);
   margin-bottom: 16px;
-}
-
-.hero .text-accent {
-  color: var(--brand2);
-}
-
-.lead {
-  font-size: 1.1rem;
-  color: var(--muted);
-  margin-bottom: 22px;
 }
 
 .hero-actions {
@@ -520,6 +615,10 @@ textarea:focus-visible {
   color: var(--muted);
 }
 
+/* ============================================
+   PROOF STRIP / STATS
+   ============================================ */
+
 .proof-strip {
   text-align: center;
 }
@@ -534,6 +633,7 @@ textarea:focus-visible {
   padding: 12px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .stat-chip .stat {
@@ -541,6 +641,15 @@ textarea:focus-visible {
   font-weight: 700;
   font-size: 1.2rem;
 }
+
+.stat-chip .label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ============================================
+   GRIDS
+   ============================================ */
 
 .services-grid,
 .portfolio-grid,
@@ -591,6 +700,10 @@ textarea:focus-visible {
   background: rgba(29, 78, 216, 0.05);
 }
 
+/* ============================================
+   ORDER FORM
+   ============================================ */
+
 .order-grid {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   align-items: start;
@@ -640,6 +753,11 @@ textarea:focus-visible {
   padding: 8px 14px;
   font-size: 0.85rem;
   min-height: 44px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.pill:hover {
+  border-color: rgba(29, 78, 216, 0.4);
 }
 
 .pill.is-active {
@@ -657,6 +775,7 @@ select {
   border: 1px solid var(--line);
   font: inherit;
   background: var(--surface);
+  color: var(--ink);
 }
 
 textarea {
@@ -676,6 +795,13 @@ textarea {
   border-radius: 12px;
   border: 1px solid var(--line);
   background: transparent;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.quantity-stepper button:hover {
+  border-color: rgba(29, 78, 216, 0.4);
+  background: rgba(29, 78, 216, 0.04);
 }
 
 .helper-row {
@@ -707,6 +833,10 @@ textarea {
   gap: 12px;
 }
 
+/* ============================================
+   PORTFOLIO
+   ============================================ */
+
 .portfolio-grid,
 .gallery-grid {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -729,11 +859,13 @@ textarea {
 
 .portfolio-thumb img {
   width: 100%;
-}
-
-.portfolio-card img {
   border-radius: 14px;
   border: 1px solid var(--line);
+  transition: transform 0.2s ease;
+}
+
+.portfolio-thumb:hover img {
+  transform: scale(1.02);
 }
 
 .portfolio-card .meta {
@@ -764,7 +896,129 @@ textarea {
   color: var(--brand2);
 }
 
+/* ============================================
+   3-WAY MOTION WALL (Reusable Component)
+   ============================================ */
 
+.motion-wall {
+  display: grid;
+  gap: 14px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(29, 78, 216, 0.02), rgba(225, 29, 46, 0.02));
+  padding: 8px 0;
+}
+
+.motion-wall-row {
+  overflow: hidden;
+  position: relative;
+}
+
+.motion-wall-track {
+  display: inline-flex;
+  gap: 14px;
+  width: max-content;
+  animation: motion-wall-slide var(--motion-duration, 60s) linear infinite;
+  animation-direction: var(--motion-direction, normal);
+  cursor: grab;
+  will-change: transform;
+  padding: 4px;
+}
+
+.motion-wall-track.is-paused {
+  animation-play-state: paused;
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(29, 78, 216, 0.3) transparent;
+}
+
+.motion-wall-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.motion-wall-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.motion-wall-track::-webkit-scrollbar-thumb {
+  background: rgba(29, 78, 216, 0.3);
+  border-radius: 3px;
+}
+
+.motion-wall-track:active {
+  cursor: grabbing;
+}
+
+.motion-wall-tile {
+  width: clamp(160px, 20vw, 280px);
+  flex: 0 0 auto;
+  border: none;
+  background: transparent;
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.motion-wall-tile:hover {
+  transform: scale(1.03);
+}
+
+.motion-wall-tile:focus-visible {
+  outline: 2px solid var(--brand2);
+  outline-offset: 2px;
+}
+
+.motion-wall-tile img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(11, 16, 32, 0.12);
+}
+
+/* Skeleton tiles for loading state */
+.motion-wall-tile.skeleton-tile {
+  background: linear-gradient(90deg, rgba(11, 16, 32, 0.06), rgba(11, 16, 32, 0.12), rgba(11, 16, 32, 0.06));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease infinite;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+}
+
+@keyframes motion-wall-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Static grid fallback for reduced motion */
+.motion-wall--static {
+  padding: 16px;
+}
+
+.motion-wall-static-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.motion-wall-static-grid .motion-wall-tile {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-wall-track {
+    animation: none;
+  }
+}
+
+/* Legacy gallery wall support */
 .gallery-wall {
   display: grid;
   gap: 14px;
@@ -820,6 +1074,10 @@ textarea {
   }
 }
 
+/* ============================================
+   LIGHTBOX
+   ============================================ */
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -829,6 +1087,7 @@ textarea {
   justify-content: center;
   z-index: 2000;
   padding: 24px;
+  backdrop-filter: blur(8px);
 }
 
 .lightbox.is-open {
@@ -864,12 +1123,21 @@ textarea {
   border-radius: 999px;
   min-height: 44px;
   padding: 0 16px;
+  transition: background 0.15s ease;
+}
+
+.lightbox-controls button:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .lightbox-caption {
   color: rgba(255, 255, 255, 0.8);
   font-size: 0.95rem;
 }
+
+/* ============================================
+   CTA BAND
+   ============================================ */
 
 .cta-band {
   background: linear-gradient(135deg, rgba(29, 78, 216, 0.12), rgba(225, 29, 46, 0.12));
@@ -883,6 +1151,16 @@ textarea {
   font-family: "Manrope", system-ui, sans-serif;
   margin-bottom: 8px;
 }
+
+/* Catalogue CTA - special styling */
+.catalogue-cta {
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.12), rgba(18, 140, 126, 0.12));
+  border-color: rgba(37, 211, 102, 0.25);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
 
 .site-footer {
   padding: 48px 0 24px;
@@ -922,6 +1200,10 @@ textarea {
   color: var(--muted);
 }
 
+/* ============================================
+   CONTACT
+   ============================================ */
+
 .contact-grid {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 24px;
@@ -942,6 +1224,10 @@ textarea {
   margin-top: 16px;
 }
 
+/* ============================================
+   TOAST
+   ============================================ */
+
 .toast {
   position: fixed;
   bottom: 24px;
@@ -960,6 +1246,10 @@ textarea {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ============================================
+   ORDER HERO
+   ============================================ */
 
 .order-hero {
   position: relative;
@@ -998,14 +1288,29 @@ textarea {
   margin: 0 auto;
 }
 
+.order-hero .hero-content h1,
+.order-hero .hero-content p,
+.order-hero .hero-content .eyebrow {
+  color: #fff;
+}
+
+.order-hero .hero-content .lead {
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .order-hero .hero-actions {
   justify-content: center;
 }
+
+/* ============================================
+   SERVICE ROWS
+   ============================================ */
 
 .service-row {
   display: grid;
   gap: 24px;
   align-items: center;
+  margin-bottom: 32px;
 }
 
 .service-row img,
@@ -1020,6 +1325,14 @@ textarea {
   display: grid;
   gap: 10px;
 }
+
+.service-meta h2 {
+  font-family: "Manrope", system-ui, sans-serif;
+}
+
+/* ============================================
+   WORK WALL
+   ============================================ */
 
 .work-wall {
   column-count: 2;
@@ -1040,7 +1353,16 @@ textarea {
   width: 100%;
   border-radius: 16px;
   border: 1px solid var(--line);
+  transition: transform 0.2s ease;
 }
+
+.work-wall .work-card:hover img {
+  transform: scale(1.02);
+}
+
+/* ============================================
+   SKELETON LOADERS
+   ============================================ */
 
 .skeleton {
   background: linear-gradient(90deg, rgba(11, 16, 32, 0.05), rgba(11, 16, 32, 0.12), rgba(11, 16, 32, 0.05));
@@ -1048,6 +1370,11 @@ textarea {
   animation: shimmer 1.4s ease infinite;
   border-radius: var(--radius);
   height: 220px;
+}
+
+.theme-dark .skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  background-size: 200% 100%;
 }
 
 @keyframes shimmer {
@@ -1058,6 +1385,10 @@ textarea {
     background-position: -200% 0;
   }
 }
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
 
 @media (min-width: 480px) {
   .hero-actions {
@@ -1110,6 +1441,10 @@ textarea {
 
   .work-wall {
     column-count: 3;
+  }
+
+  .motion-wall-tile {
+    width: clamp(180px, 22vw, 300px);
   }
 }
 
@@ -1176,7 +1511,10 @@ textarea {
   .toast,
   .card,
   .logo-wrap::after,
-  .skeleton {
+  .skeleton,
+  .motion-wall-track,
+  .gallery-wall-track,
+  .promo-track {
     transition: none;
     animation: none;
   }
