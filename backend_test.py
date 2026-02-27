@@ -34,38 +34,39 @@ class ExpressBannersAPITest:
                 "max": "5"
             })
             
-            # Should return 500 (no Cloudinary env vars) but as JSON
+            # Production should return 200 with media items (has Cloudinary env vars)
             content_type = response.headers.get('content-type', '')
             is_json = 'application/json' in content_type
             
-            if response.status_code == 500 and is_json:
+            if response.status_code == 200 and is_json:
                 try:
                     data = response.json()
-                    has_error = 'error' in data
+                    has_folder = 'folder' in data
+                    has_items = 'items' in data and isinstance(data['items'], list)
                     self.log_test(
-                        "GET /media?folder=... returns 500 JSON (expected without Cloudinary)",
-                        True,
-                        f"Status: {response.status_code}, Content-Type: {content_type}, Has error field: {has_error}"
+                        "GET /media?folder=... returns 200 JSON with media items",
+                        has_folder and has_items,
+                        f"Status: {response.status_code}, Content-Type: {content_type}, Folder: {data.get('folder')}, Items count: {len(data.get('items', []))}"
                     )
-                    return True
+                    return has_folder and has_items
                 except json.JSONDecodeError:
                     self.log_test(
-                        "GET /media?folder=... returns 500 JSON (expected without Cloudinary)",
+                        "GET /media?folder=... returns 200 JSON with media items",
                         False,
                         f"Response not valid JSON despite content-type: {content_type}"
                     )
                     return False
             else:
                 self.log_test(
-                    "GET /media?folder=... returns 500 JSON (expected without Cloudinary)",
+                    "GET /media?folder=... returns 200 JSON with media items",
                     False,
-                    f"Expected 500 with JSON, got {response.status_code} with {content_type}"
+                    f"Expected 200 with JSON, got {response.status_code} with {content_type}"
                 )
                 return False
                 
         except Exception as e:
             self.log_test(
-                "GET /media?folder=... returns 500 JSON (expected without Cloudinary)",
+                "GET /media?folder=... returns 200 JSON with media items",
                 False,
                 f"Request failed: {str(e)}"
             )
