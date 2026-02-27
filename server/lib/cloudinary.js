@@ -25,10 +25,7 @@ const parsePositiveInt = (value, fallback) => {
 
 const CACHE_TTL_SECONDS = parsePositiveInt(process.env.GALLERY_CACHE_TTL_SECONDS, 3600);
 
-const cache = {
-  gallery: { value: null, expiresAt: 0 },
-  services: { value: null, expiresAt: 0 },
-};
+const cache = {};
 
 const withCache = async (key, buildFn) => {
   const now = Date.now();
@@ -43,6 +40,27 @@ const withCache = async (key, buildFn) => {
     expiresAt: now + CACHE_TTL_SECONDS * 1000,
   };
   return value;
+};
+
+const listByPrefix = async (folder, max = 50) => {
+  const prefix = folder.endsWith("/") ? folder : `${folder}/`;
+  const resources = [];
+  let nextCursor;
+
+  do {
+    const opts = {
+      type: "upload",
+      prefix,
+      max_results: Math.min(max - resources.length, 500),
+    };
+    if (nextCursor) opts.next_cursor = nextCursor;
+
+    const result = await cloudinary.api.resources(opts);
+    resources.push(...(result.resources || []));
+    nextCursor = result.next_cursor;
+  } while (nextCursor && resources.length < max);
+
+  return resources.slice(0, max);
 };
 
 const searchAll = async ({ expression, resourceType, maxResults = 100 }) => {
