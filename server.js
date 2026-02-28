@@ -13,6 +13,7 @@ const {
 
 // Cloudinary folder roots: set these to match your media organization.
 const CATALOGUE_FOLDER = "expressbanners/catalogue";
+const GALLERY_MAX_RESULTS = Math.min(Math.max(Number.parseInt(process.env.GALLERY_MAX_RESULTS || "200", 10) || 200, 1), 500);
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || "8080", 10);
@@ -23,12 +24,44 @@ const setResponseCacheHeaders = (res) => {
   res.set("Cache-Control", `public, max-age=300, s-maxage=${CACHE_TTL_SECONDS}`);
 };
 
+const normalizeTagList = (rawTags) => {
+  const source = Array.isArray(rawTags) ? rawTags.join(",") : String(rawTags || "");
+  return source
+    .split(",")
+    .map((tag) => tag.trim().toLowerCase())
+    .filter(Boolean)
+    .filter((tag, index, arr) => arr.indexOf(tag) === index);
+};
+
 app.get("/api/gallery", async (req, res) => {
   setResponseCacheHeaders(res);
   try {
     ensureCloudinaryConfig();
-    const payload = await withCache("gallery", async () => {
-      const images = await listByFolder(CATALOGUE_FOLDER, 100);
+    const tags = normalizeTagList(req.query.tags);
+    const cacheKey = tags.length ? `gallery:tags:${tags.join("|")}` : "gallery";
+
+    const payload = await withCache(cacheKey, async () => {
+      let images = [];
+
+      if (tags.length) {
+        // Tag mode: fetch images for each tag and merge unique assets.
+        const tagResults = await Promise.all(
+          tags.map((tag) => searchAll({
+            expression: `tags=${tag}`,
+            resourceType: "image",
+            maxResults: 100,
+          }))
+        );
+        const byId = new Map();
+        tagResults.flat().forEach((asset) => {
+          if (asset?.public_id && !byId.has(asset.public_id)) {
+            byId.set(asset.public_id, asset);
+          }
+        });
+        images = [...byId.values()].slice(0, GALLERY_MAX_RESULTS);
+      } else {
+        images = await listByFolder(CATALOGUE_FOLDER, GALLERY_MAX_RESULTS);
+      }
 
       const items = images
         .filter((asset) => asset.resource_type === "image")
@@ -48,6 +81,7 @@ app.get("/api/gallery", async (req, res) => {
 
       return {
         updatedAt: new Date().toISOString(),
+        tags,
         items,
       };
     });
@@ -57,6 +91,7 @@ app.get("/api/gallery", async (req, res) => {
     console.error("/api/gallery error:", error.message || error);
     res.status(500).json({
       updatedAt: new Date().toISOString(),
+      tags: normalizeTagList(req.query.tags),
       items: [],
       error: "Unable to load gallery media.",
     });
@@ -173,15 +208,22 @@ app.get("/media", async (req, res) => {
     const payload = await withCache(cacheKey, async () => {
       const resources = await listByFolder(folder, max);
 
-      const items = resources.map((asset) => ({
-        public_id: asset.public_id,
-        secure_url: asset.secure_url,
-        width: asset.width,
-        height: asset.height,
-        format: asset.format,
-        created_at: asset.created_at,
-        resource_type: asset.resource_type,
-      }));
+      const items = resources
+        .filter((asset) => asset.resource_type === "image")
+        .map((asset) => ({
+          public_id: asset.public_id,
+          secure_url: asset.secure_url || cloudinary.url(asset.public_id, {
+            secure: true,
+            format: asset.format,
+            fetch_format: "auto",
+            quality: "auto",
+          }),
+          width: asset.width,
+          height: asset.height,
+          format: asset.format,
+          created_at: asset.created_at,
+          resource_type: asset.resource_type,
+        }));
 
       return {
         folder,
