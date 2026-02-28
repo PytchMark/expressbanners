@@ -100,12 +100,12 @@
       <section class="section theme-light" aria-labelledby="gallery-title">
         <div class="container">
           <div class="section-head reveal">
-            <p class="eyebrow">Gallery Wall</p>
+            <p class="eyebrow">Gallery Categories</p>
             <h2 id="gallery-title">Browse our <span class="em">quality</span> work.</h2>
-            <p>Scroll through the 3-way motion gallery. Tap any image for details.</p>
+            <p>Explore one horizontal row per category and tap any thumbnail for preview.</p>
           </div>
 
-          <div class="motion-wall" data-gallery-wall data-testid="portfolio-motion-wall" aria-live="polite"></div>
+          <div class="gallery-categories" data-gallery-categories aria-live="polite"></div>
 
           <div class="cta-band reveal" style="margin-top: 32px;">
             <h3>Turn your idea into a finished print.</h3>
@@ -146,6 +146,15 @@
       </div>
     </div>
 
+    <div class="gallery-preview" data-gallery-modal role="dialog" aria-modal="true" aria-label="Gallery preview">
+      <div class="gallery-preview-dialog">
+        <button type="button" class="gallery-preview-close" data-gallery-modal-close aria-label="Close preview">Close</button>
+        <div class="gallery-preview-media" data-gallery-modal-body></div>
+        <p class="gallery-preview-title" data-gallery-modal-title></p>
+        <p class="gallery-preview-meta" data-gallery-modal-meta></p>
+      </div>
+    </div>
+
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
@@ -181,5 +190,6 @@
     <div class="toast" role="status" aria-live="polite" data-toast></div>
 
     <script src="../js/app.js"></script>
+    <script src="../js/gallery.js"></script>
   </body>
 </html>

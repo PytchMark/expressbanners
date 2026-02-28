@@ -43,7 +43,8 @@ A premium, mobile-first static website for Express Banners Jamaica, built for Gi
 ├── css/
 │   └── styles.css      # All styles
 ├── js/
-│   └── app.js          # All JavaScript
+│   ├── app.js          # Shared site JavaScript
+│   └── gallery.js      # Portfolio category gallery rows + preview modal
 ├── data/
 │   ├── settings.json   # Site configuration
 │   └── portfolio.json  # Portfolio items
@@ -126,6 +127,40 @@ Use `.em` class for blue accent on important words only:
 - [ ] No layout shift on load
 
 ---
+
+### Local Cloudinary Setup
+
+1. Copy `.env.example` to `.env`.
+2. Fill in:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+   - optional `CLOUDINARY_FOLDER`
+3. Start the server:
+
+```bash
+npm install
+npm start
+```
+
+The backend keeps Cloudinary secrets server-side and exposes safe JSON endpoints to the frontend.
+
+### Gallery API (Tag-based)
+
+```
+GET /api/gallery?tag=<tag>&limit=<n>&cursor=<next_cursor>
+```
+
+- Uses Cloudinary Search API with newest-first sorting.
+- Supports pagination through `next_cursor`.
+- Returns both images and videos (images are listed first for simpler UI).
+
+Example checks for the two test categories:
+
+```bash
+curl "http://localhost:8080/api/gallery?tag=promoprints&limit=24"
+curl "http://localhost:8080/api/gallery?tag=embroidery&limit=24"
+```
 
 ## Deployment
 

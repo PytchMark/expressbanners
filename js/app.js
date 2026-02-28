@@ -84,6 +84,18 @@ const fetchMedia = async (folder, max = 50) => {
  * Convert Cloudinary items to portfolio-compatible objects
  */
 
+const fetchGalleryByTag = async (tag, limit = 50, cursor = "") => {
+  const params = new URLSearchParams({ tag, limit: String(limit) });
+  if (cursor) params.set("cursor", cursor);
+  const resp = await fetch(`/api/gallery?${params.toString()}`);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const contentType = resp.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new Error("Response is not JSON (likely HTML fallback)");
+  }
+  return resp.json();
+};
+
 const fetchGallery = async (tags = []) => {
   const normalizedTags = [...new Set((tags || []).map((tag) => String(tag || "").trim().toLowerCase()).filter(Boolean))];
   const cacheKey = `gallery_cache:${normalizedTags.join("|") || "all"}`;
@@ -101,14 +113,25 @@ const fetchGallery = async (tags = []) => {
   }
 
   try {
-    const query = normalizedTags.length ? `?tags=${encodeURIComponent(normalizedTags.join(","))}` : "";
-    const resp = await fetch(`/api/gallery${query}`);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const contentType = resp.headers.get("content-type") || "";
-    if (!contentType.includes("application/json")) {
-      throw new Error("Response is not JSON (likely HTML fallback)");
+    const merged = [];
+    const seen = new Set();
+
+    for (const tag of normalizedTags) {
+      let cursor = "";
+      let pages = 0;
+      do {
+        const data = await fetchGalleryByTag(tag, 50, cursor);
+        (data.assets || []).forEach((item) => {
+          if (!item?.public_id || seen.has(item.public_id)) return;
+          seen.add(item.public_id);
+          merged.push(item);
+        });
+        cursor = data.next_cursor || "";
+        pages += 1;
+      } while (cursor && pages < 6);
     }
-    const data = await resp.json();
+
+    const data = { updatedAt: new Date().toISOString(), items: merged };
     if (data.items?.length) {
       try {
         localStorage.setItem(cacheKey, JSON.stringify({
@@ -125,6 +148,7 @@ const fetchGallery = async (tags = []) => {
     return { updatedAt: new Date().toISOString(), items: [] };
   }
 };
+
 const mediaItemsToPortfolio = (items, category = "Portfolio") => {
   return items.map((item, idx) => ({
     id: `cloud-${item.public_id.replace(/[^a-zA-Z0-9]/g, "-")}-${idx}`,

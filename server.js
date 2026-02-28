@@ -4,16 +4,9 @@ const {
   cloudinary,
   ensureCloudinaryConfig,
   withCache,
-  searchAll,
   listByFolder,
-  listByPrefix,
-  folderFromPublicId,
   CACHE_TTL_SECONDS,
 } = require("./server/lib/cloudinary");
-
-// Cloudinary folder roots: set these to match your media organization.
-const CATALOGUE_FOLDER = "expressbanners/catalogue";
-const GALLERY_MAX_RESULTS = Math.min(Math.max(Number.parseInt(process.env.GALLERY_MAX_RESULTS || "200", 10) || 200, 1), 500);
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || "8080", 10);
@@ -24,75 +17,76 @@ const setResponseCacheHeaders = (res) => {
   res.set("Cache-Control", `public, max-age=300, s-maxage=${CACHE_TTL_SECONDS}`);
 };
 
-const normalizeTagList = (rawTags) => {
-  const source = Array.isArray(rawTags) ? rawTags.join(",") : String(rawTags || "");
-  return source
-    .split(",")
-    .map((tag) => tag.trim().toLowerCase())
-    .filter(Boolean)
-    .filter((tag, index, arr) => arr.indexOf(tag) === index);
-};
 
 app.get("/api/gallery", async (req, res) => {
   setResponseCacheHeaders(res);
+
+  const tag = String(req.query.tag || "").trim().toLowerCase();
+  const limit = Math.min(Math.max(Number.parseInt(req.query.limit, 10) || 24, 1), 100);
+  const cursor = String(req.query.cursor || "").trim();
+
+  if (!tag) {
+    return res.status(400).json({
+      ok: false,
+      error: "tag query parameter is required",
+      assets: [],
+    });
+  }
+
   try {
     ensureCloudinaryConfig();
-    const tags = normalizeTagList(req.query.tags);
-    const cacheKey = tags.length ? `gallery:tags:${tags.join("|")}` : "gallery";
+    const expression = `tags=${tag}`;
+    const query = cloudinary.search
+      .expression(expression)
+      .max_results(limit)
+      .sort_by("created_at", "desc");
 
-    const payload = await withCache(cacheKey, async () => {
-      let images = [];
+    if (cursor) {
+      query.next_cursor(cursor);
+    }
 
-      if (tags.length) {
-        // Tag mode: fetch images for each tag and merge unique assets.
-        const tagResults = await Promise.all(
-          tags.map((tag) => searchAll({
-            expression: `tags=${tag}`,
-            resourceType: "image",
-            maxResults: 100,
-          }))
-        );
-        const byId = new Map();
-        tagResults.flat().forEach((asset) => {
-          if (asset?.public_id && !byId.has(asset.public_id)) {
-            byId.set(asset.public_id, asset);
-          }
-        });
-        images = [...byId.values()].slice(0, GALLERY_MAX_RESULTS);
-      } else {
-        images = await listByFolder(CATALOGUE_FOLDER, GALLERY_MAX_RESULTS);
-      }
+    const result = await query.execute();
 
-      const items = images
-        .filter((asset) => asset.resource_type === "image")
-        .map((asset) => ({
-          public_id: asset.public_id,
-          secure_url: asset.secure_url || cloudinary.url(asset.public_id, {
-            secure: true,
-            format: asset.format,
-            fetch_format: "auto",
-            quality: "auto",
-          }),
-          width: asset.width,
-          height: asset.height,
+    const assets = (result.resources || [])
+      .filter((asset) => asset?.public_id && ["image", "video"].includes(asset.resource_type))
+      .sort((a, b) => {
+        if (a.resource_type === b.resource_type) return 0;
+        if (a.resource_type === "image") return -1;
+        return 1;
+      })
+      .map((asset) => ({
+        public_id: asset.public_id,
+        resource_type: asset.resource_type,
+        format: asset.format,
+        width: asset.width,
+        height: asset.height,
+        secure_url: asset.secure_url || cloudinary.url(asset.public_id, {
+          secure: true,
+          resource_type: asset.resource_type,
           format: asset.format,
-          folder: asset.asset_folder || CATALOGUE_FOLDER,
-        }));
+          fetch_format: "auto",
+          quality: "auto",
+        }),
+        created_at: asset.created_at,
+      }));
 
-      return {
-        updatedAt: new Date().toISOString(),
-        tags,
-        items,
-      };
+    return res.json({
+      ok: true,
+      tag,
+      assets,
+      next_cursor: result.next_cursor || null,
     });
-
-    res.json(payload);
   } catch (error) {
-    console.error("/api/gallery error:", error.message || error);
-    res.status(500).json({
-      updatedAt: new Date().toISOString(),
-      tags: normalizeTagList(req.query.tags),
-      items: [],
+    console.error(`/api/gallery error for tag="${tag}":`, {
+      message: error.message || String(error),
+      name: error.name,
+      http_code: error.http_code,
+    });
+    return res.status(500).json({
+      ok: false,
+      tag,
+      assets: [],
+      next_cursor: null,
       error: "Unable to load gallery media.",
     });
   }
