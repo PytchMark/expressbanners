@@ -82,6 +82,46 @@ const fetchMedia = async (folder, max = 50) => {
 /**
  * Convert Cloudinary items to portfolio-compatible objects
  */
+
+const fetchGallery = async () => {
+  const cacheKey = "gallery_cache";
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed.expiresAt > Date.now() && parsed.data?.items?.length) {
+        return parsed.data;
+      }
+      localStorage.removeItem(cacheKey);
+    }
+  } catch (e) {
+    // ignore corrupt cache
+  }
+
+  try {
+    const resp = await fetch("/api/gallery");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const contentType = resp.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("Response is not JSON (likely HTML fallback)");
+    }
+    const data = await resp.json();
+    if (data.items?.length) {
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({
+          data,
+          expiresAt: Date.now() + MEDIA_CACHE_TTL,
+        }));
+      } catch (e) {
+        // localStorage full, ignore
+      }
+    }
+    return data;
+  } catch (error) {
+    console.warn("fetchGallery() failed:", error.message);
+    return { updatedAt: new Date().toISOString(), items: [] };
+  }
+};
 const mediaItemsToPortfolio = (items, category = "Portfolio") => {
   return items.map((item, idx) => ({
     id: `cloud-${item.public_id.replace(/[^a-zA-Z0-9]/g, "-")}-${idx}`,
@@ -1153,11 +1193,18 @@ const initAllMotionWalls = () => {
  * Load real Cloudinary media for portfolio grids and motion walls
  */
 const loadCloudinaryMedia = async () => {
-  // Load catalogue media for portfolio/motion walls
-  const catalogueData = await fetchMedia(FOLDER_MAP.portfolio, 60);
-  if (catalogueData.items.length) {
-    const cloudItems = mediaItemsToPortfolio(catalogueData.items, "Portfolio");
+  // Prefer dedicated gallery endpoint to get full Cloudinary image set
+  const galleryData = await fetchGallery();
+  if (galleryData.items.length) {
+    const cloudItems = mediaItemsToPortfolio(galleryData.items, "Portfolio");
     state.portfolio = cloudItems;
+  } else {
+    // Fallback to /media endpoint for compatibility
+    const catalogueData = await fetchMedia(FOLDER_MAP.portfolio, 200);
+    if (catalogueData.items.length) {
+      const cloudItems = mediaItemsToPortfolio(catalogueData.items, "Portfolio");
+      state.portfolio = cloudItems;
+    }
   }
 
   // Re-render everything with real Cloudinary data

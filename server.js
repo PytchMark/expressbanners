@@ -13,6 +13,7 @@ const {
 
 // Cloudinary folder roots: set these to match your media organization.
 const CATALOGUE_FOLDER = "expressbanners/catalogue";
+const GALLERY_MAX_RESULTS = Math.min(Math.max(Number.parseInt(process.env.GALLERY_MAX_RESULTS || "200", 10) || 200, 1), 500);
 
 const app = express();
 const port = Number.parseInt(process.env.PORT || "8080", 10);
@@ -28,7 +29,7 @@ app.get("/api/gallery", async (req, res) => {
   try {
     ensureCloudinaryConfig();
     const payload = await withCache("gallery", async () => {
-      const images = await listByFolder(CATALOGUE_FOLDER, 100);
+      const images = await listByFolder(CATALOGUE_FOLDER, GALLERY_MAX_RESULTS);
 
       const items = images
         .filter((asset) => asset.resource_type === "image")
@@ -173,15 +174,22 @@ app.get("/media", async (req, res) => {
     const payload = await withCache(cacheKey, async () => {
       const resources = await listByFolder(folder, max);
 
-      const items = resources.map((asset) => ({
-        public_id: asset.public_id,
-        secure_url: asset.secure_url,
-        width: asset.width,
-        height: asset.height,
-        format: asset.format,
-        created_at: asset.created_at,
-        resource_type: asset.resource_type,
-      }));
+      const items = resources
+        .filter((asset) => asset.resource_type === "image")
+        .map((asset) => ({
+          public_id: asset.public_id,
+          secure_url: asset.secure_url || cloudinary.url(asset.public_id, {
+            secure: true,
+            format: asset.format,
+            fetch_format: "auto",
+            quality: "auto",
+          }),
+          width: asset.width,
+          height: asset.height,
+          format: asset.format,
+          created_at: asset.created_at,
+          resource_type: asset.resource_type,
+        }));
 
       return {
         folder,
