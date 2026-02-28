@@ -442,7 +442,7 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 999px;
 }
 
 .logo-wrap::after {
@@ -478,6 +478,9 @@ textarea:focus-visible {
 .nav-logo img {
   width: 120px;
   height: auto;
+  border-radius: 999px;
+  filter: drop-shadow(0 8px 20px rgba(15, 23, 42, 0.35)) drop-shadow(0 0 14px rgba(59, 130, 246, 0.32))
+    drop-shadow(0 0 24px rgba(239, 68, 68, 0.18));
 }
 
 .nav-toggle {
