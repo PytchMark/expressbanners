@@ -35,6 +35,7 @@ const FOLDER_MAP = {
 };
 
 const MEDIA_CACHE_TTL = 12 * 60 * 60 * 1000; // 12 hours
+const PORTFOLIO_TAGS = ["promoprints", "embroidery"];
 
 /**
  * MediaLoader: fetch from /media endpoint with localStorage cache
@@ -83,8 +84,9 @@ const fetchMedia = async (folder, max = 50) => {
  * Convert Cloudinary items to portfolio-compatible objects
  */
 
-const fetchGallery = async () => {
-  const cacheKey = "gallery_cache";
+const fetchGallery = async (tags = []) => {
+  const normalizedTags = [...new Set((tags || []).map((tag) => String(tag || "").trim().toLowerCase()).filter(Boolean))];
+  const cacheKey = `gallery_cache:${normalizedTags.join("|") || "all"}`;
   try {
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
@@ -99,7 +101,8 @@ const fetchGallery = async () => {
   }
 
   try {
-    const resp = await fetch("/api/gallery");
+    const query = normalizedTags.length ? `?tags=${encodeURIComponent(normalizedTags.join(","))}` : "";
+    const resp = await fetch(`/api/gallery${query}`);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const contentType = resp.headers.get("content-type") || "";
     if (!contentType.includes("application/json")) {
@@ -1194,9 +1197,17 @@ const initAllMotionWalls = () => {
  */
 const loadCloudinaryMedia = async () => {
   // Prefer dedicated gallery endpoint to get full Cloudinary image set
-  const galleryData = await fetchGallery();
+  const galleryData = await fetchGallery(PORTFOLIO_TAGS);
   if (galleryData.items.length) {
-    const cloudItems = mediaItemsToPortfolio(galleryData.items, "Portfolio");
+    const uniqueItems = [];
+    const seen = new Set();
+    galleryData.items.forEach((item) => {
+      if (!item?.public_id || seen.has(item.public_id)) return;
+      seen.add(item.public_id);
+      uniqueItems.push(item);
+    });
+
+    const cloudItems = mediaItemsToPortfolio(uniqueItems, "Portfolio");
     state.portfolio = cloudItems;
   } else {
     // Fallback to /media endpoint for compatibility

@@ -24,12 +24,44 @@ const setResponseCacheHeaders = (res) => {
   res.set("Cache-Control", `public, max-age=300, s-maxage=${CACHE_TTL_SECONDS}`);
 };
 
+const normalizeTagList = (rawTags) => {
+  const source = Array.isArray(rawTags) ? rawTags.join(",") : String(rawTags || "");
+  return source
+    .split(",")
+    .map((tag) => tag.trim().toLowerCase())
+    .filter(Boolean)
+    .filter((tag, index, arr) => arr.indexOf(tag) === index);
+};
+
 app.get("/api/gallery", async (req, res) => {
   setResponseCacheHeaders(res);
   try {
     ensureCloudinaryConfig();
-    const payload = await withCache("gallery", async () => {
-      const images = await listByFolder(CATALOGUE_FOLDER, GALLERY_MAX_RESULTS);
+    const tags = normalizeTagList(req.query.tags);
+    const cacheKey = tags.length ? `gallery:tags:${tags.join("|")}` : "gallery";
+
+    const payload = await withCache(cacheKey, async () => {
+      let images = [];
+
+      if (tags.length) {
+        // Tag mode: fetch images for each tag and merge unique assets.
+        const tagResults = await Promise.all(
+          tags.map((tag) => searchAll({
+            expression: `tags=${tag}`,
+            resourceType: "image",
+            maxResults: 100,
+          }))
+        );
+        const byId = new Map();
+        tagResults.flat().forEach((asset) => {
+          if (asset?.public_id && !byId.has(asset.public_id)) {
+            byId.set(asset.public_id, asset);
+          }
+        });
+        images = [...byId.values()].slice(0, GALLERY_MAX_RESULTS);
+      } else {
+        images = await listByFolder(CATALOGUE_FOLDER, GALLERY_MAX_RESULTS);
+      }
 
       const items = images
         .filter((asset) => asset.resource_type === "image")
@@ -49,6 +81,7 @@ app.get("/api/gallery", async (req, res) => {
 
       return {
         updatedAt: new Date().toISOString(),
+        tags,
         items,
       };
     });
@@ -58,6 +91,7 @@ app.get("/api/gallery", async (req, res) => {
     console.error("/api/gallery error:", error.message || error);
     res.status(500).json({
       updatedAt: new Date().toISOString(),
+      tags: normalizeTagList(req.query.tags),
       items: [],
       error: "Unable to load gallery media.",
     });
