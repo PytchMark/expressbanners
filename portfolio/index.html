@@ -147,8 +147,19 @@
     </div>
 
     <div class="gallery-preview" data-gallery-modal role="dialog" aria-modal="true" aria-label="Gallery preview" data-testid="gallery-modal">
+      <button type="button" class="gallery-nav gallery-nav-prev" data-gallery-modal-prev aria-label="Previous image" data-testid="gallery-modal-prev">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button type="button" class="gallery-nav gallery-nav-next" data-gallery-modal-next aria-label="Next image" data-testid="gallery-modal-next">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
       <div class="gallery-preview-dialog" data-testid="gallery-modal-dialog">
-        <button type="button" class="gallery-preview-close" data-gallery-modal-close aria-label="Close preview" data-testid="gallery-modal-close">Close</button>
+        <div class="gallery-preview-header">
+          <span class="gallery-preview-counter" data-gallery-modal-counter data-testid="gallery-modal-counter">1 / 1</span>
+          <button type="button" class="gallery-preview-close" data-gallery-modal-close aria-label="Close preview" data-testid="gallery-modal-close">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
         <div class="gallery-preview-media" data-gallery-modal-body data-testid="gallery-modal-body"></div>
         <p class="gallery-preview-title" data-gallery-modal-title data-testid="gallery-modal-title"></p>
         <p class="gallery-preview-meta" data-gallery-modal-meta data-testid="gallery-modal-meta"></p>
