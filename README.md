@@ -151,15 +151,46 @@ The backend keeps Cloudinary secrets server-side and exposes safe JSON endpoints
 GET /api/gallery?tag=<tag>&limit=<n>&cursor=<next_cursor>
 ```
 
-- Uses Cloudinary Search API with newest-first sorting.
+- Uses Cloudinary Search API securely on the backend (API secret never exposed to frontend).
+- Newest-first sorting.
 - Supports pagination through `next_cursor`.
-- Returns both images and videos (images are listed first for simpler UI).
+- Returns both images and videos (images listed first for simpler UI).
 
-Example checks for the two test categories:
+**Current Tag Categories:**
+
+| Tag | Category Title | Description |
+|---|---|---|
+| `promoprints` | Promotional Printing | Flyers, cards, labels & more |
+| `embroidery` | Embroidery | Premium stitching for uniforms & merch |
+
+Example checks:
 
 ```bash
-curl "http://localhost:8080/api/gallery?tag=promoprints&limit=24"
-curl "http://localhost:8080/api/gallery?tag=embroidery&limit=24"
+# Test promoprints tag (should return ~65 assets)
+curl "http://localhost:8001/api/gallery?tag=promoprints&limit=24"
+
+# Test embroidery tag (should return ~17 assets)
+curl "http://localhost:8001/api/gallery?tag=embroidery&limit=24"
+```
+
+**Response format:**
+```json
+{
+  "ok": true,
+  "tag": "promoprints",
+  "assets": [
+    {
+      "public_id": "Screenshot_20260208...",
+      "resource_type": "image",
+      "format": "jpg",
+      "width": 560,
+      "height": 885,
+      "secure_url": "https://res.cloudinary.com/...",
+      "created_at": "2026-02-14T03:27:37+00:00"
+    }
+  ],
+  "next_cursor": "..." 
+}
 ```
 
 ## Deployment

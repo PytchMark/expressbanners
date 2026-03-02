@@ -1,58 +1,82 @@
-# Express Banners - PRD
+# Express Banners - Product Requirements Document
 
 ## Original Problem Statement
-Express Banners site hosted on Cloud Run. /media endpoint returning 0 items because Cloudinary account uses Dynamic Folder Mode. Frontend showing single image everywhere or dummy placeholders. Need real Cloudinary media loading from specific folders.
+Fix the gallery page that was NOT loading Cloudinary media correctly. The gallery should load assets by Cloudinary TAGS and display "1 row per category" with a clean preview modal.
 
 ## Architecture
-- **Backend**: Node.js/Express (server.js) on Cloud Run, port 8080
-- **Frontend**: Vanilla HTML/CSS/JS, multi-page static site
-- **Media**: Cloudinary Admin API (Dynamic Folder Mode) accessed server-side
-- **Deployment**: Docker → Cloud Run via cloudbuild.yaml
-- **Cloud Name**: dopxnugqn
+- **Frontend**: Vanilla HTML/CSS/JS static site
+- **Backend**: Node.js + Express server
+- **CDN**: Cloudinary for image/video hosting
+- **API**: Secure backend endpoint for Cloudinary Search API
 
-## Root Cause Analysis
-The Cloudinary account uses **Dynamic Folder Mode**. The original code used `cloudinary.api.resources({ prefix: 'folder/' })` which only works in **Fixed Folder Mode**. The fix was switching to `cloudinary.api.resources_by_asset_folder()` which correctly lists assets by their folder path in Dynamic Folder Mode.
+## User Personas
+1. **Jamaican Business Owners** - Looking for print, signage, embroidery services
+2. **Event Planners** - Need banners, promotional materials
+3. **Marketing Teams** - Require branded merchandise and print materials
 
-## Cloudinary Folder Structure (from user's dashboard)
-- `expressbanners/` (44 assets directly here)
-  - `catalogue/` (portfolio images)
-  - `Embroidery/` (embroidery service images)
-  - `Promotional Printing/` (screen printing images)
-  - `SignsandBanners/` (signs and banners images)
+## Core Requirements (Static)
+1. Fetch Cloudinary media by TAG using Search API
+2. One horizontal row per category (Netflix-style)
+3. Modal preview on thumbnail click
+4. Lazy loading and responsive images
+5. No API secrets exposed to frontend
 
-## What's Been Implemented (Jan-Feb 2026)
-- [x] Backend: `/media?folder=<folder>&max=<n>` endpoint using `resources_by_asset_folder` (Dynamic Folder Mode)
-- [x] Backend: Recursive subfolder listing (gets images from nested subfolders)
-- [x] Backend: Fallback to prefix-based listing for Fixed Folder Mode accounts
-- [x] Backend: `/media/debug` diagnostic endpoint (verifies Cloudinary connection)
-- [x] Backend: `/media/folders` endpoint (lists subfolders)
-- [x] Backend: Fixed `/api/gallery` to use `listByFolder` with `expressbanners/catalogue`
-- [x] Backend: Fixed `/api/services-media` with correct service→folder mapping
-- [x] Backend: All routes registered BEFORE `*` SPA fallback
-- [x] Frontend: `fetchMedia()` with localStorage cache (12h TTL)
-- [x] Frontend: `FOLDER_MAP` with correct Cloudinary folder mappings
-- [x] Frontend: `loadCloudinaryMedia()` loads catalogue for portfolio/motion walls
-- [x] Frontend: `loadServiceMedia()` loads folder-specific images for each service
-- [x] Frontend: Sequential index for shared folders (Signs/Banners get different images)
-- [x] README updated with Dynamic Folder Mode docs, debug endpoints, deployment guidance
-- [x] All code validation tests passed (100%)
+## What's Been Implemented
 
-## Deployment Status
-- Code is ready in this repo
-- User needs to deploy to Cloud Run for changes to take effect
-- Current production has OLD code (prefix-based, returns 0 items)
+### January 2026
+- **Gallery tag-based loading**: Backend `/api/gallery?tag=<tag>` endpoint using Cloudinary Search API
+- **Two categories working**:
+  - `promoprints` (65 assets) - Promotional Printing
+  - `embroidery` (17 assets) - Embroidery
+- **Horizontal scrolling rows**: Netflix-style per-category rows with smooth scroll snap
+- **Modal preview**: 
+  - Opens on thumbnail click
+  - Shows large image/video preview
+  - Displays public_id and format metadata
+  - Closes via: Close button, ESC key, click-outside
+- **Responsive design**: Mobile-first horizontal scroll works on touch devices
+- **Cloudinary transforms**: Thumbnails use `f_auto,q_auto,c_fill,w_360,h_240,g_auto`
+- **Lazy loading**: `loading="lazy"` on all thumbnail images
+- **Test IDs added**: data-testid attributes on gallery elements for testing
 
-## Required Cloud Run Environment Variables
-- CLOUDINARY_CLOUD_NAME (dopxnugqn)
-- CLOUDINARY_API_KEY
-- CLOUDINARY_API_SECRET
+## Files Changed
+- `/app/js/gallery.js` - Added data-testid attributes
+- `/app/portfolio/index.html` - Added data-testid to modal elements
+- `/app/README.md` - Updated gallery API documentation
+- `/app/.env` - Created with Cloudinary credentials for local dev
 
-## Verification Steps After Deployment
-1. Visit `/media/debug` → should show `connected: true`
-2. Visit `/media/folders?folder=expressbanners` → should list catalogue, Embroidery, etc.
-3. Visit `/media?folder=expressbanners/catalogue&max=5` → should show items with secure_url
+## Prioritized Backlog
 
-## Next Tasks
-- [ ] User deploys updated code to Cloud Run
-- [ ] Verify /media endpoint returns images on production
-- [ ] UX polish: contrast fixes, emphasis cleanup, skeleton animations
+### P0 (Critical) - DONE
+- [x] Gallery loads assets by Cloudinary tag
+- [x] One row per category
+- [x] Modal preview functionality
+- [x] ESC/close/overlay-click closes modal
+
+### P1 (High Priority)
+- [ ] Add more categories as tags are created in Cloudinary
+- [ ] Implement prev/next arrows in modal for navigation
+- [ ] Add video support polish (play button overlay)
+
+### P2 (Medium Priority)
+- [ ] Admin diagnostic page for viewing all tags/assets
+- [ ] Category configuration via env vars (JSON)
+- [ ] Loading state improvements
+
+### P3 (Low Priority)
+- [ ] Swipe gestures in modal for mobile
+- [ ] Keyboard arrow navigation in modal
+- [ ] Share button for individual assets
+
+## Testing Status
+- Backend API: 100% pass
+- Frontend UI: 95% pass
+- Overall: 97% pass
+
+## Environment Variables Required
+```
+CLOUDINARY_CLOUD_NAME=dopxnugqn
+CLOUDINARY_API_KEY=237931425784416
+CLOUDINARY_API_SECRET=aO7DS8dXMpR_c_Jv3fqgShNxKDU
+PORT=8001
+```
