@@ -11,7 +11,7 @@ import os
 from typing import Dict, Any, Tuple
 
 class ExpressBannersAPITest:
-    def __init__(self, base_url: str = "http://localhost:8081"):
+    def __init__(self, base_url: str = "http://localhost:8001"):
         self.base_url = base_url
         self.test_results = []
         
@@ -329,28 +329,38 @@ class ExpressBannersAPITest:
             )
             return False
 
-    def test_existing_gallery_endpoint(self) -> bool:
-        """Test that existing /api/gallery endpoint works with Cloudinary"""
+    def test_gallery_promoprints_endpoint(self) -> bool:
+        """Test /api/gallery?tag=promoprints returns correct structure"""
         try:
-            response = requests.get(f"{self.base_url}/api/gallery")
+            response = requests.get(f"{self.base_url}/api/gallery", params={"tag": "promoprints"})
             
             content_type = response.headers.get('content-type', '')
             is_json = 'application/json' in content_type
             
             if response.status_code == 200 and is_json:
                 data = response.json()
-                has_items = 'items' in data
-                has_updated_at = 'updatedAt' in data
+                has_ok = data.get('ok') == True
+                has_correct_tag = data.get('tag') == 'promoprints'
+                has_assets = 'assets' in data and isinstance(data.get('assets'), list)
+                
+                # Check if assets have required structure
+                assets_valid = True
+                if has_assets and len(data['assets']) > 0:
+                    first_asset = data['assets'][0]
+                    required_fields = ['public_id', 'resource_type', 'format', 'secure_url']
+                    assets_valid = all(field in first_asset for field in required_fields)
+                
+                success = has_ok and has_correct_tag and has_assets and assets_valid
                 
                 self.log_test(
-                    "Existing /api/gallery endpoint works with Cloudinary",
-                    has_items and has_updated_at,
-                    f"Status: {response.status_code}, Items: {len(data.get('items', []))}, Updated: {data.get('updatedAt', '')[:19]}"
+                    "GET /api/gallery?tag=promoprints returns correct structure",
+                    success,
+                    f"Status: {response.status_code}, OK: {data.get('ok')}, Tag: {data.get('tag')}, Assets: {len(data.get('assets', []))}"
                 )
-                return has_items and has_updated_at
+                return success
             else:
                 self.log_test(
-                    "Existing /api/gallery endpoint works with Cloudinary",
+                    "GET /api/gallery?tag=promoprints returns correct structure",
                     False,
                     f"Expected 200 JSON, got {response.status_code} {content_type}"
                 )
@@ -358,7 +368,91 @@ class ExpressBannersAPITest:
                 
         except Exception as e:
             self.log_test(
-                "Existing /api/gallery endpoint works with Cloudinary",
+                "GET /api/gallery?tag=promoprints returns correct structure",
+                False,
+                f"Request failed: {str(e)}"
+            )
+            return False
+
+    def test_gallery_embroidery_endpoint(self) -> bool:
+        """Test /api/gallery?tag=embroidery returns correct structure"""
+        try:
+            response = requests.get(f"{self.base_url}/api/gallery", params={"tag": "embroidery"})
+            
+            content_type = response.headers.get('content-type', '')
+            is_json = 'application/json' in content_type
+            
+            if response.status_code == 200 and is_json:
+                data = response.json()
+                has_ok = data.get('ok') == True
+                has_correct_tag = data.get('tag') == 'embroidery'
+                has_assets = 'assets' in data and isinstance(data.get('assets'), list)
+                
+                # Check if assets have required structure
+                assets_valid = True
+                if has_assets and len(data['assets']) > 0:
+                    first_asset = data['assets'][0]
+                    required_fields = ['public_id', 'resource_type', 'format', 'secure_url']
+                    assets_valid = all(field in first_asset for field in required_fields)
+                
+                success = has_ok and has_correct_tag and has_assets and assets_valid
+                
+                self.log_test(
+                    "GET /api/gallery?tag=embroidery returns correct structure",
+                    success,
+                    f"Status: {response.status_code}, OK: {data.get('ok')}, Tag: {data.get('tag')}, Assets: {len(data.get('assets', []))}"
+                )
+                return success
+            else:
+                self.log_test(
+                    "GET /api/gallery?tag=embroidery returns correct structure",
+                    False,
+                    f"Expected 200 JSON, got {response.status_code} {content_type}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test(
+                "GET /api/gallery?tag=embroidery returns correct structure",
+                False,
+                f"Request failed: {str(e)}"
+            )
+            return False
+
+    def test_gallery_missing_tag_endpoint(self) -> bool:
+        """Test /api/gallery without tag returns 400 error"""
+        try:
+            response = requests.get(f"{self.base_url}/api/gallery")
+            
+            content_type = response.headers.get('content-type', '')
+            is_json = 'application/json' in content_type
+            
+            if response.status_code == 400 and is_json:
+                data = response.json()
+                has_ok_false = data.get('ok') == False
+                has_error = 'error' in data
+                expected_error = "tag query parameter is required"
+                has_correct_error = data.get('error') == expected_error
+                
+                success = has_ok_false and has_error and has_correct_error
+                
+                self.log_test(
+                    "GET /api/gallery without tag returns 400 error",
+                    success,
+                    f"Status: {response.status_code}, OK: {data.get('ok')}, Error: {data.get('error')}"
+                )
+                return success
+            else:
+                self.log_test(
+                    "GET /api/gallery without tag returns 400 error",
+                    False,
+                    f"Expected 400 JSON, got {response.status_code} {content_type}"
+                )
+                return False
+                
+        except Exception as e:
+            self.log_test(
+                "GET /api/gallery without tag returns 400 error",
                 False,
                 f"Request failed: {str(e)}"
             )
@@ -377,7 +471,9 @@ class ExpressBannersAPITest:
             self.test_media_debug_endpoint,
             self.test_media_folders_endpoint,
             self.test_dynamic_folder_mode_support,
-            self.test_existing_gallery_endpoint,
+            self.test_gallery_promoprints_endpoint,
+            self.test_gallery_embroidery_endpoint,
+            self.test_gallery_missing_tag_endpoint,
         ]
         
         passed_count = 0

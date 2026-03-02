@@ -67,6 +67,7 @@
     btn.type = "button";
     btn.className = "gallery-card";
     btn.setAttribute("aria-label", `Preview ${asset.public_id}`);
+    btn.setAttribute("data-testid", `gallery-card-${index}`);
 
     const thumb = asset.resource_type === "video"
       ? `<video src="${toCloudinaryThumb(asset.secure_url)}" muted playsinline preload="metadata"></video><span class="gallery-video-pill">Video</span>`
@@ -166,13 +167,13 @@
 
   const renderShell = () => {
     pageRoot.innerHTML = categories.map((category) => `
-      <article class="gallery-category" data-gallery-section="${category.key}">
+      <article class="gallery-category" data-gallery-section="${category.key}" data-testid="gallery-section-${category.key}">
         <header class="gallery-category-head">
           <h3>${category.title}</h3>
           <p>${category.subtitle}</p>
         </header>
-        <div class="gallery-row" data-gallery-row></div>
-        <p class="gallery-empty" data-gallery-empty hidden></p>
+        <div class="gallery-row" data-gallery-row data-testid="gallery-row-${category.key}"></div>
+        <p class="gallery-empty" data-gallery-empty hidden data-testid="gallery-empty-${category.key}"></p>
       </article>
     `).join("");
 
