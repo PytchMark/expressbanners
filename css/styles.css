@@ -1161,6 +1161,48 @@ textarea {
   border-color: rgba(37, 211, 102, 0.25);
 }
 
+/* Portfolio catalogue embed */
+.catalogue-embed {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0 40px;
+}
+
+.catalogue-embed-head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.catalogue-frame-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(11, 16, 32, 0.08);
+  aspect-ratio: 16 / 10;
+  background: #fff;
+}
+
+.catalogue-frame-wrap::before {
+  content: "";
+  display: block;
+  padding-top: 62.5%;
+}
+
+.catalogue-frame-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@supports (aspect-ratio: 16 / 10) {
+  .catalogue-frame-wrap::before {
+    display: none;
+  }
+}
+
 /* ============================================
    FOOTER
    ============================================ */
@@ -1809,4 +1851,3 @@ textarea {
     padding: 10px;
   }
 }
-
