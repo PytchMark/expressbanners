@@ -35,7 +35,7 @@ const FOLDER_MAP = {
 };
 
 const MEDIA_CACHE_TTL = 12 * 60 * 60 * 1000; // 12 hours
-const PORTFOLIO_TAGS = ["promoprints", "embroidery"];
+const PORTFOLIO_TAGS = ["promoprints", "embroidery", "featherbanners"];
 
 /**
  * MediaLoader: fetch from /media endpoint with localStorage cache
@@ -1164,8 +1164,9 @@ const initAboutGalleryWall = () => {
  */
 const initHomeMotionWall = () => {
   if (!elements.homeMotionWall || !state.portfolio?.length) return;
-  const featured = state.portfolio.filter((item) => item.featured);
-  const items = featured.length >= 6 ? featured : state.portfolio.slice(0, 9);
+  const items = state.portfolio.length > 6
+    ? state.portfolio.slice(0, Math.min(state.portfolio.length, 18))
+    : state.portfolio;
   renderMotionWall(elements.homeMotionWall, items, {
     rowCount: 3,
     baseDuration: 55,
