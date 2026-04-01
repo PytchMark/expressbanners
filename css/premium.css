@@ -501,6 +501,7 @@ h6,
 .portfolio-card.is-featured::before {
   content: "Featured";
   position: absolute;
+  inset: unset;
   top: 14px;
   right: 14px;
   background: linear-gradient(135deg, var(--brand) 0%, var(--brand-warm) 100%);
