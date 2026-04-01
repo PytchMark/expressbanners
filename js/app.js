@@ -128,7 +128,7 @@ const fetchGallery = async (tags = []) => {
         });
         cursor = data.next_cursor || "";
         pages += 1;
-      } while (cursor && pages < 6);
+      } while (cursor && pages < 20);
     }
 
     const data = { updatedAt: new Date().toISOString(), items: merged };
@@ -151,7 +151,7 @@ const fetchGallery = async (tags = []) => {
 
 const mediaItemsToPortfolio = (items, category = "Portfolio") => {
   return items.map((item, idx) => ({
-    id: `cloud-${item.public_id.replace(/[^a-zA-Z0-9]/g, "-")}-${idx}`,
+    id: `cloud-${item.public_id.replace(/[^a-zA-Z0-9]/g, "-")}`,
     title: (item.public_id.split("/").pop() || "Image").replace(/[-_]/g, " "),
     category,
     src: item.secure_url,
@@ -656,7 +656,8 @@ const showLightboxItem = (direction) => {
 };
 
 const initLightbox = () => {
-  if (!elements.lightbox) return;
+  if (!elements.lightbox || initLightbox.initialized) return;
+  initLightbox.initialized = true;
   const focusableSelector = "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
   elements.lightboxClose?.addEventListener("click", closeLightbox);
   elements.lightboxNext?.addEventListener("click", () => showLightboxItem(1));
@@ -1242,9 +1243,14 @@ const loadCloudinaryMedia = async () => {
     }
   }
 
-  // Re-render everything with real Cloudinary data
-  renderPortfolio();
-  initPortfolioFilters();
+  // Re-render everything with real Cloudinary data.
+  // Skip re-rendering the portfolio grid if the lightbox is currently open to
+  // avoid replacing state.portfolio under an in-progress interaction.
+  const lightboxOpen = elements.lightbox?.classList.contains("is-open");
+  if (!lightboxOpen) {
+    renderPortfolio();
+    initPortfolioFilters();
+  }
   initLightbox();
   initWorkWall();
   initAllMotionWalls();
