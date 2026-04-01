@@ -60,7 +60,7 @@
         const cx = rect.width / 2;
         const cy = rect.height / 2;
         const tiltX = ((y - cy) / cy) * TILT_MAX;
-        const tiltY = ((cx - x) / cx) * TILT_MAX;
+        const tiltY = ((x - cx) / cx) * TILT_MAX;
         card.style.transition = ACTIVE_TRANSITION;
         card.style.transform = `${TILT_SCALE} rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`;
       });
@@ -115,7 +115,7 @@
         const value = target * easeOutCubic(progress);
 
         if (isK) {
-          el.textContent = `${(value / 1000).toFixed(value < 1000 ? 1 : 0)}K+`;
+          el.textContent = `${(value / 1000).toFixed(value >= 1000 ? 0 : 1)}K+`;
         } else if (finalText.includes("%")) {
           el.textContent = `${Math.round(value)}%`;
         } else if (finalText.includes("-")) {
