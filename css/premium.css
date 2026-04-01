@@ -1,0 +1,907 @@
+/* ============================================================
+   EXPRESS BANNERS — PREMIUM DESIGN LAYER
+   Fonts · 3-D depth · Spring easing · Atmospheric glows
+   Card overlays · Stagger reveals · Noise texture · Nav polish
+   Forms · Footer · Back-to-top · Scroll progress bar
+   ============================================================ */
+
+/* ---- 1. DESIGN TOKENS ---------------------------------------- */
+:root {
+  --font-display: "Plus Jakarta Sans", "Manrope", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Spring & expressive easing */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+
+  /* Extended brand palette */
+  --brand-glow: rgba(225, 29, 46, 0.28);
+  --brand2-glow: rgba(29, 78, 216, 0.28);
+  --brand-warm: #f97316;
+
+  /* Surface layering */
+  --surface-raised: rgba(11, 16, 32, 0.03);
+  --surface-overlay: rgba(11, 16, 32, 0.06);
+
+  /* Layered shadow system */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 6px 16px rgba(0, 0, 0, 0.06),
+    0 14px 28px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06), 0 10px 24px rgba(0, 0, 0, 0.08),
+    0 28px 48px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.07), 0 20px 40px rgba(0, 0, 0, 0.09),
+    0 48px 80px rgba(0, 0, 0, 0.05);
+  --shadow-brand: 0 4px 14px rgba(225, 29, 46, 0.22),
+    0 16px 32px rgba(225, 29, 46, 0.12);
+  --shadow-brand2: 0 4px 14px rgba(29, 78, 216, 0.22),
+    0 16px 32px rgba(29, 78, 216, 0.12);
+}
+
+/* ---- 2. TYPOGRAPHY UPGRADE ----------------------------------- */
+body {
+  font-family: var(--font-body);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "calt";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-head h1,
+.section-head h2,
+.hero h1,
+.cta-band h3,
+.service-meta h2,
+.order-hero .hero-content h1 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+}
+
+.hero h1 {
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.section-head h2 {
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ---- 3. PAGE PROGRESS BAR ------------------------------------ */
+.page-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 3100;
+  pointer-events: none;
+}
+
+.page-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--brand2), var(--brand), var(--brand-warm));
+  background-size: 200% 100%;
+  transition: width 0.1s linear;
+  animation: progress-shimmer 2.4s linear infinite;
+}
+
+@keyframes progress-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ---- 4. HERO ENHANCEMENTS ------------------------------------ */
+
+/* Atmospheric glow blobs */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+.hero::before {
+  top: -15%;
+  right: -8%;
+  width: 55%;
+  height: 80%;
+  background: radial-gradient(
+    ellipse,
+    rgba(225, 29, 46, 0.11) 0%,
+    transparent 68%
+  );
+}
+
+.hero::after {
+  bottom: 0;
+  left: -10%;
+  width: 50%;
+  height: 75%;
+  background: radial-gradient(
+    ellipse,
+    rgba(29, 78, 216, 0.09) 0%,
+    transparent 68%
+  );
+}
+
+.hero-grid,
+.hero-copy,
+.hero-media {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gradient text on hero headline */
+.hero h1 {
+  background: linear-gradient(
+    135deg,
+    var(--ink) 0%,
+    rgba(11, 16, 32, 0.78) 55%,
+    #2d3a6e 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: hero-gradient-shift 9s ease infinite;
+}
+
+/* Keep .em accent red through the gradient */
+.hero h1 .em {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-warm) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes hero-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Enhanced media card */
+.media-card {
+  box-shadow: var(--shadow-md), 0 0 0 1px rgba(29, 78, 216, 0.07);
+  transition: transform 0.45s var(--ease-spring),
+    box-shadow 0.45s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+}
+
+.media-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.media-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: var(--shadow-lg), 0 0 48px var(--brand-glow);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 28px;
+  opacity: 0.45;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  animation: scroll-bounce 2.6s ease-in-out infinite;
+}
+
+.scroll-indicator__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--font-body);
+}
+
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(7px);
+    opacity: 0.7;
+  }
+}
+
+/* ---- 5. NAVIGATION ENHANCEMENTS ----------------------------- */
+
+/* Active-page underline indicator */
+.nav-links a:not(.btn) {
+  position: relative;
+}
+
+.nav-links a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.28s var(--ease-spring);
+}
+
+.nav-links a:not(.btn):hover::after,
+.nav-links a:not(.btn).active::after {
+  transform: scaleX(1);
+}
+
+/* Deepened scrolled border */
+.site-header.is-scrolled .nav-pill {
+  border-color: rgba(29, 78, 216, 0.22);
+}
+
+/* Mobile menu item stagger */
+@media (max-width: 960px) {
+  .nav-links.is-open a:nth-child(1) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.04s both;
+  }
+  .nav-links.is-open a:nth-child(2) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.09s both;
+  }
+  .nav-links.is-open a:nth-child(3) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.14s both;
+  }
+  .nav-links.is-open a:nth-child(4) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.19s both;
+  }
+  .nav-links.is-open a:nth-child(5) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.24s both;
+  }
+  .nav-links.is-open a:nth-child(6) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.29s both;
+  }
+  .nav-links.is-open a:nth-child(7) {
+    animation: menu-item-in 0.32s var(--ease-out-expo) 0.34s both;
+  }
+}
+
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ---- 6. BUTTON UPGRADES -------------------------------------- */
+.btn {
+  transition: transform 0.25s var(--ease-spring),
+    box-shadow 0.25s var(--ease-spring), background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Primary button gradient + gloss sweep */
+.btn-primary {
+  background: linear-gradient(135deg, #e11d2e 0%, #c81129 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -130%;
+  width: 60%;
+  height: 180%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+
+.btn-primary:hover::before {
+  left: 150%;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 28px rgba(225, 29, 46, 0.38),
+    0 2px 8px rgba(225, 29, 46, 0.22);
+}
+
+/* Arrow icon animation */
+.btn-primary .btn-arrow {
+  display: inline-block;
+  transition: transform 0.25s var(--ease-spring);
+}
+
+.btn-primary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Catalogue button */
+.btn-catalogue {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-catalogue::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -130%;
+  width: 60%;
+  height: 180%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+
+.btn-catalogue:hover::before {
+  left: 150%;
+}
+
+/* ---- 7. CARD 3-D DEPTH UPGRADE ------------------------------- */
+.card {
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.32s var(--ease-spring),
+    box-shadow 0.32s var(--ease-spring), border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Rim-light top-edge highlight */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+/* Gloss highlight sweep on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -120%;
+  width: 55%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.07),
+    transparent
+  );
+  pointer-events: none;
+  transition: left 0.6s ease;
+}
+
+.card:hover::after {
+  left: 150%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md),
+    0 0 0 1px rgba(29, 78, 216, 0.14),
+    0 10px 28px var(--brand2-glow);
+  border-color: rgba(29, 78, 216, 0.28);
+}
+
+/* ---- 8. PORTFOLIO CARD IMAGE OVERLAY ----------------------- */
+.portfolio-thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  display: block;
+}
+
+.portfolio-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 35%,
+    rgba(11, 16, 32, 0.8) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.38s var(--ease-out-expo);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.portfolio-thumb:hover::after {
+  opacity: 1;
+}
+
+.portfolio-thumb img {
+  transition: transform 0.42s var(--ease-spring);
+}
+
+.portfolio-thumb:hover img {
+  transform: scale(1.07);
+}
+
+/* Featured card badge */
+.portfolio-card.is-featured {
+  position: relative;
+}
+
+.portfolio-card.is-featured::before {
+  content: "Featured";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-warm) 100%);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 999px;
+  z-index: 3;
+  box-shadow: 0 4px 14px rgba(225, 29, 46, 0.32);
+}
+
+/* ---- 9. STAGGERED REVEAL ANIMATION -------------------------- */
+.reveal {
+  transform: translateY(22px);
+  transition: opacity 0.68s var(--ease-out-expo),
+    transform 0.68s var(--ease-out-expo);
+}
+
+.reveal.is-visible {
+  transform: translateY(0);
+}
+
+/* ---- 10. DARK SECTION DEPTH --------------------------------- */
+/* Noise-grain texture on dark backgrounds */
+.theme-dark {
+  position: relative;
+}
+
+.theme-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.theme-dark > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ambient dual-tone glow on the proof strip */
+.proof-strip {
+  background: radial-gradient(
+      ellipse at 18% 50%,
+      rgba(29, 78, 216, 0.18) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      ellipse at 82% 50%,
+      rgba(225, 29, 46, 0.18) 0%,
+      transparent 58%
+    ),
+    var(--bg);
+}
+
+/* ---- 11. STAT CHIP UPGRADES --------------------------------- */
+.stat-chip {
+  transition: transform 0.3s var(--ease-spring),
+    box-shadow 0.3s var(--ease-spring);
+}
+
+.stat-chip:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.theme-dark .stat-chip .stat {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #fff 30%, rgba(255, 255, 255, 0.55) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ---- 12. FORM FOCUS GLOWS ----------------------------------- */
+.input,
+textarea,
+select {
+  border: 1.5px solid var(--line);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--brand2);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.14),
+    0 2px 10px rgba(29, 78, 216, 0.07);
+  background: rgba(29, 78, 216, 0.025);
+}
+
+/* ---- 13. PILL SELECTION GLOW -------------------------------- */
+.pill.is-active {
+  box-shadow: 0 0 0 2px var(--brand2), 0 4px 16px rgba(29, 78, 216, 0.2);
+}
+
+/* ---- 14. MOTION WALL TILE DEPTH ----------------------------- */
+.motion-wall-tile {
+  transition: transform 0.3s var(--ease-spring),
+    box-shadow 0.3s var(--ease-spring);
+}
+
+.motion-wall-tile:hover {
+  transform: scale(1.045);
+  box-shadow: 0 14px 36px rgba(11, 16, 32, 0.2);
+}
+
+.motion-wall-tile img {
+  box-shadow: 0 4px 12px rgba(11, 16, 32, 0.1),
+    0 12px 28px rgba(11, 16, 32, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+/* ---- 15. CTA BAND ENHANCED ---------------------------------- */
+.cta-band {
+  background: linear-gradient(
+    135deg,
+    rgba(29, 78, 216, 0.1) 0%,
+    rgba(225, 29, 46, 0.07) 50%,
+    rgba(29, 78, 216, 0.06) 100%
+  );
+  box-shadow: inset 0 1px 0 rgba(29, 78, 216, 0.1), var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-band::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -8%;
+  width: 40%;
+  height: 220%;
+  background: radial-gradient(
+    ellipse,
+    rgba(225, 29, 46, 0.07) 0%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.cta-band h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  letter-spacing: -0.022em;
+}
+
+/* ---- 16. FOOTER BRAND PRESENCE ------------------------------ */
+.site-footer {
+  background: linear-gradient(180deg, #f0f3fa 0%, #e9ecf5 100%);
+  border-top: none;
+  position: relative;
+}
+
+/* Brand gradient top accent bar */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--brand2),
+    var(--brand),
+    var(--brand-warm),
+    var(--brand),
+    var(--brand2)
+  );
+  background-size: 200% 100%;
+  animation: footer-bar-shift 6s linear infinite;
+}
+
+@keyframes footer-bar-shift {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.site-footer h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: -0.022em;
+}
+
+/* ---- 17. BACK TO TOP BUTTON --------------------------------- */
+.back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand2) 0%, #4f46e5 100%);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  opacity: 0;
+  transform: translateY(18px) scale(0.88);
+  transition: opacity 0.32s var(--ease-spring),
+    transform 0.32s var(--ease-spring), box-shadow 0.28s ease;
+  box-shadow: 0 4px 18px rgba(29, 78, 216, 0.32),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  box-shadow: 0 8px 28px rgba(29, 78, 216, 0.42),
+    0 4px 12px rgba(0, 0, 0, 0.14);
+  transform: translateY(-3px) scale(1.07);
+}
+
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s var(--ease-spring);
+}
+
+.back-to-top:hover svg {
+  transform: translateY(-2px);
+}
+
+/* ---- 18. SECTION DIVIDER ENHANCED --------------------------- */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(225, 29, 46, 0.32) 28%,
+    rgba(29, 78, 216, 0.32) 72%,
+    transparent 100%
+  );
+  margin: 0;
+}
+
+/* ---- 19. TAG / CHIP HOVER EFFECTS --------------------------- */
+.tag {
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.22s ease,
+    background 0.2s ease;
+}
+
+.tag:hover {
+  transform: translateY(-2px);
+  background: rgba(29, 78, 216, 0.1);
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.13);
+}
+
+.chip {
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.22s ease;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(11, 16, 32, 0.09);
+}
+
+/* ---- 20. GALLERY CARD ENHANCED ------------------------------ */
+.gallery-card {
+  transition: transform 0.32s var(--ease-spring), box-shadow 0.32s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 14px 36px rgba(11, 16, 32, 0.2);
+}
+
+/* ---- 21. SERVICE ROW MEDIA HOVER ---------------------------- */
+.service-row img,
+.service-row video {
+  transition: transform 0.42s var(--ease-spring), box-shadow 0.42s ease;
+}
+
+.service-row:hover img,
+.service-row:hover video {
+  transform: scale(1.02);
+  box-shadow: 0 22px 52px rgba(11, 16, 32, 0.14);
+}
+
+/* ---- 22. FILTER BUTTON POLISH ------------------------------- */
+.filter-controls button {
+  transition: transform 0.22s var(--ease-spring), box-shadow 0.22s ease,
+    border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.filter-controls button:hover {
+  transform: translateY(-1px);
+}
+
+.filter-controls button.is-active {
+  box-shadow: 0 0 0 2px var(--brand2), 0 4px 16px rgba(29, 78, 216, 0.2);
+}
+
+/* ---- 23. LIGHTBOX ANIMATION --------------------------------- */
+.lightbox-dialog {
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.55);
+  animation: dialog-in 0.38s var(--ease-out-expo);
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---- 24. TOAST ENHANCED ------------------------------------- */
+.toast {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ---- 25. WORK WALL IMAGE HOVER ------------------------------ */
+.work-wall img {
+  transition: transform 0.36s var(--ease-spring), box-shadow 0.36s ease;
+}
+
+.work-wall .work-card:hover img {
+  transform: scale(1.04);
+  box-shadow: 0 16px 40px rgba(11, 16, 32, 0.18);
+}
+
+/* ---- 26. PROMO STRIP POLISH --------------------------------- */
+.promo-strip {
+  background: linear-gradient(90deg, #c81129 0%, var(--brand) 50%, #c81129 100%);
+  background-size: 200% 100%;
+  animation: promo-strip-shift 8s linear infinite;
+}
+
+@keyframes promo-strip-shift {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ---- REDUCED MOTION — disable everything added here --------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 {
+    animation: none !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--ink) !important;
+    color: var(--ink) !important;
+  }
+
+  .hero h1 .em {
+    -webkit-text-fill-color: var(--brand2) !important;
+    background: none !important;
+    color: var(--brand2) !important;
+  }
+
+  .hero::before,
+  .hero::after,
+  .page-progress-bar,
+  .btn-primary::before,
+  .btn-catalogue::before,
+  .card::after,
+  .scroll-indicator,
+  .back-to-top,
+  .site-footer::before,
+  .promo-strip {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .theme-dark .stat-chip .stat {
+    -webkit-text-fill-color: #fff !important;
+    background: none !important;
+    color: #fff !important;
+  }
+}
