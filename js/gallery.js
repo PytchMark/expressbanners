@@ -171,7 +171,7 @@
     const existingLoadMore = row.querySelector("[data-load-more]");
     if (existingLoadMore) existingLoadMore.remove();
 
-    const startIndex = state.categories[categoryKey].length;
+    const startIndex = state.categories[categoryKey].length - newAssets.length;
     newAssets.forEach((asset, i) => {
       row.appendChild(createCard(asset, startIndex + i, categoryKey));
     });

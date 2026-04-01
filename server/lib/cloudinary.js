@@ -76,27 +76,23 @@ const listByFolder = async (folder, max = 50) => {
     }
   };
 
-  try {
-    // 1. List assets directly in this folder
-    await listSingleFolder(folder);
+  // Helper: recursively list a folder and all its subfolders (breadth-first)
+  const listFolderRecursive = async (folderPath, depth = 0) => {
+    if (allResources.length >= max) return;
+    await listSingleFolder(folderPath);
 
-    // 2. Recurse into subfolders if we haven't hit max
-    if (allResources.length < max) {
-      const subs = await getSubfolders(folder);
-      for (const sub of subs) {
-        if (allResources.length >= max) break;
-        await listSingleFolder(sub);
+    // Stop recursing when we have enough or have gone deep enough
+    if (depth >= 4 || allResources.length >= max) return;
 
-        // Go one level deeper (for nested sub-subfolders)
-        if (allResources.length < max) {
-          const deepSubs = await getSubfolders(sub);
-          for (const deepSub of deepSubs) {
-            if (allResources.length >= max) break;
-            await listSingleFolder(deepSub);
-          }
-        }
-      }
+    const subs = await getSubfolders(folderPath);
+    for (const sub of subs) {
+      if (allResources.length >= max) break;
+      await listFolderRecursive(sub, depth + 1);
     }
+  };
+
+  try {
+    await listFolderRecursive(folder);
   } catch (firstError) {
     // Fallback: try prefix-based listing (Fixed Folder Mode)
     if (firstError.error?.message?.includes("dynamic") || allResources.length === 0) {
@@ -115,6 +111,24 @@ const listByFolder = async (folder, max = 50) => {
         nextCursor = result.next_cursor;
       } while (nextCursor && allResources.length < max);
     }
+  }
+
+  // If Dynamic Folder Mode returned nothing, also try prefix-based fallback
+  if (allResources.length === 0) {
+    const prefix = folder.endsWith("/") ? folder : `${folder}/`;
+    let nextCursor;
+    do {
+      const opts = {
+        type: "upload",
+        prefix,
+        max_results: Math.min(max - allResources.length, 500),
+      };
+      if (nextCursor) opts.next_cursor = nextCursor;
+
+      const result = await cloudinary.api.resources(opts);
+      allResources.push(...(result.resources || []));
+      nextCursor = result.next_cursor;
+    } while (nextCursor && allResources.length < max);
   }
 
   return allResources.slice(0, max);

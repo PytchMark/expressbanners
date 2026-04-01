@@ -117,10 +117,13 @@ app.get("/api/services-media", async (req, res) => {
       );
 
       const services = {};
+      const folderPickIndex = {};
       Object.entries(SERVICES_FOLDER_MAP).forEach(([service, folder]) => {
         const items = folderResults[folder] || [];
         if (items.length) {
-          const pick = items[0];
+          const idx = folderPickIndex[folder] || 0;
+          folderPickIndex[folder] = idx + 1;
+          const pick = items[idx % items.length];
           services[service] = {
             type: "image",
             public_id: pick.public_id,
